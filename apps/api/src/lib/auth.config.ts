@@ -1,8 +1,8 @@
-import { loginSchema } from "@appkit/core";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { ExpressAuthConfig } from "@auth/express";
 // src/lib/auth/auth.config.ts
 import Credentials from "@auth/express/providers/credentials";
+import { loginSchema } from "@codelane/core";
 
 import { db } from "#api/db/index";
 import { accounts, sessions, users, verificationTokens } from "#api/db/schema/index";

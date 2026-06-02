@@ -47,39 +47,39 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: [
         {
-          find: "@appkit/config/client",
+          find: "@codelane/config/client",
           replacement: path.resolve(workspaceRoot, "packages/config/src/client.ts"),
         },
         {
-          find: "@appkit/config",
+          find: "@codelane/config",
           replacement: path.resolve(workspaceRoot, "packages/config/src/index.ts"),
         },
         {
-          find: "@appkit/frontend/globals.css",
+          find: "@codelane/frontend/globals.css",
           replacement: path.resolve(workspaceRoot, "packages/frontend/src/styles/globals.css"),
         },
         {
-          find: "@appkit/frontend",
+          find: "@codelane/frontend",
           replacement: path.resolve(workspaceRoot, "packages/frontend/src/index.ts"),
         },
         {
-          find: "@appkit/ui/globals.css",
+          find: "@codelane/ui/globals.css",
           replacement: path.resolve(workspaceRoot, "packages/ui/src/styles/globals.css"),
         },
         {
-          find: "@appkit/ui/client",
+          find: "@codelane/ui/client",
           replacement: path.resolve(workspaceRoot, "packages/ui/src/client.ts"),
         },
         {
-          find: "@appkit/ui",
+          find: "@codelane/ui",
           replacement: path.resolve(workspaceRoot, "packages/ui/src/index.ts"),
         },
         {
-          find: "@appkit/api-client",
+          find: "@codelane/api-client",
           replacement: path.resolve(workspaceRoot, "packages/api-client/src/index.ts"),
         },
         {
-          find: "@appkit/core",
+          find: "@codelane/core",
           replacement: path.resolve(workspaceRoot, "packages/core/src/index.ts"),
         },
       ],
@@ -105,11 +105,11 @@ export default defineConfig(({ mode }) => {
         "use-sync-external-store/shim/with-selector.js",
       ],
       exclude: [
-        "@appkit/config",
-        "@appkit/frontend",
-        "@appkit/ui",
-        "@appkit/api-client",
-        "@appkit/core",
+        "@codelane/config",
+        "@codelane/frontend",
+        "@codelane/ui",
+        "@codelane/api-client",
+        "@codelane/core",
       ],
     },
 

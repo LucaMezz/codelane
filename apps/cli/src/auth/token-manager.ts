@@ -1,4 +1,4 @@
-import { getCurrentUser, refreshCliAccessToken } from "@appkit/api-client";
+import { getCurrentUser, refreshCliAccessToken } from "@codelane/api-client";
 
 import type { CredentialStore } from "./credential-store";
 

@@ -1,8 +1,8 @@
 {
-  "name": "@appkit/config",
+  "name": "@codelane/config",
   "version": "0.1.0",
   "private": true,
-  "description": "Shared runtime configuration defaults, env names, and URL helpers for AppKit.",
+  "description": "Shared runtime configuration defaults, env names, and URL helpers for CodeLane.",
   "license": "Apache-2.0",
   "files": [
     "dist"

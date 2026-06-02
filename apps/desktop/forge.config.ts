@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { appMetadata } from "@appkit/core/metadata";
+import { appMetadata } from "@codelane/core/metadata";
 import { MakerDeb } from "@electron-forge/maker-deb";
 import { MakerRpm } from "@electron-forge/maker-rpm";
 import { MakerSquirrel } from "@electron-forge/maker-squirrel";
@@ -24,7 +24,7 @@ const config: ForgeConfig = {
 
     // Important:
     // Keep this unscoped. Squirrel can break when it tries to use
-    // the package name "@appkit/desktop" in generated .nuspec paths.
+    // the package name "@codelane/desktop" in generated .nuspec paths.
     name: appName,
     executableName: desktopMetadata.executableName,
 

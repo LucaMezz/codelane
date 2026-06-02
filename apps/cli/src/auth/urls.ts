@@ -1,4 +1,4 @@
-import { createLocalHttpUrl, defaultPorts } from "@appkit/config/client";
+import { createLocalHttpUrl, defaultPorts } from "@codelane/config/client";
 
 import { configStore } from "./config-store";
 

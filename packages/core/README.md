@@ -1,6 +1,6 @@
-# @appkit/core
+# @codelane/core
 
-`@appkit/core` is the dependency-free shared core package for the AppKit monorepo.
+`@codelane/core` is the dependency-free shared core package for the CodeLane monorepo.
 
 It contains framework-agnostic code that can be safely shared by the backend API, the web app, the desktop app, and other internal packages without pulling in runtime-specific dependencies.
 
@@ -8,7 +8,7 @@ The package is intended to be the stable shared domain layer of the project.
 
 ## Overview
 
-`@appkit/core` is for shared logic that is not tied to any specific runtime or framework.
+`@codelane/core` is for shared logic that is not tied to any specific runtime or framework.
 
 It is used by:
 
@@ -22,7 +22,7 @@ Right now, this package includes shared Zod schemas that are used across the bac
 
 ## Role in the monorepo
 
-`@appkit/core` sits at the lowest shared layer of the workspace.
+`@codelane/core` sits at the lowest shared layer of the workspace.
 
 ```text
 apps/
@@ -42,7 +42,7 @@ Because of that, it must stay small, focused, and free of runtime-specific depen
 
 ## Design purpose
 
-The purpose of `@appkit/core` is to centralize code that would otherwise be duplicated across apps.
+The purpose of `@codelane/core` is to centralize code that would otherwise be duplicated across apps.
 
 Good examples include:
 
@@ -80,7 +80,7 @@ The exact structure may evolve, but the package should remain focused on depende
 
 ## What belongs in this package
 
-Good candidates for `@appkit/core`:
+Good candidates for `@codelane/core`:
 
 - Zod schemas used by both the API and frontend apps.
 - Shared request/response schemas.
@@ -113,7 +113,7 @@ This kind of code is useful in:
 
 ## What does not belong in this package
 
-Avoid placing the following in `@appkit/core`:
+Avoid placing the following in `@codelane/core`:
 
 - React components.
 - React hooks.
@@ -134,13 +134,13 @@ Use the following rule of thumb:
 
 ```text
 Pure and reusable everywhere?
-  Put it in @appkit/core.
+  Put it in @codelane/core.
 
 Reusable React UI?
-  Put it in @appkit/ui.
+  Put it in @codelane/ui.
 
 Reusable API communication?
-  Put it in @appkit/api-client.
+  Put it in @codelane/api-client.
 
 Backend runtime code?
   Put it in apps/api.
@@ -154,7 +154,7 @@ Desktop-only code?
 
 ## Dependency policy
 
-`@appkit/core` should have little to no runtime dependencies.
+`@codelane/core` should have little to no runtime dependencies.
 
 The ideal dependency shape is:
 
@@ -170,7 +170,7 @@ no API clients
 no app packages
 ```
 
-If a new dependency is added to `@appkit/core`, it should be carefully justified because every consumer of the core package may inherit that dependency.
+If a new dependency is added to `@codelane/core`, it should be carefully justified because every consumer of the core package may inherit that dependency.
 
 ## Zod schemas
 
@@ -181,7 +181,7 @@ Zod schemas let the repo share validation logic between backend and frontend cod
 Example usage in the API:
 
 ```ts
-import { signInSchema } from "@appkit/core";
+import { signInSchema } from "@codelane/core";
 
 const result = signInSchema.safeParse(req.body);
 ```
@@ -189,7 +189,7 @@ const result = signInSchema.safeParse(req.body);
 Example usage in a frontend app:
 
 ```ts
-import { signInSchema } from "@appkit/core";
+import { signInSchema } from "@codelane/core";
 
 const result = signInSchema.safeParse(formValues);
 ```
@@ -238,14 +238,14 @@ src/index.ts
 Consumers should import from the package entry point:
 
 ```ts
-import { signInSchema } from "@appkit/core";
+import { signInSchema } from "@codelane/core";
 ```
 
 Avoid deep imports into package internals:
 
 ```ts
 // Avoid
-import { signInSchema } from "@appkit/core/src/schemas/auth";
+import { signInSchema } from "@codelane/core/src/schemas/auth";
 ```
 
 If something should be used outside this package, export it from `src/index.ts`.
@@ -266,12 +266,12 @@ This avoids collisions with app-local aliases and makes package ownership clear.
 Recommended rules:
 
 - Use `#/*` only inside this package.
-- Use `@appkit/core` when importing from other apps or packages.
-- Do not use app-local aliases such as `@/*` inside `@appkit/core`.
+- Use `@codelane/core` when importing from other apps or packages.
+- Do not use app-local aliases such as `@/*` inside `@codelane/core`.
 
 ## Dependency boundaries
 
-`@appkit/core` follows the strictest package boundaries in the monorepo.
+`@codelane/core` follows the strictest package boundaries in the monorepo.
 
 It must not import from:
 
@@ -300,76 +300,76 @@ pnpm deps:arch
 
 ## Relationship to `apps/api`
 
-The API can use `@appkit/core` for shared schemas, types, and validation rules.
+The API can use `@codelane/core` for shared schemas, types, and validation rules.
 
 Good API usage:
 
 ```ts
-import { createUserSchema } from "@appkit/core";
+import { createUserSchema } from "@codelane/core";
 ```
 
 The API should keep runtime-specific behavior, database access, middleware, and route handlers inside `apps/api`.
 
-If a backend type or schema also needs to be used by web or desktop, it is a good candidate for `@appkit/core`.
+If a backend type or schema also needs to be used by web or desktop, it is a good candidate for `@codelane/core`.
 
 ## Relationship to `apps/web`
 
-The web app can use `@appkit/core` for shared validation and domain types.
+The web app can use `@codelane/core` for shared validation and domain types.
 
 Good web usage:
 
 ```ts
-import { signInSchema } from "@appkit/core";
+import { signInSchema } from "@codelane/core";
 ```
 
 The web app should keep Next.js routes, layouts, and browser-specific behavior inside `apps/web`.
 
 ## Relationship to `apps/desktop`
 
-The desktop app can use `@appkit/core` for shared validation and domain types.
+The desktop app can use `@codelane/core` for shared validation and domain types.
 
 Good desktop usage:
 
 ```ts
-import { signInSchema } from "@appkit/core";
+import { signInSchema } from "@codelane/core";
 ```
 
 The desktop app should keep Electron main-process, preload, IPC, and renderer-specific behavior inside `apps/desktop`.
 
-## Relationship to `@appkit/ui`
+## Relationship to `@codelane/ui`
 
-`@appkit/ui` may use `@appkit/core` if it needs shared framework-agnostic logic.
+`@codelane/ui` may use `@codelane/core` if it needs shared framework-agnostic logic.
 
-However, `@appkit/core` must not import from `@appkit/ui`.
+However, `@codelane/core` must not import from `@codelane/ui`.
 
 The dependency direction should be:
 
 ```text
-@appkit/ui -> @appkit/core
+@codelane/ui -> @codelane/core
 ```
 
 not:
 
 ```text
-@appkit/core -> @appkit/ui
+@codelane/core -> @codelane/ui
 ```
 
-## Relationship to `@appkit/api-client`
+## Relationship to `@codelane/api-client`
 
-`@appkit/api-client` may use `@appkit/core` for shared request/response schemas and types.
+`@codelane/api-client` may use `@codelane/core` for shared request/response schemas and types.
 
-However, `@appkit/core` must not import from `@appkit/api-client`.
+However, `@codelane/core` must not import from `@codelane/api-client`.
 
 The dependency direction should be:
 
 ```text
-@appkit/api-client -> @appkit/core
+@codelane/api-client -> @codelane/core
 ```
 
 not:
 
 ```text
-@appkit/core -> @appkit/api-client
+@codelane/core -> @codelane/api-client
 ```
 
 ## Scripts
@@ -379,25 +379,25 @@ Run commands from the repository root using pnpm filters.
 ### Build the core package
 
 ```bash
-pnpm --filter @appkit/core build
+pnpm --filter @codelane/core build
 ```
 
 ### Typecheck the core package
 
 ```bash
-pnpm --filter @appkit/core typecheck
+pnpm --filter @codelane/core typecheck
 ```
 
 ### Run Knip for the core package
 
 ```bash
-pnpm --filter @appkit/core knip
+pnpm --filter @codelane/core knip
 ```
 
 ### Run tests
 
 ```bash
-pnpm --filter @appkit/core test:run
+pnpm --filter @codelane/core test:run
 ```
 
 if tests are configured for this package.
@@ -408,8 +408,8 @@ A typical workflow for changing shared schemas or core logic:
 
 ```bash
 pnpm install
-pnpm --filter @appkit/core typecheck
-pnpm --filter @appkit/core build
+pnpm --filter @codelane/core typecheck
+pnpm --filter @codelane/core build
 ```
 
 Then run the root checks to make sure all consumers still work:
@@ -433,7 +433,7 @@ When adding a new schema:
 2. Export the schema.
 3. Derive types from the schema using `z.infer`.
 4. Export the schema and inferred type from `src/index.ts`.
-5. Use it from the API and frontend apps through `@appkit/core`.
+5. Use it from the API and frontend apps through `@codelane/core`.
 6. Run typecheck and build.
 
 Example:
@@ -457,7 +457,7 @@ export * from "#/schemas/project";
 Then consume it:
 
 ```ts
-import { createProjectSchema } from "@appkit/core";
+import { createProjectSchema } from "@codelane/core";
 ```
 
 ## Schema design guidelines
@@ -511,41 +511,41 @@ Because this package has no runtime dependencies, it should be one of the easies
 
 ## Versioning and publishing
 
-`@appkit/core` is an internal package for this monorepo.
+`@codelane/core` is an internal package for this monorepo.
 
 It is not intended to be published as an external npm package. It exists to share code between the apps and packages in this repository.
 
 Internal consumers should depend on it with:
 
 ```json
-"@appkit/core": "workspace:*"
+"@codelane/core": "workspace:*"
 ```
 
 ## Common issues
 
 ### A frontend and backend type drift apart
 
-Move the shared schema/type into `@appkit/core` and import it from both places.
+Move the shared schema/type into `@codelane/core` and import it from both places.
 
 ### A schema needs database-specific behavior
 
 Keep database behavior in `apps/api`.
 
-If only the shape or validation rule is shared, put that part in `@appkit/core`.
+If only the shape or validation rule is shared, put that part in `@codelane/core`.
 
 ### A utility needs React
 
-It does not belong in `@appkit/core`.
+It does not belong in `@codelane/core`.
 
-Move it to `@appkit/ui` or the app that needs it.
+Move it to `@codelane/ui` or the app that needs it.
 
 ### A utility needs Express or Node APIs
 
-It probably belongs in `apps/api`, not `@appkit/core`.
+It probably belongs in `apps/api`, not `@codelane/core`.
 
 ### A utility needs Electron APIs
 
-It belongs in `apps/desktop`, not `@appkit/core`.
+It belongs in `apps/desktop`, not `@codelane/core`.
 
 ### Import from `#/*` fails
 
@@ -581,7 +581,7 @@ The package should remain compatible with:
 
 ## Design goals
 
-`@appkit/core` is designed to be:
+`@codelane/core` is designed to be:
 
 - **Dependency-free**: avoids runtime-specific dependencies.
 - **Framework-agnostic**: usable by backend, web, desktop, and packages.
@@ -606,7 +606,7 @@ This package is not intended to contain:
 - App-specific workflows.
 - Published package infrastructure.
 
-If code depends on a specific runtime, it probably does not belong in `@appkit/core`.
+If code depends on a specific runtime, it probably does not belong in `@codelane/core`.
 
 ## Related documentation
 
@@ -622,4 +622,4 @@ See the root README for:
 
 ## License
 
-This package is part of the AppKit monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.
+This package is part of the CodeLane monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.

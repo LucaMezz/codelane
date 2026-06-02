@@ -1,4 +1,4 @@
-import { Spinner } from "@appkit/ui";
+import { Spinner } from "@codelane/ui";
 
 export function LoadingScreen(): React.JSX.Element {
   return (

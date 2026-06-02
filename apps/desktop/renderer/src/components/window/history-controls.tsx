@@ -1,6 +1,6 @@
-import { Button } from "@appkit/ui";
-import { Kbd, KbdGroup } from "@appkit/ui";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@appkit/ui";
+import { Button } from "@codelane/ui";
+import { Kbd, KbdGroup } from "@codelane/ui";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@codelane/ui";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
 

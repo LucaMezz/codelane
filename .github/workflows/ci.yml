@@ -199,10 +199,10 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build desktop dependencies
-        run: pnpm exec turbo run build --filter='@appkit/desktop^...'
+        run: pnpm exec turbo run build --filter='@codelane/desktop^...'
 
       - name: Package desktop app
-        run: pnpm --filter @appkit/desktop make
+        run: pnpm --filter @codelane/desktop make
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

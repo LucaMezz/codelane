@@ -1,7 +1,7 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@appkit/ui";
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@appkit/ui";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@codelane/ui";
+import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@codelane/ui";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 
 const chartData = [

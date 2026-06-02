@@ -1,8 +1,8 @@
-# @appkit/ui
+# @codelane/ui
 
-`@appkit/ui` is the shared React UI package for the AppKit monorepo.
+`@codelane/ui` is the shared React UI package for the CodeLane monorepo.
 
-It contains reusable components, hooks, styling utilities, global styles, and a Storybook component workbench that can be shared between the web app and the desktop renderer. The package is built around shadcn/ui-style component primitives and is intended to provide a consistent design foundation across AppKit's frontend targets.
+It contains reusable components, hooks, styling utilities, global styles, and a Storybook component workbench that can be shared between the web app and the desktop renderer. The package is built around shadcn/ui-style component primitives and is intended to provide a consistent design foundation across CodeLane's frontend targets.
 
 ## Overview
 
@@ -27,12 +27,12 @@ It should not contain app-specific route logic, desktop runtime code, backend co
 
 ## Role in the monorepo
 
-`@appkit/ui` sits between the frontend applications and the rest of the shared packages.
+`@codelane/ui` sits between the frontend applications and the rest of the shared packages.
 
 ```text
 apps/
-  web/          Browser frontend that consumes @appkit/ui
-  desktop/      Desktop renderer that consumes @appkit/ui
+  web/          Browser frontend that consumes @codelane/ui
+  desktop/      Desktop renderer that consumes @codelane/ui
 
 packages/
   ui/           Shared React UI package and Storybook workbench
@@ -40,7 +40,7 @@ packages/
   api-client/   Shared API communication helpers
 ```
 
-The web and desktop apps should import reusable components from `@appkit/ui` instead of duplicating UI code.
+The web and desktop apps should import reusable components from `@codelane/ui` instead of duplicating UI code.
 
 ## Package structure
 
@@ -67,7 +67,7 @@ The exact structure may evolve, but the intent should stay the same: this packag
 
 ## Storybook
 
-`@appkit/ui` includes Storybook for developing, previewing, documenting, and testing shared UI components independently from any consuming application.
+`@codelane/ui` includes Storybook for developing, previewing, documenting, and testing shared UI components independently from any consuming application.
 
 Storybook is useful because it allows shared components to be viewed without running the web app or desktop app. This makes it easier to develop components in isolation, review visual states, document variants, and verify that the shared styling foundation works correctly.
 
@@ -86,8 +86,8 @@ pnpm build:ui
 You can also run the package scripts directly:
 
 ```bash
-pnpm --filter @appkit/ui storybook
-pnpm --filter @appkit/ui storybook:build
+pnpm --filter @codelane/ui storybook
+pnpm --filter @codelane/ui storybook:build
 ```
 
 Storybook is configured under:
@@ -132,7 +132,7 @@ When adding stories for a shared component:
 1. Add the story next to the component.
 2. Use the package's real component source, not duplicated demo components.
 3. Cover common variants, sizes, states, and realistic usage examples.
-4. Prefer examples that demonstrate how the component is expected to be used in AppKit.
+4. Prefer examples that demonstrate how the component is expected to be used in CodeLane.
 5. Avoid app-specific business flows unless the component is genuinely shared.
 6. Run Storybook locally.
 7. Build Storybook before merging larger UI changes.
@@ -168,7 +168,7 @@ Storybook files commonly use default exports for component metadata. This is exp
 
 ## shadcn/ui registry stories
 
-This package may use registry-provided stories for shadcn/ui-style components when they are useful and compatible with AppKit's setup.
+This package may use registry-provided stories for shadcn/ui-style components when they are useful and compatible with CodeLane's setup.
 
 When adding registry stories, verify that they are adapted to this package's Storybook framework:
 
@@ -189,7 +189,7 @@ Registry-generated stories should be reviewed before committing. In particular, 
 
 ## What belongs in this package
 
-Good candidates for `@appkit/ui`:
+Good candidates for `@codelane/ui`:
 
 - Buttons.
 - Inputs.
@@ -237,13 +237,13 @@ Use the following rule of thumb:
 
 ```text
 Reusable React UI?
-  Put it in @appkit/ui.
+  Put it in @codelane/ui.
 
 Reusable non-UI logic?
-  Put it in @appkit/core.
+  Put it in @codelane/core.
 
 Reusable API communication?
-  Put it in @appkit/api-client.
+  Put it in @codelane/api-client.
 
 Specific to one app?
   Keep it in that app.
@@ -284,14 +284,14 @@ src/index.ts
 Consumers should import from the package entry point:
 
 ```tsx
-import { Button, Card } from "@appkit/ui";
+import { Button, Card } from "@codelane/ui";
 ```
 
 Avoid deep imports from package internals:
 
 ```tsx
 // Avoid
-import { Button } from "@appkit/ui/src/components/shadcn-ui/button";
+import { Button } from "@codelane/ui/src/components/shadcn-ui/button";
 ```
 
 Deep imports make refactors harder and bypass the package's public API boundary.
@@ -313,7 +313,7 @@ This avoids collisions with app-local aliases such as `@/*`.
 Recommended conventions:
 
 - Use `#/*` only inside this package.
-- Use `@appkit/ui` when importing this package from apps or other packages.
+- Use `@codelane/ui` when importing this package from apps or other packages.
 - Avoid using app-local aliases such as `@/*` inside shared packages.
 - Prefer stable file/barrel boundaries over fragile deep relative paths.
 
@@ -337,7 +337,7 @@ Apps that consume the UI package should import the shared global stylesheet wher
 Example:
 
 ```ts
-import "@appkit/ui/globals.css";
+import "@codelane/ui/globals.css";
 ```
 
 The exact export path depends on the package's configured `exports` field. If `globals.css` is intended to be consumed directly, make sure it is exported in `package.json`.
@@ -389,7 +389,7 @@ import { cn } from "#/utils/cn";
 
 Utilities in this package should generally be UI-related.
 
-If a utility is framework-agnostic and useful outside UI code, move it to `@appkit/core`.
+If a utility is framework-agnostic and useful outside UI code, move it to `@codelane/core`.
 
 ## Hooks
 
@@ -465,7 +465,7 @@ pnpm dev:ui
 or:
 
 ```bash
-pnpm --filter @appkit/ui storybook
+pnpm --filter @codelane/ui storybook
 ```
 
 ### Build Storybook
@@ -477,31 +477,31 @@ pnpm build:ui
 or:
 
 ```bash
-pnpm --filter @appkit/ui storybook:build
+pnpm --filter @codelane/ui storybook:build
 ```
 
 ### Build the UI package
 
 ```bash
-pnpm --filter @appkit/ui build
+pnpm --filter @codelane/ui build
 ```
 
 ### Typecheck the UI package
 
 ```bash
-pnpm --filter @appkit/ui typecheck
+pnpm --filter @codelane/ui typecheck
 ```
 
 ### Run Knip for the UI package
 
 ```bash
-pnpm --filter @appkit/ui knip
+pnpm --filter @codelane/ui knip
 ```
 
 ### Run tests
 
 ```bash
-pnpm --filter @appkit/ui test:run
+pnpm --filter @codelane/ui test:run
 ```
 
 if tests are configured for this package.
@@ -513,21 +513,21 @@ A typical workflow for changing shared UI components:
 ```bash
 pnpm install
 pnpm dev:ui
-pnpm --filter @appkit/ui typecheck
-pnpm --filter @appkit/ui build
+pnpm --filter @codelane/ui typecheck
+pnpm --filter @codelane/ui build
 pnpm build:ui
 ```
 
 Then run a consuming app to verify the UI in context:
 
 ```bash
-pnpm --filter @appkit/web dev
+pnpm --filter @codelane/web dev
 ```
 
 or:
 
 ```bash
-pnpm --filter @appkit/desktop dev
+pnpm --filter @codelane/desktop dev
 ```
 
 Before committing:
@@ -551,7 +551,7 @@ pnpm build:ui
 Consumers should import shared UI from the public package entry point:
 
 ```tsx
-import { Button, Card } from "@appkit/ui";
+import { Button, Card } from "@codelane/ui";
 
 export function Example() {
   return (
@@ -592,7 +592,7 @@ export * from "#/components/shadcn-ui/badge";
 Then consume it:
 
 ```tsx
-import { Badge } from "@appkit/ui";
+import { Badge } from "@codelane/ui";
 ```
 
 ## Adding or modifying shadcn/ui components
@@ -611,14 +611,14 @@ If a shadcn/ui component is only relevant to one app, keep it in that app instea
 
 ## Dependency boundaries
 
-`@appkit/ui` follows these rules:
+`@codelane/ui` follows these rules:
 
 - It may depend on React and frontend UI libraries.
-- It may depend on `@appkit/core` if shared framework-agnostic logic is needed.
+- It may depend on `@codelane/core` if shared framework-agnostic logic is needed.
 - It must not depend on `apps/web`.
 - It must not depend on `apps/desktop`.
 - It must not depend on `apps/api`.
-- It should not depend on `@appkit/api-client` unless there is a deliberate reason.
+- It should not depend on `@codelane/api-client` unless there is a deliberate reason.
 - It should not import Node-only or Electron-only modules.
 - It should not import generated build output.
 
@@ -630,7 +630,7 @@ pnpm deps:arch
 
 ## Relationship to `apps/web`
 
-The web app consumes shared components from `@appkit/ui`.
+The web app consumes shared components from `@codelane/ui`.
 
 If a component is reusable between web and desktop, it should live here.
 
@@ -638,25 +638,25 @@ If a component is specific to Next.js routing, metadata, server components, or w
 
 ## Relationship to `apps/desktop`
 
-The desktop renderer consumes shared components from `@appkit/ui`.
+The desktop renderer consumes shared components from `@codelane/ui`.
 
 If a component is reusable between desktop and web, it should live here.
 
 If a component is specific to Electron window chrome, desktop IPC, or desktop runtime behavior, it should stay in `apps/desktop`.
 
-## Relationship to `@appkit/core`
+## Relationship to `@codelane/core`
 
-Use `@appkit/core` for framework-agnostic logic.
+Use `@codelane/core` for framework-agnostic logic.
 
-If a helper does not depend on React, JSX, DOM APIs, CSS classes, or UI concerns, consider moving it to `@appkit/core`.
+If a helper does not depend on React, JSX, DOM APIs, CSS classes, or UI concerns, consider moving it to `@codelane/core`.
 
-Good `@appkit/ui` utility:
+Good `@codelane/ui` utility:
 
 ```text
 cn class name helper
 ```
 
-Good `@appkit/core` utility:
+Good `@codelane/core` utility:
 
 ```text
 schema validation helper
@@ -779,7 +779,7 @@ Check that:
 - The import points to an actual file.
 - The file extension/resolution mode is supported by the package's TypeScript configuration.
 
-### Component is not available from `@appkit/ui`
+### Component is not available from `@codelane/ui`
 
 Make sure it is exported from:
 
@@ -792,7 +792,7 @@ src/index.ts
 Make sure the consuming app imports the shared stylesheet if required:
 
 ```ts
-import "@appkit/ui/globals.css";
+import "@codelane/ui/globals.css";
 ```
 
 Also verify the CSS file is exported in `package.json` if it is imported through the package name.
@@ -830,7 +830,7 @@ The package should remain compatible with:
 
 ## Design goals
 
-`@appkit/ui` is designed to be:
+`@codelane/ui` is designed to be:
 
 - **Reusable**: shared by web and desktop frontends.
 - **Consistent**: provides common UI primitives and styling foundations.
@@ -838,7 +838,7 @@ The package should remain compatible with:
 - **Documented**: includes Storybook stories for shared UI examples and component states.
 - **Accessible**: shared components should be accessible by default.
 - **Platform-neutral**: avoids web-only or desktop-only runtime assumptions.
-- **Monorepo-aware**: follows AppKit package boundaries and import conventions.
+- **Monorepo-aware**: follows CodeLane package boundaries and import conventions.
 - **Maintainable**: exports a clear public API and avoids deep internal imports.
 
 ## Non-goals
@@ -853,7 +853,7 @@ This package is not intended to contain:
 - App-specific feature workflows.
 - Published external package infrastructure.
 
-The package is designed for internal use inside the AppKit monorepo.
+The package is designed for internal use inside the CodeLane monorepo.
 
 ## Related documentation
 
@@ -869,4 +869,4 @@ See the root README for:
 
 ## License
 
-This package is part of the AppKit monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.
+This package is part of the CodeLane monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.

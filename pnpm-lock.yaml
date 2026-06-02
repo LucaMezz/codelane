@@ -63,10 +63,10 @@ importers:
 
   apps/api:
     dependencies:
-      '@appkit/config':
+      '@codelane/config':
         specifier: workspace:*
         version: link:../../packages/config
-      '@appkit/core':
+      '@codelane/core':
         specifier: workspace:*
         version: link:../../packages/core
       '@auth/drizzle-adapter':
@@ -139,13 +139,13 @@ importers:
 
   apps/cli:
     dependencies:
-      '@appkit/api-client':
+      '@codelane/api-client':
         specifier: workspace:*
         version: link:../../packages/api-client
-      '@appkit/config':
+      '@codelane/config':
         specifier: workspace:*
         version: link:../../packages/config
-      '@appkit/core':
+      '@codelane/core':
         specifier: workspace:*
         version: link:../../packages/core
       commander:
@@ -188,16 +188,16 @@ importers:
 
   apps/desktop:
     dependencies:
-      '@appkit/config':
+      '@codelane/config':
         specifier: workspace:*
         version: link:../../packages/config
-      '@appkit/core':
+      '@codelane/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@appkit/frontend':
+      '@codelane/frontend':
         specifier: workspace:*
         version: link:../../packages/frontend
-      '@appkit/ui':
+      '@codelane/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       '@tailwindcss/typography':
@@ -331,13 +331,13 @@ importers:
 
   apps/web:
     dependencies:
-      '@appkit/config':
+      '@codelane/config':
         specifier: workspace:*
         version: link:../../packages/config
-      '@appkit/frontend':
+      '@codelane/frontend':
         specifier: workspace:*
         version: link:../../packages/frontend
-      '@appkit/ui':
+      '@codelane/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       '@vitejs/plugin-react':
@@ -380,10 +380,10 @@ importers:
 
   packages/api-client:
     dependencies:
-      '@appkit/config':
+      '@codelane/config':
         specifier: workspace:*
         version: link:../config
-      '@appkit/core':
+      '@codelane/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -449,13 +449,13 @@ importers:
 
   packages/frontend:
     dependencies:
-      '@appkit/api-client':
+      '@codelane/api-client':
         specifier: workspace:*
         version: link:../api-client
-      '@appkit/core':
+      '@codelane/core':
         specifier: workspace:*
         version: link:../core
-      '@appkit/ui':
+      '@codelane/ui':
         specifier: workspace:*
         version: link:../ui
       '@hookform/resolvers':

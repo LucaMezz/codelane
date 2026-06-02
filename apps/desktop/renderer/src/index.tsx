@@ -1,4 +1,4 @@
-import { createRoutes } from "@appkit/frontend";
+import { createRoutes } from "@codelane/frontend";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 
 import { Layout } from "./components/layout";

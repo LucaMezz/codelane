@@ -34,7 +34,7 @@ export async function waitForLocalhostCallback(): Promise<{
         }
 
         res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-        res.end("<p>AppKit CLI login complete. You can close this tab.</p>");
+        res.end("<p>CodeLane CLI login complete. You can close this tab.</p>");
         resolve({ code, state });
       } catch (error) {
         reject(error);

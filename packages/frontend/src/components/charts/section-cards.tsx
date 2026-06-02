@@ -1,4 +1,4 @@
-import { Badge, Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@appkit/ui";
+import { Badge, Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@codelane/ui";
 import { BoxesIcon, CheckCircle2Icon, Layers3Icon, ShieldCheckIcon } from "lucide-react";
 
 const cards = [

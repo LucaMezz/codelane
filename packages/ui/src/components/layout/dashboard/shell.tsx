@@ -17,7 +17,7 @@ export function DashboardShell({ actions, breadcrumbs, children, user }: Dashboa
   return (
     <SidebarProvider className="flex min-h-0 h-full w-full" defaultOpen>
       <AppSidebar
-        className="top-[var(--appkit-dashboard-sidebar-offset,0px)] h-[calc(100svh-var(--appkit-dashboard-sidebar-offset,0px))]"
+        className="top-[var(--codelane-dashboard-sidebar-offset,0px)] h-[calc(100svh-var(--codelane-dashboard-sidebar-offset,0px))]"
         actions={actions}
         user={user}
       />

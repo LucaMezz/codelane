@@ -1,4 +1,4 @@
-import { Button } from "@appkit/ui";
+import { Button } from "@codelane/ui";
 import { MdInbox } from "react-icons/md";
 
 export function Inbox(): React.JSX.Element {

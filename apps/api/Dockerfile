@@ -22,7 +22,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # Build only the API and its dependencies
-RUN pnpm --filter @appkit/api build
+RUN pnpm --filter @codelane/api build
 
 FROM node:22-alpine AS runner
 
@@ -39,7 +39,7 @@ COPY apps/api/package.json ./apps/api/package.json
 COPY packages/config/package.json ./packages/config/package.json
 COPY packages/core/package.json ./packages/core/package.json
 
-RUN pnpm install --prod --frozen-lockfile --filter @appkit/api
+RUN pnpm install --prod --frozen-lockfile --filter @codelane/api
 
 COPY --from=base /app/apps/api/dist ./apps/api/dist
 

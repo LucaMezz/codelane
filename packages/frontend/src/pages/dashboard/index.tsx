@@ -13,7 +13,9 @@ export function Dashboard() {
           <section className="px-4 lg:px-6">
             <div className="rounded-lg border bg-card p-4 md:p-6">
               <div className="max-w-3xl space-y-2">
-                <p className="text-sm font-medium text-muted-foreground">AppKit starter surface</p>
+                <p className="text-sm font-medium text-muted-foreground">
+                  CodeLane starter surface
+                </p>
                 <h1 className="text-2xl font-semibold tracking-normal md:text-3xl">
                   A cross-platform template dashboard
                 </h1>

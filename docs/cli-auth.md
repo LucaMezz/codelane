@@ -2,7 +2,7 @@
 
 <!-- cspell:words PKCE pkce HMAC libsecret rundll autonumber -->
 
-AppKit CLI authentication uses a browser-based native application flow:
+CodeLane CLI authentication uses a browser-based native application flow:
 
 - the CLI starts the login, but it never asks for the user's password
 - the browser handles the normal web sign-in experience
@@ -20,7 +20,7 @@ and [RFC 7636: Proof Key for Code Exchange](https://www.rfc-editor.org/rfc/rfc76
 The user runs:
 
 ```bash
-appkit login
+codelane login
 ```
 
 The CLI opens:
@@ -32,9 +32,9 @@ http://localhost:3000/cli/login?state=...&code_challenge=...&redirect_uri=http%3
 If the user is already signed in to the web app, the browser immediately shows:
 
 ```txt
-Authorize AppKit CLI?
+Authorize CodeLane CLI?
 
-The AppKit CLI is requesting access to luca@example.com.
+The CodeLane CLI is requesting access to luca@example.com.
 
 [Authorize CLI] [Cancel]
 ```
@@ -56,15 +56,15 @@ Logged in as luca@example.com
 ## Commands
 
 ```bash
-appkit login
-appkit login --no-browser
-appkit login --api-url http://localhost:4000 --web-url http://localhost:3000
-appkit whoami
-appkit auth status
-appkit logout
+codelane login
+codelane login --no-browser
+codelane login --api-url http://localhost:4000 --web-url http://localhost:3000
+codelane whoami
+codelane auth status
+codelane logout
 ```
 
-Development defaults come from `@appkit/config`:
+Development defaults come from `@codelane/config`:
 
 - API: `http://localhost:4000`
 - Web: `http://localhost:3000`
@@ -79,14 +79,14 @@ APPKIT_WEB_URL=http://localhost:3000
 Or with login flags:
 
 ```bash
-appkit login --api-url http://localhost:4000 --web-url http://localhost:3000
+codelane login --api-url http://localhost:4000 --web-url http://localhost:3000
 ```
 
 ## Components
 
 ```mermaid
 flowchart LR
-  CLI["AppKit CLI"] --> Browser["System browser"]
+  CLI["CodeLane CLI"] --> Browser["System browser"]
   Browser --> Web["Web app"]
   Web --> API["Express API"]
   API --> DB[("Postgres")]
@@ -176,14 +176,14 @@ Shared schemas and API wrappers keep request and response shapes consistent:
 sequenceDiagram
   autonumber
   actor User
-  participant CLI as AppKit CLI
+  participant CLI as CodeLane CLI
   participant Browser as Browser
   participant Web as Web app
   participant API as Express API
   participant DB as Postgres
   participant Loopback as 127.0.0.1 callback
 
-  User->>CLI: appkit login
+  User->>CLI: codelane login
   CLI->>CLI: Generate state
   CLI->>CLI: Generate PKCE code_verifier
   CLI->>CLI: Derive code_challenge
@@ -194,12 +194,12 @@ sequenceDiagram
   API-->>Web: Current web session or no session
 
   alt User already signed in
-    Web-->>Browser: Show "Authorize AppKit CLI?"
+    Web-->>Browser: Show "Authorize CodeLane CLI?"
   else User not signed in
     Web-->>Browser: Redirect to /auth/login?callbackUrl=<original /cli/login URL>
     User->>Web: Sign in through normal web form
     Web-->>Browser: Return to original /cli/login URL
-    Web-->>Browser: Show "Authorize AppKit CLI?"
+    Web-->>Browser: Show "Authorize CodeLane CLI?"
   end
 
   User->>Web: Click Authorize CLI
@@ -358,7 +358,7 @@ For `GET /auth/me`, the API also checks that the CLI session still exists, belon
 
 ### Logout revokes the server-side session
 
-`appkit logout`:
+`codelane logout`:
 
 1. reads the local refresh token
 2. calls `POST /auth/cli/revoke`
@@ -429,7 +429,7 @@ This table represents long-lived CLI login state.
 | -------------------- | ------------------------------------------------------ |
 | `refresh_token_hash` | Hash of the current refresh token.                     |
 | `user_id`            | The user this CLI session belongs to.                  |
-| `name`               | Human-readable session name, currently `AppKit CLI`.   |
+| `name`               | Human-readable session name, currently `CodeLane CLI`. |
 | `user_agent`         | Optional caller user agent from token exchange.        |
 | `last_used_at`       | Updated during refresh.                                |
 | `expires_at`         | Refresh session expiry, currently 30 days.             |
@@ -564,7 +564,7 @@ Response:
 
 ### `POST /auth/cli/revoke`
 
-Called by `appkit logout`.
+Called by `codelane logout`.
 
 Request:
 
@@ -590,7 +590,7 @@ Response:
 
 ### `GET /auth/me`
 
-Called by `appkit whoami` and `appkit auth status`.
+Called by `codelane whoami` and `codelane auth status`.
 
 Request:
 
@@ -626,13 +626,13 @@ Response:
 ```mermaid
 stateDiagram-v2
   [*] --> NoCredentials
-  NoCredentials --> BrowserLoginStarted: appkit login
+  NoCredentials --> BrowserLoginStarted: codelane login
   BrowserLoginStarted --> CodeIssued: user authorizes in browser
   CodeIssued --> CliSessionCreated: code + PKCE exchange succeeds
   CliSessionCreated --> AccessTokenCached: access token returned
   AccessTokenCached --> RefreshNeeded: access token near expiry
   RefreshNeeded --> AccessTokenCached: refresh token rotation succeeds
-  AccessTokenCached --> Revoked: appkit logout
+  AccessTokenCached --> Revoked: codelane logout
   RefreshNeeded --> NoCredentials: refresh fails
   Revoked --> NoCredentials: local credential deleted
 ```
@@ -667,7 +667,7 @@ stateDiagram-v2
 flowchart TD
   A["CLI opens /cli/login?..."] --> B["Web app checks /auth/session"]
   B --> C["Session exists"]
-  C --> D["Show Authorize AppKit CLI screen"]
+  C --> D["Show Authorize CodeLane CLI screen"]
   D --> E["User approves"]
   E --> F["Browser redirects to localhost callback"]
 ```
@@ -684,7 +684,7 @@ flowchart TD
   D --> E["User signs in"]
   E --> F["Login page navigates to callbackUrl"]
   F --> G["Original state, code_challenge, redirect_uri are still present"]
-  G --> H["Show Authorize AppKit CLI screen"]
+  G --> H["Show Authorize CodeLane CLI screen"]
 ```
 
 Preserving the exact callback URL matters because the CLI is waiting for a specific `state`, PKCE challenge, and localhost callback URI.
@@ -753,7 +753,7 @@ The API code is running, but the database migration has not been applied.
 Run:
 
 ```bash
-pnpm --filter @appkit/api db:migrate
+pnpm --filter @codelane/api db:migrate
 ```
 
 If the command cannot see `DATABASE_URL`, load the root `.env` when running Drizzle.
@@ -771,7 +771,7 @@ Authorization codes expire after 5 minutes.
 Restart the login:
 
 ```bash
-appkit login
+codelane login
 ```
 
 ### Reused authorization code
@@ -787,7 +787,7 @@ The CLI cannot refresh its access token.
 The user should run:
 
 ```bash
-appkit login
+codelane login
 ```
 
 ## Security checklist
@@ -819,7 +819,7 @@ pnpm db:up
 2. Apply migrations:
 
 ```bash
-pnpm --filter @appkit/api db:migrate
+pnpm --filter @codelane/api db:migrate
 ```
 
 3. Start the API:
@@ -837,7 +837,7 @@ pnpm dev:web
 5. Start login:
 
 ```bash
-pnpm --filter @appkit/cli dev -- login
+pnpm --filter @codelane/cli dev -- login
 ```
 
 6. Approve in the browser.
@@ -845,19 +845,19 @@ pnpm --filter @appkit/cli dev -- login
 7. Check the signed-in user:
 
 ```bash
-pnpm --filter @appkit/cli dev -- whoami
+pnpm --filter @codelane/cli dev -- whoami
 ```
 
 8. Check status:
 
 ```bash
-pnpm --filter @appkit/cli dev -- auth status
+pnpm --filter @codelane/cli dev -- auth status
 ```
 
 9. Logout:
 
 ```bash
-pnpm --filter @appkit/cli dev -- logout
+pnpm --filter @codelane/cli dev -- logout
 ```
 
 ## Related reading

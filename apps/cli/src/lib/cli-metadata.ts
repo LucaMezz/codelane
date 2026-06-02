@@ -1,4 +1,4 @@
-import { appMetadata } from "@appkit/core/metadata";
+import { appMetadata } from "@codelane/core/metadata";
 
 import cliPackageJson from "../../package.json" with { type: "json" };
 

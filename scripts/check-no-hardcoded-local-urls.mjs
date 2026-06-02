@@ -161,7 +161,7 @@ if (violations.length > 0) {
 
   console.error("");
   console.error(
-    "Move local URLs/ports into @appkit/config defaults, root .env.example, or an allowed docs file.",
+    "Move local URLs/ports into @codelane/config defaults, root .env.example, or an allowed docs file.",
   );
 
   process.exit(1);

@@ -1,4 +1,4 @@
-import { Toaster } from "@appkit/ui";
+import { Toaster } from "@codelane/ui";
 import type { ReactNode } from "react";
 import type { RouteObject } from "react-router-dom";
 

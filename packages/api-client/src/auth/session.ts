@@ -1,4 +1,4 @@
-import { joinUrl } from "@appkit/config/client";
+import { joinUrl } from "@codelane/config/client";
 
 import { fetchWithTimeout } from "../request";
 import { ApiClientOptions, AuthSession } from "./types";

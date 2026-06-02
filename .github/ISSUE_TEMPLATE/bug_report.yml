@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for helping improve AppKit. Please include enough detail for someone else to reproduce the issue.
+        Thanks for helping improve CodeLane. Please include enough detail for someone else to reproduce the issue.
   - type: textarea
     id: summary
     attributes:

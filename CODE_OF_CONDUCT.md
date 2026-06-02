@@ -2,7 +2,7 @@
 
 ## Our pledge
 
-We want AppKit to be a welcoming, respectful, and useful place to collaborate. We pledge to make participation in this project a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
+We want CodeLane to be a welcoming, respectful, and useful place to collaborate. We pledge to make participation in this project a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, sex characteristics, gender identity and expression, level of experience, education, socio-economic status, nationality, personal appearance, race, religion, or sexual identity and orientation.
 
 ## Our standards
 

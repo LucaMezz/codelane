@@ -1,6 +1,6 @@
-# @appkit/config
+# @codelane/config
 
-`@appkit/config` provides shared configuration defaults, environment parsing, environment variable names, and URL helpers for the AppKit monorepo.
+`@codelane/config` provides shared configuration defaults, environment parsing, environment variable names, and URL helpers for the CodeLane monorepo.
 
 The package exists to keep ports, local origins, env names, and URL handling centralized instead of scattering hardcoded local URLs across apps and packages.
 
@@ -21,14 +21,14 @@ It should stay small, runtime-aware, and free of app implementation details.
 ## Exports
 
 ```ts
-import { joinUrl } from "@appkit/config";
-import { joinUrl } from "@appkit/config/client";
-import { parseServerEnv } from "@appkit/config/server";
+import { joinUrl } from "@codelane/config";
+import { joinUrl } from "@codelane/config/client";
+import { parseServerEnv } from "@codelane/config/server";
 ```
 
-Use `@appkit/config/client` from browser-safe code.
+Use `@codelane/config/client` from browser-safe code.
 
-Use `@appkit/config/server` only in server-side Node code.
+Use `@codelane/config/server` only in server-side Node code.
 
 ## Package structure
 
@@ -113,7 +113,7 @@ Avoid:
 
 ## Boundary rules
 
-- Browser code must not import `@appkit/config/server`.
+- Browser code must not import `@codelane/config/server`.
 - Server-only parsing should stay in `server.ts`.
 - Client-safe helpers should be exported from `client.ts`.
 - Apps and packages should use config helpers instead of hardcoded local URLs.
@@ -121,9 +121,9 @@ Avoid:
 ## Scripts
 
 ```bash
-pnpm --filter @appkit/config build
-pnpm --filter @appkit/config typecheck
-pnpm --filter @appkit/config knip
+pnpm --filter @codelane/config build
+pnpm --filter @codelane/config typecheck
+pnpm --filter @codelane/config knip
 ```
 
 ## Development guidelines
@@ -136,4 +136,4 @@ pnpm --filter @appkit/config knip
 
 ## License
 
-This package is part of the AppKit monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.
+This package is part of the CodeLane monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.

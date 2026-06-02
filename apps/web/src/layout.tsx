@@ -1,4 +1,4 @@
-import { ThemeModeToggle, TooltipProvider } from "@appkit/ui";
+import { ThemeModeToggle, TooltipProvider } from "@codelane/ui";
 import { Outlet } from "react-router-dom";
 
 export function Layout(): React.JSX.Element {

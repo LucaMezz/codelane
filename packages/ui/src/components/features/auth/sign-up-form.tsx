@@ -47,7 +47,7 @@ export function SignUpForm({
               <div className="flex flex-col items-center gap-1 text-center sm:gap-2">
                 <h1 className="text-xl font-bold sm:text-2xl">Create an account</h1>
                 <p className="text-balance text-sm text-muted-foreground sm:text-base">
-                  Sign up to start using your AppKit workspace.
+                  Sign up to start using your CodeLane workspace.
                 </p>
               </div>
 

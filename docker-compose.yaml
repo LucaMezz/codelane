@@ -1,16 +1,16 @@
 services:
   postgres:
     image: postgres:17
-    container_name: appkit-postgres
+    container_name: codelane-postgres
     restart: unless-stopped
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-appkit}
-      POSTGRES_USER: ${POSTGRES_USER:-appkit}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-appkit}
+      POSTGRES_DB: ${POSTGRES_DB:-codelane}
+      POSTGRES_USER: ${POSTGRES_USER:-codelane}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-codelane}
     volumes:
-      - appkit-postgres-data:/var/lib/postgresql/data
+      - codelane-postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
       interval: 5s
@@ -18,7 +18,7 @@ services:
       retries: 10
 
   api:
-    container_name: appkit-api
+    container_name: codelane-api
     build:
       context: .
       dockerfile: apps/api/Dockerfile
@@ -31,7 +31,7 @@ services:
       NODE_ENV: production
       API_PORT: ${API_PORT:-4000}
       PORT: ${API_PORT:-4000}
-      DATABASE_URL: postgres://${POSTGRES_USER:-appkit}:${POSTGRES_PASSWORD:-appkit}@postgres:5432/${POSTGRES_DB:-appkit}
+      DATABASE_URL: postgres://${POSTGRES_USER:-codelane}:${POSTGRES_PASSWORD:-codelane}@postgres:5432/${POSTGRES_DB:-codelane}
       CORS_ORIGINS: ${CORS_ORIGINS}
       CORS_ORIGIN: ${CORS_ORIGIN}
       AUTH_SECRET: ${AUTH_SECRET}
@@ -40,17 +40,17 @@ services:
         condition: service_healthy
 
   api-dev:
-    container_name: appkit-api-dev
+    container_name: codelane-api-dev
     image: node:22-alpine
     working_dir: /app
-    command: sh -c "corepack enable && pnpm install --ignore-scripts && pnpm --filter @appkit/api dev"
+    command: sh -c "corepack enable && pnpm install --ignore-scripts && pnpm --filter @codelane/api dev"
     ports:
       - "${API_PORT:-4000}:${API_PORT:-4000}"
     environment:
       NODE_ENV: development
       API_PORT: ${API_PORT:-4000}
       PORT: ${API_PORT:-4000}
-      DATABASE_URL: postgres://${POSTGRES_USER:-appkit}:${POSTGRES_PASSWORD:-appkit}@postgres:5432/${POSTGRES_DB:-appkit}
+      DATABASE_URL: postgres://${POSTGRES_USER:-codelane}:${POSTGRES_PASSWORD:-codelane}@postgres:5432/${POSTGRES_DB:-codelane}
       CORS_ORIGINS: ${CORS_ORIGINS}
       CORS_ORIGIN: ${CORS_ORIGIN}
       AUTH_SECRET: ${AUTH_SECRET}
@@ -63,4 +63,4 @@ services:
         condition: service_healthy
 
 volumes:
-  appkit-postgres-data:
+  codelane-postgres-data:

@@ -1,5 +1,5 @@
-import { exchangeCliCode } from "@appkit/api-client";
-import { joinUrl } from "@appkit/config/client";
+import { exchangeCliCode } from "@codelane/api-client";
+import { joinUrl } from "@codelane/config/client";
 import type { Command } from "commander";
 
 import { configStore } from "../auth/config-store";

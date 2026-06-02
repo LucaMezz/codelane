@@ -7,7 +7,7 @@ import {
   cliRefreshRequestSchema,
   cliRevokeRequestSchema,
   cliTokenRequestSchema,
-} from "@appkit/core";
+} from "@codelane/core";
 import { and, eq, isNull } from "drizzle-orm";
 
 import { env } from "#api/config/env";
@@ -97,7 +97,7 @@ export const cliAuthService = {
       .values({
         userId: code.userId,
         refreshTokenHash: sha256(refreshToken),
-        name: "AppKit CLI",
+        name: "CodeLane CLI",
         userAgent,
         lastUsedAt: new Date(),
         expiresAt: new Date(Date.now() + refreshTokenTtlMs),

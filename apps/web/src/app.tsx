@@ -1,4 +1,4 @@
-import { createRoutes } from "@appkit/frontend";
+import { createRoutes } from "@codelane/frontend";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { env } from "./config/env";

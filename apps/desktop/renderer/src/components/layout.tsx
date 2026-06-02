@@ -1,6 +1,6 @@
-import { Separator } from "@appkit/ui";
-import { ThemeModeToggle } from "@appkit/ui";
-import { TooltipProvider } from "@appkit/ui";
+import { Separator } from "@codelane/ui";
+import { ThemeModeToggle } from "@codelane/ui";
+import { TooltipProvider } from "@codelane/ui";
 import type { CSSProperties } from "react";
 import { Outlet } from "react-router-dom";
 
@@ -14,7 +14,7 @@ export function Layout(): React.JSX.Element {
     <TooltipProvider>
       <div
         className="flex flex-col h-screen overflow-hidden"
-        style={{ "--appkit-dashboard-sidebar-offset": "32px" } as CSSProperties}
+        style={{ "--codelane-dashboard-sidebar-offset": "32px" } as CSSProperties}
       >
         <TitleBar className="flex h-8 items-center border-b shrink-0">
           <div className="w-full h-8 flex items-center justify-between px-2">

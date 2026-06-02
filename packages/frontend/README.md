@@ -1,6 +1,6 @@
-# @appkit/frontend
+# @codelane/frontend
 
-`@appkit/frontend` contains shared React application routes, pages, guards, and frontend flows used by AppKit frontend hosts.
+`@codelane/frontend` contains shared React application routes, pages, guards, and frontend flows used by CodeLane frontend hosts.
 
 The package exists so deployable apps such as `apps/web` and the desktop renderer can stay thin. App-level hosts provide runtime setup, while shared screens and flows live here.
 
@@ -18,9 +18,9 @@ This package owns frontend application behavior that is reusable across browser 
 
 It can depend on:
 
-- `@appkit/ui`
-- `@appkit/core`
-- `@appkit/api-client`
+- `@codelane/ui`
+- `@codelane/core`
+- `@codelane/api-client`
 - React frontend libraries
 
 It must not depend on deployable app implementation code.
@@ -43,9 +43,9 @@ packages/
 The intended direction is:
 
 ```text
-apps/web or desktop renderer -> @appkit/frontend -> @appkit/ui
+apps/web or desktop renderer -> @codelane/frontend -> @codelane/ui
                                       |
-                                      -> @appkit/api-client -> @appkit/core
+                                      -> @codelane/api-client -> @codelane/core
 ```
 
 ## Package structure
@@ -71,7 +71,7 @@ Good candidates:
 - shared login and sign-up page flows
 - dashboard shell/page composition that applies to multiple frontend hosts
 - frontend-side API flow wiring
-- shared pages that use `@appkit/ui`, `@appkit/core`, and `@appkit/api-client`
+- shared pages that use `@codelane/ui`, `@codelane/core`, and `@codelane/api-client`
 - browser-compatible auth flows such as `/cli/login`
 
 ## What does not belong here
@@ -121,8 +121,8 @@ Shared pages read this through `useFrontendRuntimeConfig`.
 ## Scripts
 
 ```bash
-pnpm --filter @appkit/frontend typecheck
-pnpm --filter @appkit/frontend knip
+pnpm --filter @codelane/frontend typecheck
+pnpm --filter @codelane/frontend knip
 ```
 
 The package is source-consumed by app hosts and participates in root checks.
@@ -130,9 +130,9 @@ The package is source-consumed by app hosts and participates in root checks.
 ## Development guidelines
 
 - Keep route and page code readable.
-- Move reusable UI primitives to `@appkit/ui`.
-- Move shared schemas to `@appkit/core`.
-- Move API request helpers to `@appkit/api-client`.
+- Move reusable UI primitives to `@codelane/ui`.
+- Move shared schemas to `@codelane/core`.
+- Move API request helpers to `@codelane/api-client`.
 - Keep host-specific setup in apps.
 - Avoid Electron-only and Node-only APIs.
 - Preserve route query params when they are part of an auth or callback flow.
@@ -140,7 +140,7 @@ The package is source-consumed by app hosts and participates in root checks.
 ## Quality checks
 
 ```bash
-pnpm --filter @appkit/frontend typecheck
+pnpm --filter @codelane/frontend typecheck
 pnpm deps:arch
 pnpm check
 pnpm knip
@@ -148,4 +148,4 @@ pnpm knip
 
 ## License
 
-This package is part of the AppKit monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.
+This package is part of the CodeLane monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.

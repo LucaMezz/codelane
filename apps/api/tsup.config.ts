@@ -8,5 +8,5 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   bundle: true,
-  noExternal: ["@appkit/core"],
+  noExternal: ["@codelane/core"],
 });

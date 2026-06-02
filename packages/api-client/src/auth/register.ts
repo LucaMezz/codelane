@@ -1,5 +1,5 @@
-import { joinUrl } from "@appkit/config/client";
-import { RegisterInput } from "@appkit/core";
+import { joinUrl } from "@codelane/config/client";
+import { RegisterInput } from "@codelane/core";
 
 import { fetchWithTimeout } from "../request";
 import { ApiClientOptions, RegisterUserResult } from "./types";

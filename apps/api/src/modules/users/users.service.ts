@@ -1,4 +1,4 @@
-import { registerSchema } from "@appkit/core";
+import { registerSchema } from "@codelane/core";
 import { eq } from "drizzle-orm";
 
 import { db } from "#api/db/index";

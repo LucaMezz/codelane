@@ -1,5 +1,5 @@
-import { Badge, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@appkit/ui";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@appkit/ui";
+import { Badge, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@codelane/ui";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@codelane/ui";
 import {
   CheckCircle2Icon,
   CircleDashedIcon,

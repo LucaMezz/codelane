@@ -1,6 +1,6 @@
 # Support
 
-AppKit is a starter kit and reference architecture. Support is community/project-maintainer best effort unless a separate commercial or organizational support policy is added later.
+CodeLane is a starter kit and reference architecture. Support is community/project-maintainer best effort unless a separate commercial or organizational support policy is added later.
 
 ## Before asking for help
 

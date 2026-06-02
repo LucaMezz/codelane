@@ -35,7 +35,7 @@ import { TeamSwitcher } from "./team-switcher";
 const data = {
   teams: [
     {
-      name: "AppKit",
+      name: "CodeLane",
       logo: GalleryVerticalEnd,
       plan: "Template workspace",
     },

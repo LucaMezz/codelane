@@ -1,6 +1,6 @@
 export const appMetadata = {
-  name: "AppKit",
-  slug: "appkit",
+  name: "CodeLane",
+  slug: "codelane",
   author: {
     name: "Luca Mezzavilla",
   },
@@ -15,14 +15,14 @@ export const appMetadata = {
   },
   apps: {
     desktop: {
-      appName: "appkit-desktop",
-      executableName: "appkit-desktop",
-      bundleId: "com.appkit.desktop",
+      appName: "codelane-desktop",
+      executableName: "codelane-desktop",
+      bundleId: "com.codelane.desktop",
       category: "public.app-category.developer-tools",
     },
     cli: {
-      binaryName: "appkit",
-      description: "Command-line client for interacting with the AppKit backend API.",
+      binaryName: "codelane",
+      description: "Command-line client for interacting with the CodeLane backend API.",
     },
   },
 } as const;

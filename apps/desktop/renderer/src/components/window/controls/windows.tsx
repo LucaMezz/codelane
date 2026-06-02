@@ -1,4 +1,4 @@
-import { Button } from "@appkit/ui";
+import { Button } from "@codelane/ui";
 import { HiOutlineMinus } from "react-icons/hi";
 import { HiOutlineSquare2Stack, HiXMark } from "react-icons/hi2";
 

@@ -4,7 +4,7 @@ Security issues are handled privately first. Please do not open public GitHub is
 
 ## Supported versions
 
-AppKit is currently a starter kit and active development project. Security fixes are expected to target the current `main` branch unless a separate release/version support policy is introduced later.
+CodeLane is currently a starter kit and active development project. Security fixes are expected to target the current `main` branch unless a separate release/version support policy is introduced later.
 
 | Version                | Supported         |
 | ---------------------- | ----------------- |

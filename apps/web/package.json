@@ -1,5 +1,5 @@
 {
-  "name": "@appkit/web",
+  "name": "@codelane/web",
   "version": "0.1.0",
   "private": true,
   "license": "Apache-2.0",
@@ -14,9 +14,9 @@
     "knip": "knip"
   },
   "dependencies": {
-    "@appkit/config": "workspace:*",
-    "@appkit/frontend": "workspace:*",
-    "@appkit/ui": "workspace:*",
+    "@codelane/config": "workspace:*",
+    "@codelane/frontend": "workspace:*",
+    "@codelane/ui": "workspace:*",
     "@vitejs/plugin-react": "5.2.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",

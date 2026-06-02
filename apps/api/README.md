@@ -1,6 +1,6 @@
-# AppKit API
+# CodeLane API
 
-The AppKit API is the shared backend application for the AppKit monorepo.
+The CodeLane API is the shared backend application for the CodeLane monorepo.
 
 It provides the server-side foundation for the web and desktop applications, including API routes, middleware, authentication-related backend configuration, database access, and application-level backend wiring.
 
@@ -20,11 +20,11 @@ It owns:
 - Server startup and environment configuration.
 - Backend-only utilities and services.
 
-It should not depend on frontend-only packages such as `@appkit/ui`.
+It should not depend on frontend-only packages such as `@codelane/ui`.
 
 ## Role in the monorepo
 
-The API is one of the deployable applications in the AppKit starter kit.
+The API is one of the deployable applications in the CodeLane starter kit.
 
 ```text
 apps/
@@ -172,11 +172,11 @@ If a utility becomes useful outside the API app, move it to `packages/core`.
 
 The API follows these monorepo boundaries:
 
-- The API may import from `@appkit/core` for shared framework-agnostic logic.
-- The API may expose behavior that is consumed by `@appkit/api-client`.
+- The API may import from `@codelane/core` for shared framework-agnostic logic.
+- The API may expose behavior that is consumed by `@codelane/api-client`.
 - The API must not import from `apps/web`.
 - The API must not import from `apps/desktop`.
-- The API must not import from `@appkit/ui`.
+- The API must not import from `@codelane/ui`.
 - Shared packages must not import from the API app.
 - Frontend apps must not import API implementation files directly.
 
@@ -207,7 +207,7 @@ import { usersRoutes } from "#/modules/users/users.routes";
 Use workspace package names when importing shared packages:
 
 ```ts
-import { someCoreHelper } from "@appkit/core";
+import { someCoreHelper } from "@codelane/core";
 ```
 
 ### Avoid app-to-app imports
@@ -229,31 +229,31 @@ Run commands from the repository root using pnpm filters.
 ### Start the API in development
 
 ```bash
-pnpm --filter @appkit/api dev
+pnpm --filter @codelane/api dev
 ```
 
 ### Typecheck the API
 
 ```bash
-pnpm --filter @appkit/api typecheck
+pnpm --filter @codelane/api typecheck
 ```
 
 ### Build the API
 
 ```bash
-pnpm --filter @appkit/api build
+pnpm --filter @codelane/api build
 ```
 
 ### Run API tests
 
 ```bash
-pnpm --filter @appkit/api test:run
+pnpm --filter @codelane/api test:run
 ```
 
 ### Run Knip for the API
 
 ```bash
-pnpm --filter @appkit/api knip
+pnpm --filter @codelane/api knip
 ```
 
 ## Development workflow
@@ -262,7 +262,7 @@ A typical local API workflow is:
 
 ```bash
 pnpm install
-pnpm --filter @appkit/api dev
+pnpm --filter @codelane/api dev
 ```
 
 Before committing API changes, run:
@@ -277,8 +277,8 @@ pnpm test:run
 For API-specific validation:
 
 ```bash
-pnpm --filter @appkit/api typecheck
-pnpm --filter @appkit/api build
+pnpm --filter @codelane/api typecheck
+pnpm --filter @codelane/api build
 ```
 
 ## Environment configuration
@@ -435,7 +435,7 @@ integration tests routes, middleware, database interactions
 contract tests    API behavior expected by frontend clients
 ```
 
-## Relationship to `@appkit/api-client`
+## Relationship to `@codelane/api-client`
 
 The API implementation lives in `apps/api`.
 
@@ -443,13 +443,13 @@ Reusable client-side API communication helpers should live in `packages/api-clie
 
 The API should define behavior. The API client should consume that behavior from frontend apps.
 
-Avoid duplicating endpoint strings, request shapes, or response handling across frontend apps when they can be centralized in `@appkit/api-client`.
+Avoid duplicating endpoint strings, request shapes, or response handling across frontend apps when they can be centralized in `@codelane/api-client`.
 
-## Relationship to `@appkit/core`
+## Relationship to `@codelane/core`
 
-Shared domain types, validation helpers, and framework-agnostic utilities can live in `@appkit/core`.
+Shared domain types, validation helpers, and framework-agnostic utilities can live in `@codelane/core`.
 
-Use `@appkit/core` when code:
+Use `@codelane/core` when code:
 
 - Has no dependency on Express.
 - Has no dependency on Node-only APIs.
@@ -494,7 +494,7 @@ Also make sure the API package's `package.json` and `tsconfig.json` agree on pac
 
 Do not import backend implementation files directly.
 
-Move shared types or validation schemas into `packages/core`, then import from `@appkit/core`.
+Move shared types or validation schemas into `packages/core`, then import from `@codelane/core`.
 
 ### Knip reports root-provided binaries
 
@@ -502,9 +502,9 @@ Some tooling binaries may be intentionally provided from the workspace root. If 
 
 ### API code needs UI behavior
 
-The API should not import from `@appkit/ui`.
+The API should not import from `@codelane/ui`.
 
-Move shared non-UI logic into `@appkit/core`, or keep frontend-specific behavior in the frontend apps.
+Move shared non-UI logic into `@codelane/core`, or keep frontend-specific behavior in the frontend apps.
 
 ## Quality checks
 
@@ -559,4 +559,4 @@ See the root README for:
 
 ## License
 
-This app is part of the AppKit monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.
+This app is part of the CodeLane monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.

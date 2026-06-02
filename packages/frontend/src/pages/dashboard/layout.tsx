@@ -1,9 +1,9 @@
-import { signOut } from "@appkit/api-client";
-import { getInitials } from "@appkit/core";
-import { DashboardShell } from "@appkit/ui";
-import { AppSidebarActions } from "@appkit/ui";
-import { AppBreadcrumbs } from "@appkit/ui";
-import { toast } from "@appkit/ui";
+import { signOut } from "@codelane/api-client";
+import { getInitials } from "@codelane/core";
+import { DashboardShell } from "@codelane/ui";
+import { AppSidebarActions } from "@codelane/ui";
+import { AppBreadcrumbs } from "@codelane/ui";
+import { toast } from "@codelane/ui";
 import { Outlet, useNavigate } from "react-router-dom";
 
 import { useAuthSession } from "../../components/auth/auth-session-provider";

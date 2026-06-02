@@ -7,5 +7,5 @@ export default defineConfig({
   sourcemap: true,
   clean: true,
   bundle: true,
-  noExternal: ["@appkit/core", "@appkit/api-client"],
+  noExternal: ["@codelane/core", "@codelane/api-client"],
 });

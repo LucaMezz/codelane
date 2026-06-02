@@ -1,8 +1,8 @@
-# AppKit Web
+# CodeLane Web
 
-The AppKit web app is the browser-based frontend application for the AppKit monorepo.
+The CodeLane web app is the browser-based frontend application for the CodeLane monorepo.
 
-It is built with Vite, React, and React Router. The app is intentionally thin: it hosts shared frontend routes and flows from `@appkit/frontend`, imports shared UI styles, and provides browser runtime configuration.
+It is built with Vite, React, and React Router. The app is intentionally thin: it hosts shared frontend routes and flows from `@codelane/frontend`, imports shared UI styles, and provides browser runtime configuration.
 
 ## Overview
 
@@ -10,15 +10,15 @@ It is built with Vite, React, and React Router. The app is intentionally thin: i
 
 It consumes shared workspace packages such as:
 
-- `@appkit/ui`
-- `@appkit/frontend`
-- `@appkit/config`
+- `@codelane/ui`
+- `@codelane/frontend`
+- `@codelane/config`
 
-Web-specific runtime host code should remain inside `apps/web`. Shared route/page/flow code should live in `@appkit/frontend`.
+Web-specific runtime host code should remain inside `apps/web`. Shared route/page/flow code should live in `@codelane/frontend`.
 
 ## Role in the monorepo
 
-The web app is one of the deployable application targets in the AppKit starter kit.
+The web app is one of the deployable application targets in the CodeLane starter kit.
 
 ```text
 apps/
@@ -34,7 +34,7 @@ packages/
   config/       Shared config defaults and helpers
 ```
 
-The web app should communicate with the backend through stable API contracts, preferably using helpers from `@appkit/api-client` where appropriate.
+The web app should communicate with the backend through stable API contracts, preferably using helpers from `@codelane/api-client` where appropriate.
 
 It should not import backend implementation files directly.
 
@@ -53,7 +53,7 @@ apps/web/
 └── README.md
 ```
 
-Most reusable application screens and routes live in `@appkit/frontend`.
+Most reusable application screens and routes live in `@codelane/frontend`.
 
 ## Key files and folders
 
@@ -74,10 +74,10 @@ src/
 Recommended conventions:
 
 - Keep host code thin.
-- Create routes through `@appkit/frontend`.
-- Move cross-platform UI into `@appkit/ui`.
-- Move shared frontend flows into `@appkit/frontend`.
-- Move config defaults into `@appkit/config`.
+- Create routes through `@codelane/frontend`.
+- Move cross-platform UI into `@codelane/ui`.
+- Move shared frontend flows into `@codelane/frontend`.
+- Move config defaults into `@codelane/config`.
 
 ### `public/`
 
@@ -104,13 +104,13 @@ PostCSS configuration used by the web app styling pipeline.
 
 The web app follows these monorepo boundaries:
 
-- The web app may import from `@appkit/ui`.
-- The web app may import from `@appkit/frontend`.
-- The web app may import from `@appkit/config`.
+- The web app may import from `@codelane/ui`.
+- The web app may import from `@codelane/frontend`.
+- The web app may import from `@codelane/config`.
 - The web app must not import from `apps/api`.
 - The web app must not import from `apps/desktop`.
 - The web app must not import from `apps/cli`.
-- The web app should stay a thin host and avoid direct imports from `@appkit/core` or `@appkit/api-client`.
+- The web app should stay a thin host and avoid direct imports from `@codelane/core` or `@codelane/api-client`.
 - Shared packages must not import from the web app.
 - Source code should not import generated build output such as `.next`, `dist`, `build`, or `out`.
 
@@ -127,9 +127,9 @@ pnpm deps:arch
 Use workspace package names for shared code:
 
 ```ts
-import { createRoutes } from "@appkit/frontend";
-import { defaultPorts } from "@appkit/config/client";
-import { Button } from "@appkit/ui";
+import { createRoutes } from "@codelane/frontend";
+import { defaultPorts } from "@codelane/config/client";
+import { Button } from "@codelane/ui";
 ```
 
 ### Web-local imports
@@ -164,10 +164,10 @@ If code is needed by multiple apps, move it into a shared package.
 
 ## Shared UI usage
 
-Reusable UI should come from `@appkit/ui`:
+Reusable UI should come from `@codelane/ui`:
 
 ```tsx
-import { Button } from "@appkit/ui";
+import { Button } from "@codelane/ui";
 
 export function Example() {
   return <Button>Continue</Button>;
@@ -190,16 +190,16 @@ Specific to web routing, metadata, server rendering, or web-only UX?
 
 The web app uses the monorepo's frontend styling setup.
 
-Shared component styling should live with `@appkit/ui` when the component is reusable across web and desktop.
+Shared component styling should live with `@codelane/ui` when the component is reusable across web and desktop.
 
 Web-only styling should stay in `apps/web`.
 
 Recommended guidelines:
 
-- Prefer shared UI primitives from `@appkit/ui`.
+- Prefer shared UI primitives from `@codelane/ui`.
 - Keep route-specific layout and page composition in the web app.
 - Avoid duplicating desktop renderer styles unless they are intentionally platform-specific.
-- Move reusable styling utilities into `@appkit/ui`.
+- Move reusable styling utilities into `@codelane/ui`.
 
 ## Scripts
 
@@ -208,31 +208,31 @@ Run commands from the repository root using pnpm filters.
 ### Start the web app in development
 
 ```bash
-pnpm --filter @appkit/web dev
+pnpm --filter @codelane/web dev
 ```
 
 ### Build the web app
 
 ```bash
-pnpm --filter @appkit/web build
+pnpm --filter @codelane/web build
 ```
 
 ### Typecheck the web app
 
 ```bash
-pnpm --filter @appkit/web typecheck
+pnpm --filter @codelane/web typecheck
 ```
 
 ### Run web tests
 
 ```bash
-pnpm --filter @appkit/web test:run
+pnpm --filter @codelane/web test:run
 ```
 
 ### Run Knip for the web app
 
 ```bash
-pnpm --filter @appkit/web knip
+pnpm --filter @codelane/web knip
 ```
 
 ## Development workflow
@@ -241,7 +241,7 @@ A typical local web workflow is:
 
 ```bash
 pnpm install
-pnpm --filter @appkit/web dev
+pnpm --filter @codelane/web dev
 ```
 
 Before committing web changes, run:
@@ -256,8 +256,8 @@ pnpm test:run
 For web-specific validation:
 
 ```bash
-pnpm --filter @appkit/web typecheck
-pnpm --filter @appkit/web build
+pnpm --filter @codelane/web typecheck
+pnpm --filter @codelane/web build
 ```
 
 ## Build workflow
@@ -265,7 +265,7 @@ pnpm --filter @appkit/web build
 The production web build is handled by Vite:
 
 ```bash
-pnpm --filter @appkit/web build
+pnpm --filter @codelane/web build
 ```
 
 The root build command may also build the web app through Turborepo:
@@ -284,29 +284,29 @@ A successful production build should verify that:
 
 ## Routing guidelines
 
-Shared route files should usually live in `@appkit/frontend`.
+Shared route files should usually live in `@codelane/frontend`.
 
 Recommended rules:
 
 - Keep route components readable.
-- Move reusable UI into components or `@appkit/ui`.
-- Move business/domain logic into `@appkit/core` where possible.
-- Move API communication helpers into `@appkit/api-client`.
+- Move reusable UI into components or `@codelane/ui`.
+- Move business/domain logic into `@codelane/core` where possible.
+- Move API communication helpers into `@codelane/api-client`.
 - Keep `apps/web` focused on browser host setup.
 
 ## API communication
 
 The web app should communicate with the backend through stable API contracts.
 
-Prefer using `@appkit/frontend` flows that call `@appkit/api-client`, or add reusable request helpers to `@appkit/api-client`.
+Prefer using `@codelane/frontend` flows that call `@codelane/api-client`, or add reusable request helpers to `@codelane/api-client`.
 
 ```ts
-import { createRoutes } from "@appkit/frontend";
+import { createRoutes } from "@codelane/frontend";
 ```
 
 Avoid duplicating endpoint URLs, request shapes, and response handling across web and desktop clients.
 
-If the API response shape needs to be shared, prefer moving framework-agnostic types or schemas into `@appkit/core`.
+If the API response shape needs to be shared, prefer moving framework-agnostic types or schemas into `@codelane/core`.
 
 ## Environment configuration
 
@@ -340,14 +340,14 @@ Potential test targets:
 - Form behavior.
 - Auth routing behavior.
 
-## Relationship to `@appkit/ui`
+## Relationship to `@codelane/ui`
 
-The web app should use `@appkit/ui` for reusable components.
+The web app should use `@codelane/ui` for reusable components.
 
 Good:
 
 ```ts
-import { Button } from "@appkit/ui";
+import { Button } from "@codelane/ui";
 ```
 
 Avoid deep imports into package internals:
@@ -359,15 +359,15 @@ import { Button } from "../../../packages/ui/src/components/button";
 
 If a UI component is only used by the web app and is not useful for desktop, keep it inside `apps/web`.
 
-## Relationship to `@appkit/api-client`
+## Relationship to `@codelane/api-client`
 
-Use `@appkit/api-client` for reusable client-side API communication.
+Use `@codelane/api-client` for reusable client-side API communication.
 
 This helps prevent the web and desktop apps from duplicating API request logic.
 
-## Relationship to `@appkit/core`
+## Relationship to `@codelane/core`
 
-Use `@appkit/core` for framework-agnostic shared logic, such as:
+Use `@codelane/core` for framework-agnostic shared logic, such as:
 
 - Domain types.
 - Pure helpers.
@@ -375,7 +375,7 @@ Use `@appkit/core` for framework-agnostic shared logic, such as:
 - Constants.
 - Shared data transformation logic.
 
-Do not place React components, route logic, or browser-specific code in `@appkit/core`.
+Do not place React components, route logic, or browser-specific code in `@codelane/core`.
 
 ## Common issues
 
@@ -392,7 +392,7 @@ Example:
 ```json
 {
   "dependencies": {
-    "@appkit/ui": "workspace:*"
+    "@codelane/ui": "workspace:*"
   }
 }
 ```
@@ -403,11 +403,11 @@ Also check whether the package entry point is compatible with Vite's ESM resolut
 
 Do not import from `apps/api/src`.
 
-Move shared types or schemas into `@appkit/core`, then import them from there.
+Move shared types or schemas into `@codelane/core`, then import them from there.
 
 ### Styling differs from desktop
 
-If the same component should look the same in web and desktop, move it into `@appkit/ui`.
+If the same component should look the same in web and desktop, move it into `@codelane/ui`.
 
 If the styling difference is platform-specific, keep it in the app-specific layer.
 
@@ -443,7 +443,7 @@ The web app should remain compatible with:
 The web app is designed to be:
 
 - **Modern**: built with Vite, React, React Router, and TypeScript.
-- **Thin**: delegates shared routes and flows to `@appkit/frontend`.
+- **Thin**: delegates shared routes and flows to `@codelane/frontend`.
 - **Shared-code friendly**: consumes shared UI, frontend, and config packages.
 - **Deployable**: remains a standalone web application target.
 - **Maintainable**: keeps app-specific code separate from reusable packages.
@@ -470,4 +470,4 @@ See the root README for:
 
 ## License
 
-This app is part of the AppKit monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.
+This app is part of the CodeLane monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.

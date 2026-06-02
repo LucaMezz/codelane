@@ -1,11 +1,11 @@
 {
-  "name": "@appkit/cli",
+  "name": "@codelane/cli",
   "version": "0.0.1",
   "private": true,
-  "description": "Command-line client for interacting with the AppKit backend API.",
+  "description": "Command-line client for interacting with the CodeLane backend API.",
   "license": "Apache-2.0",
   "bin": {
-    "appkit": "./dist/index.js"
+    "codelane": "./dist/index.js"
   },
   "files": [
     "dist"
@@ -25,9 +25,9 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@appkit/api-client": "workspace:*",
-    "@appkit/config": "workspace:*",
-    "@appkit/core": "workspace:*",
+    "@codelane/api-client": "workspace:*",
+    "@codelane/config": "workspace:*",
+    "@codelane/core": "workspace:*",
     "commander": "^14.0.3",
     "conf": "^15.1.0",
     "ora": "^9.4.0",

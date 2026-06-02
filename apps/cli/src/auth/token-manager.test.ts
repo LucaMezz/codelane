@@ -8,7 +8,7 @@ const mocks = vi.hoisted(() => ({
   getCurrentUser: vi.fn(),
 }));
 
-vi.mock("@appkit/api-client", () => ({
+vi.mock("@codelane/api-client", () => ({
   refreshCliAccessToken: mocks.refreshCliAccessToken,
   getCurrentUser: mocks.getCurrentUser,
 }));

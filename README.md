@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="./docs/assets/appkit-logo-text-transparent.png" alt="AppKit logo" width="480" height="160" />
+<img src="./docs/assets/codelane-logo-text-transparent.png" alt="CodeLane logo" width="480" height="160" />
 
-# AppKit
+# CodeLane
 
 **A professional TypeScript monorepo starter kit for building cross-platform apps with a shared backend.**
 
@@ -17,13 +17,13 @@
 
 ---
 
-AppKit is a professional TypeScript monorepo starter kit for building a cross-platform application with a shared backend, shared frontend packages, and a maintainable developer workflow.
+CodeLane is a professional TypeScript monorepo starter kit for building a cross-platform application with a shared backend, shared frontend packages, and a maintainable developer workflow.
 
 It is designed to support a real product-style architecture where a web app, desktop app, backend API, and shared packages can evolve together without duplicating code or letting the monorepo become messy over time.
 
 ## Overview
 
-AppKit provides a foundation for building applications that share logic across multiple runtimes:
+CodeLane provides a foundation for building applications that share logic across multiple runtimes:
 
 - A backend API application.
 - A web application.
@@ -40,25 +40,25 @@ The goal of this repository is not just to run multiple apps side by side. It is
 
 <div align="center">
 
-![AppKit Preview](./docs/assets/appkit-readme-preview.png)
+![CodeLane Preview](./docs/assets/codelane-readme-preview.png)
 
 </div>
 
 ## Tech stack
 
-AppKit combines application frameworks, shared package tooling, and repository quality tools to support cross-platform development from a single workspace.
+CodeLane combines application frameworks, shared package tooling, and repository quality tools to support cross-platform development from a single workspace.
 
 ### Runtime, apps, and UI
 
-| Tool                                                                                                                           | Purpose                                                                                                  |
-| ------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- |
-| [<img src="https://cdn.simpleicons.org/typescript" width="18" alt="TypeScript" /> TypeScript](https://www.typescriptlang.org/) | Primary language for apps, packages, configuration, and shared types.                                    |
-| [<img src="https://cdn.simpleicons.org/react" width="18" alt="React" /> React](https://react.dev/)                             | Shared UI foundation for the web app and desktop renderer.                                               |
-| [<img src="https://cdn.simpleicons.org/electron" width="18" alt="Electron" /> Electron](https://www.electronjs.org/)           | Desktop runtime for `apps/desktop`.                                                                      |
-| [<img src="https://cdn.simpleicons.org/vite" width="18" alt="Vite" /> Vite](https://vite.dev/)                                 | Fast frontend build tooling for the web app and Electron renderer.                                       |
-| [<img src="https://cdn.simpleicons.org/tailwindcss" width="18" alt="Tailwind CSS" /> Tailwind CSS](https://tailwindcss.com/)   | Utility-first styling system for shared UI and app interfaces.                                           |
-| [<img src="https://cdn.simpleicons.org/shadcnui" width="18" alt="shadcn/ui" /> shadcn/ui](https://ui.shadcn.com/)              | Component patterns used as the basis for reusable UI primitives in `@appkit/ui`.                         |
-| [<img src="https://cdn.simpleicons.org/storybook" width="18" alt="Storybook" /> Storybook](https://storybook.js.org/)          | Isolated component workbench for developing, previewing, and documenting shared `@appkit/ui` components. |
+| Tool                                                                                                                           | Purpose                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| [<img src="https://cdn.simpleicons.org/typescript" width="18" alt="TypeScript" /> TypeScript](https://www.typescriptlang.org/) | Primary language for apps, packages, configuration, and shared types.                                      |
+| [<img src="https://cdn.simpleicons.org/react" width="18" alt="React" /> React](https://react.dev/)                             | Shared UI foundation for the web app and desktop renderer.                                                 |
+| [<img src="https://cdn.simpleicons.org/electron" width="18" alt="Electron" /> Electron](https://www.electronjs.org/)           | Desktop runtime for `apps/desktop`.                                                                        |
+| [<img src="https://cdn.simpleicons.org/vite" width="18" alt="Vite" /> Vite](https://vite.dev/)                                 | Fast frontend build tooling for the web app and Electron renderer.                                         |
+| [<img src="https://cdn.simpleicons.org/tailwindcss" width="18" alt="Tailwind CSS" /> Tailwind CSS](https://tailwindcss.com/)   | Utility-first styling system for shared UI and app interfaces.                                             |
+| [<img src="https://cdn.simpleicons.org/shadcnui" width="18" alt="shadcn/ui" /> shadcn/ui](https://ui.shadcn.com/)              | Component patterns used as the basis for reusable UI primitives in `@codelane/ui`.                         |
+| [<img src="https://cdn.simpleicons.org/storybook" width="18" alt="Storybook" /> Storybook](https://storybook.js.org/)          | Isolated component workbench for developing, previewing, and documenting shared `@codelane/ui` components. |
 
 ### Backend and data
 
@@ -119,7 +119,7 @@ The API application is the shared backend for the project.
 
 It is responsible for server-side application logic, API routes, authentication/session-related backend concerns, database access, middleware, and backend configuration.
 
-The API should not depend on frontend-specific packages such as `@appkit/ui`.
+The API should not depend on frontend-specific packages such as `@codelane/ui`.
 
 ### `apps/web`
 
@@ -127,9 +127,9 @@ The web application is the browser-based frontend.
 
 It consumes shared packages such as:
 
-- `@appkit/ui`
-- `@appkit/core`
-- `@appkit/api-client`
+- `@codelane/ui`
+- `@codelane/core`
+- `@codelane/api-client`
 
 The web app should not import from the desktop app or API app directly. Shared code should be moved into `packages/*`.
 
@@ -141,19 +141,19 @@ It uses Electron-style separation between main, preload, shared IPC contracts, a
 
 The desktop app can consume shared packages such as:
 
-- `@appkit/ui`
-- `@appkit/core`
-- `@appkit/api-client`
+- `@codelane/ui`
+- `@codelane/core`
+- `@codelane/api-client`
 
 Desktop-specific code should stay inside `apps/desktop`. Shared code that can also be used by the web app should live in `packages/*`.
 
 ### `apps/cli`
 
-The CLI application is the terminal client for AppKit.
+The CLI application is the terminal client for CodeLane.
 
 It owns command registration, terminal UX, local CLI config, credential storage abstractions, and browser-based CLI authentication orchestration.
 
-The CLI should communicate with the backend through `@appkit/api-client`. It should not import UI, shared frontend flows, or implementation code from other apps.
+The CLI should communicate with the backend through `@codelane/api-client`. It should not import UI, shared frontend flows, or implementation code from other apps.
 
 ## Shared packages
 
@@ -163,10 +163,10 @@ Shared framework-agnostic logic.
 
 This package should remain independent of React, Electron, Express, browser APIs, and app-specific code. It is the right place for shared domain types, validation helpers, constants, pure utilities, and other reusable logic.
 
-`@appkit/core` should not depend on:
+`@codelane/core` should not depend on:
 
-- `@appkit/ui`
-- `@appkit/api-client`
+- `@codelane/ui`
+- `@codelane/api-client`
 - `apps/api`
 - `apps/web`
 - `apps/desktop`
@@ -178,7 +178,7 @@ Shared runtime configuration defaults and helpers.
 
 This package owns local port defaults, URL helpers, env var names, server env parsing, and client-safe config exports. Use it instead of hardcoding local URLs, ports, or API base URLs in app/package source code.
 
-Browser-safe code should import from `@appkit/config/client`. Server-only code can import from `@appkit/config/server`.
+Browser-safe code should import from `@codelane/config/client`. Server-only code can import from `@codelane/config/server`.
 
 ### `packages/frontend`
 
@@ -186,7 +186,7 @@ Shared React frontend routes, pages, guards, and application flows.
 
 This package lets `apps/web` and the desktop renderer stay thin platform hosts. Shared login pages, dashboard routes, auth guards, and API-backed frontend flows belong here when they can be reused across frontend targets.
 
-`@appkit/frontend` may use `@appkit/ui`, `@appkit/core`, and `@appkit/api-client`, but it must not import deployable app implementation code.
+`@codelane/frontend` may use `@codelane/ui`, `@codelane/core`, and `@codelane/api-client`, but it must not import deployable app implementation code.
 
 ### `packages/ui`
 
@@ -196,7 +196,7 @@ This package contains reusable components, hooks, and styling utilities that can
 
 React and React DOM are treated as peer dependencies so that each consuming app owns the actual runtime version.
 
-`@appkit/ui` should not import from apps or server-only modules.
+`@codelane/ui` should not import from apps or server-only modules.
 
 ### `packages/api-client`
 
@@ -204,7 +204,7 @@ Shared API client package.
 
 This package provides client-side helpers for communicating with the backend API. It is intended to be reusable across frontend targets.
 
-`@appkit/api-client` should not import from apps.
+`@codelane/api-client` should not import from apps.
 
 ## Package boundaries
 
@@ -237,16 +237,16 @@ pnpm deps:arch
 
 ## Internal import conventions
 
-AppKit uses package-level import conventions to keep aliases predictable.
+CodeLane uses package-level import conventions to keep aliases predictable.
 
 ### Cross-package imports
 
 Use package names when importing across workspace packages:
 
 ```ts
-import { Button } from "@appkit/ui";
-import { someCoreHelper } from "@appkit/core";
-import { apiClient } from "@appkit/api-client";
+import { Button } from "@codelane/ui";
+import { someCoreHelper } from "@codelane/core";
+import { apiClient } from "@codelane/api-client";
 ```
 
 ### Package-internal imports
@@ -415,9 +415,9 @@ Depending on the current scripts and filters, you can also run individual apps t
 Examples:
 
 ```bash
-pnpm --filter @appkit/api dev
-pnpm --filter @appkit/web dev
-pnpm --filter @appkit/desktop dev
+pnpm --filter @codelane/api dev
+pnpm --filter @codelane/web dev
+pnpm --filter @codelane/desktop dev
 ```
 
 ### Build the monorepo
@@ -545,13 +545,13 @@ pnpm package
 
 ## Current project status
 
-AppKit is a starter kit and foundation project. It is intended to demonstrate a professional monorepo architecture for a cross-platform application with a shared backend and reusable internal packages.
+CodeLane is a starter kit and foundation project. It is intended to demonstrate a professional monorepo architecture for a cross-platform application with a shared backend and reusable internal packages.
 
 The repository is structured to support future product development while keeping architecture, dependency management, and developer workflows maintainable from the beginning.
 
 ## Design goals
 
-AppKit aims to be:
+CodeLane aims to be:
 
 - **Maintainable**: clear package boundaries and enforced architecture rules.
 - **Extensible**: new apps and packages can be added without restructuring the repo.
@@ -629,12 +629,12 @@ If Knip reports an unused dependency, either remove it or make sure the package 
 
 This repository originally started as a private experiment based on a clone of [`kimizuy/electron-boilerplate`](https://github.com/kimizuy/electron-boilerplate). At that point, it was a much smaller Electron-only template and was not intended to be presented as a standalone public project.
 
-As the project evolved, it was substantially reworked into AppKit: a cross-platform TypeScript monorepo with separate web, desktop, and API applications, shared internal packages, architecture checks, dependency management, CI-friendly workflows, and modern repository tooling.
+As the project evolved, it was substantially reworked into CodeLane: a cross-platform TypeScript monorepo with separate web, desktop, and API applications, shared internal packages, architecture checks, dependency management, CI-friendly workflows, and modern repository tooling.
 
-Because of that origin, the Git history may include earlier boilerplate commits from before the project became this monorepo starter kit. The current AppKit architecture, package structure, tooling setup, documentation, and cross-platform direction were built on top of that initial template as part of this project.
+Because of that origin, the Git history may include earlier boilerplate commits from before the project became this monorepo starter kit. The current CodeLane architecture, package structure, tooling setup, documentation, and cross-platform direction were built on top of that initial template as part of this project.
 
 ## License
 
 This project is licensed under the Apache License 2.0. See [LICENSE](./LICENSE) for details.
 
-This repository originally began as a clone of [`kimizuy/electron-boilerplate`](https://github.com/kimizuy/electron-boilerplate) before being substantially reworked into a cross-platform AppKit monorepo starter kit.
+This repository originally began as a clone of [`kimizuy/electron-boilerplate`](https://github.com/kimizuy/electron-boilerplate) before being substantially reworked into a cross-platform CodeLane monorepo starter kit.

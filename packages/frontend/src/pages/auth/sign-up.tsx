@@ -1,7 +1,7 @@
-import { registerUser } from "@appkit/api-client";
-import { RegisterInput, registerSchema } from "@appkit/core";
-import { SignUpForm } from "@appkit/ui";
-import { toast } from "@appkit/ui";
+import { registerUser } from "@codelane/api-client";
+import { RegisterInput, registerSchema } from "@codelane/core";
+import { SignUpForm } from "@codelane/ui";
+import { toast } from "@codelane/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 

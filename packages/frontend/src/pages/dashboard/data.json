@@ -59,7 +59,7 @@
     "id": 8,
     "area": "Dashboard content",
     "owner": "template sample",
-    "purpose": "Placeholder screen showing how an AppKit product surface can be composed.",
+    "purpose": "Placeholder screen showing how an CodeLane product surface can be composed.",
     "status": "Placeholder",
     "boundary": "Not wired to product data"
   }

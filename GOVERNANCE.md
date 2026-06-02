@@ -1,6 +1,6 @@
 # Governance
 
-AppKit is currently maintained as a small project with a lightweight maintainer-led governance model.
+CodeLane is currently maintained as a small project with a lightweight maintainer-led governance model.
 
 ## Maintainer responsibilities
 
@@ -47,7 +47,7 @@ Maintainers may ask for changes or decline a contribution if it is outside the p
 
 ## Project scope
 
-AppKit is a monorepo starter kit for cross-platform TypeScript applications with a shared backend.
+CodeLane is a monorepo starter kit for cross-platform TypeScript applications with a shared backend.
 
 It is not intended to become:
 

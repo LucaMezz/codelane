@@ -1,6 +1,6 @@
-# AppKit Desktop
+# CodeLane Desktop
 
-The AppKit desktop app is the cross-platform desktop client for the AppKit monorepo.
+The CodeLane desktop app is the cross-platform desktop client for the CodeLane monorepo.
 
 It is built as a desktop application that shares code with the rest of the workspace while keeping desktop-specific concerns isolated inside `apps/desktop`. The app is intended to demonstrate a professional Electron-style architecture with clear separation between main-process code, preload code, renderer code, shared IPC contracts, and reusable workspace packages.
 
@@ -10,15 +10,15 @@ It is built as a desktop application that shares code with the rest of the works
 
 It consumes shared workspace packages such as:
 
-- `@appkit/ui`
-- `@appkit/core`
-- `@appkit/api-client`
+- `@codelane/ui`
+- `@codelane/core`
+- `@codelane/api-client`
 
 Desktop-only code should remain inside this app. Code that can also be used by the web app or API client should be moved into `packages/*`.
 
 ## Role in the monorepo
 
-The desktop app is one of the deployable application targets in the AppKit starter kit.
+The desktop app is one of the deployable application targets in the CodeLane starter kit.
 
 ```text
 apps/
@@ -76,8 +76,8 @@ The renderer is the React application shown inside the desktop window.
 It can use shared UI and client packages:
 
 ```ts
-import { Button } from "@appkit/ui";
-import { apiClient } from "@appkit/api-client";
+import { Button } from "@codelane/ui";
+import { apiClient } from "@codelane/api-client";
 ```
 
 Renderer code should access desktop capabilities through the preload API, not by importing Electron main-process modules directly.
@@ -120,9 +120,9 @@ pnpm deps:arch
 Use workspace package names for shared code:
 
 ```ts
-import { Button } from "@appkit/ui";
-import { someCoreHelper } from "@appkit/core";
-import { apiClient } from "@appkit/api-client";
+import { Button } from "@codelane/ui";
+import { someCoreHelper } from "@codelane/core";
+import { apiClient } from "@codelane/api-client";
 ```
 
 ### Desktop-local imports
@@ -150,31 +150,31 @@ Run commands from the repository root using pnpm filters.
 ### Start the desktop app in development
 
 ```bash
-pnpm --filter @appkit/desktop dev
+pnpm --filter @codelane/desktop dev
 ```
 
 ### Typecheck the desktop app
 
 ```bash
-pnpm --filter @appkit/desktop typecheck
+pnpm --filter @codelane/desktop typecheck
 ```
 
 ### Run desktop tests
 
 ```bash
-pnpm --filter @appkit/desktop test:run
+pnpm --filter @codelane/desktop test:run
 ```
 
 ### Build desktop-related output
 
 ```bash
-pnpm --filter @appkit/desktop build
+pnpm --filter @codelane/desktop build
 ```
 
 ### Package the desktop app
 
 ```bash
-pnpm --filter @appkit/desktop package
+pnpm --filter @codelane/desktop package
 ```
 
 or from the root package script:
@@ -191,7 +191,7 @@ A typical desktop development flow is:
 
 ```bash
 pnpm install
-pnpm --filter @appkit/desktop dev
+pnpm --filter @codelane/desktop dev
 ```
 
 Before committing desktop changes, run:
@@ -206,8 +206,8 @@ pnpm test:run
 For a desktop-specific check, run:
 
 ```bash
-pnpm --filter @appkit/desktop typecheck
-pnpm --filter @appkit/desktop test:run
+pnpm --filter @codelane/desktop typecheck
+pnpm --filter @codelane/desktop test:run
 ```
 
 ## Packaging workflow
@@ -218,7 +218,7 @@ A typical packaging flow is:
 
 ```bash
 pnpm build
-pnpm --filter @appkit/desktop package
+pnpm --filter @codelane/desktop package
 ```
 
 The monorepo also has a root packaging command:
@@ -236,7 +236,7 @@ The desktop app uses unit tests for desktop-specific utilities and behavior.
 Run:
 
 ```bash
-pnpm --filter @appkit/desktop test:run
+pnpm --filter @codelane/desktop test:run
 ```
 
 Current tests should focus on small, deterministic modules first, such as:
@@ -279,7 +279,7 @@ Recommended practices:
 
 ## Styling and UI
 
-Shared UI should live in `@appkit/ui` when it can be reused by the web app.
+Shared UI should live in `@codelane/ui` when it can be reused by the web app.
 
 Desktop-specific UI should stay in the desktop renderer.
 
@@ -298,7 +298,7 @@ Only meaningful for desktop window chrome, desktop navigation, or Electron behav
 The desktop app should consume shared packages through public package entry points:
 
 ```ts
-import { Button } from "@appkit/ui";
+import { Button } from "@codelane/ui";
 ```
 
 Avoid deep imports into package internals unless there is a deliberate reason.
@@ -306,7 +306,7 @@ Avoid deep imports into package internals unless there is a deliberate reason.
 Good:
 
 ```ts
-import { Button } from "@appkit/ui";
+import { Button } from "@codelane/ui";
 ```
 
 Avoid:
@@ -381,4 +381,4 @@ See the root README for:
 
 ## License
 
-This app is part of the AppKit monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.
+This app is part of the CodeLane monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.

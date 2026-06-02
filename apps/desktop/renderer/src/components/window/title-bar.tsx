@@ -1,4 +1,4 @@
-import { cn } from "@appkit/ui";
+import { cn } from "@codelane/ui";
 import type { HTMLAttributes, ReactNode } from "react";
 
 type TitleBarProps = HTMLAttributes<HTMLDivElement> & {

@@ -8,7 +8,7 @@ type ThemeContextValue = {
   setMode: (mode: ThemeMode) => void;
 };
 
-const storageKey = "appkit-theme";
+const storageKey = "codelane-theme";
 const defaultThemeMode = "system" satisfies ThemeMode;
 const ThemeContext = React.createContext<ThemeContextValue | null>(null);
 

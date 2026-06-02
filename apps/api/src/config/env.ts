@@ -1,7 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { parseServerEnv } from "@appkit/config/server";
+import { parseServerEnv } from "@codelane/config/server";
 import { config as loadDotenv } from "dotenv";
 
 const configDir = path.dirname(fileURLToPath(import.meta.url));

@@ -1,5 +1,5 @@
-import { startCliAuthorization } from "@appkit/api-client";
-import { toast } from "@appkit/ui";
+import { startCliAuthorization } from "@codelane/api-client";
+import { toast } from "@codelane/ui";
 import { useMemo, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
@@ -70,9 +70,9 @@ export function CliLogin(): React.JSX.Element {
     <div className="flex h-full w-full items-center justify-center p-6">
       <div className="w-full max-w-md space-y-6">
         <div className="space-y-2">
-          <h1 className="text-2xl font-semibold">Authorize AppKit CLI?</h1>
+          <h1 className="text-2xl font-semibold">Authorize CodeLane CLI?</h1>
           <p className="text-muted-foreground">
-            The AppKit CLI is requesting access to {user?.email ?? user?.name ?? "your account"}.
+            The CodeLane CLI is requesting access to {user?.email ?? user?.name ?? "your account"}.
           </p>
         </div>
 

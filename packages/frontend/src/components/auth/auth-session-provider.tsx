@@ -1,5 +1,5 @@
-import { fetchAuthSession, type AuthSession } from "@appkit/api-client";
-import { toast } from "@appkit/ui";
+import { fetchAuthSession, type AuthSession } from "@codelane/api-client";
+import { toast } from "@codelane/ui";
 import {
   createContext,
   useCallback,

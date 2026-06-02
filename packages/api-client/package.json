@@ -1,8 +1,8 @@
 {
-  "name": "@appkit/api-client",
+  "name": "@codelane/api-client",
   "version": "0.1.0",
   "private": true,
-  "description": "Shared API client for AppKit web and desktop applications.",
+  "description": "Shared API client for CodeLane web and desktop applications.",
   "license": "Apache-2.0",
   "files": [
     "dist"
@@ -24,8 +24,8 @@
     "knip": "knip"
   },
   "dependencies": {
-    "@appkit/config": "workspace:*",
-    "@appkit/core": "workspace:*"
+    "@codelane/config": "workspace:*",
+    "@codelane/core": "workspace:*"
   },
   "devDependencies": {
     "@typescript/native-preview": "7.0.0-dev.20260507.1",

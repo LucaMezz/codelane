@@ -1,4 +1,4 @@
-import { joinUrl } from "@appkit/config/client";
+import { joinUrl } from "@codelane/config/client";
 import {
   CliAuthorizeRequest,
   CliAuthorizeResponse,
@@ -14,7 +14,7 @@ import {
   cliRevokeResponseSchema,
   cliTokenResponseSchema,
   meResponseSchema,
-} from "@appkit/core";
+} from "@codelane/core";
 
 import { fetchWithTimeout } from "../request";
 import { ApiClientOptions } from "./types";

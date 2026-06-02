@@ -1,7 +1,7 @@
-import { signInWithCredentials } from "@appkit/api-client";
-import { LoginInput, loginSchema } from "@appkit/core";
-import { LoginForm } from "@appkit/ui";
-import { toast } from "@appkit/ui";
+import { signInWithCredentials } from "@codelane/api-client";
+import { LoginInput, loginSchema } from "@codelane/core";
+import { LoginForm } from "@codelane/ui";
+import { toast } from "@codelane/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate, useSearchParams } from "react-router-dom";

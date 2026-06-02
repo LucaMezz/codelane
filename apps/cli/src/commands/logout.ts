@@ -1,4 +1,4 @@
-import { revokeCliSession } from "@appkit/api-client";
+import { revokeCliSession } from "@codelane/api-client";
 import type { Command } from "commander";
 
 import { configStore } from "../auth/config-store";

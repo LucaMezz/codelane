@@ -1,8 +1,8 @@
-# AppKit CLI
+# CodeLane CLI
 
-The AppKit CLI is the command-line client for interacting with the AppKit backend API.
+The CodeLane CLI is the command-line client for interacting with the CodeLane backend API.
 
-It is intentionally separate from the web, desktop, and shared frontend packages. CLI code should stay terminal-focused, avoid React/UI dependencies, and communicate with the API through `@appkit/api-client`.
+It is intentionally separate from the web, desktop, and shared frontend packages. CLI code should stay terminal-focused, avoid React/UI dependencies, and communicate with the API through `@codelane/api-client`.
 
 ## Overview
 
@@ -17,27 +17,27 @@ It is intentionally separate from the web, desktop, and shared frontend packages
 - local credential storage abstraction
 - access token refresh behavior
 
-It should not import from `@appkit/ui`, `@appkit/frontend`, `apps/web`, `apps/desktop`, or `apps/api`.
+It should not import from `@codelane/ui`, `@codelane/frontend`, `apps/web`, `apps/desktop`, or `apps/api`.
 
 ## Commands
 
 ```bash
-appkit status
-appkit login
-appkit login --no-browser
-appkit login --api-url http://localhost:4000 --web-url http://localhost:3000
-appkit whoami
-appkit auth status
-appkit logout
+codelane status
+codelane login
+codelane login --no-browser
+codelane login --api-url http://localhost:4000 --web-url http://localhost:3000
+codelane whoami
+codelane auth status
+codelane logout
 ```
 
 During local development, run through pnpm:
 
 ```bash
-pnpm --filter @appkit/cli dev -- login
-pnpm --filter @appkit/cli dev -- whoami
-pnpm --filter @appkit/cli dev -- auth status
-pnpm --filter @appkit/cli dev -- logout
+pnpm --filter @codelane/cli dev -- login
+pnpm --filter @codelane/cli dev -- whoami
+pnpm --filter @codelane/cli dev -- auth status
+pnpm --filter @codelane/cli dev -- logout
 ```
 
 ## Package structure
@@ -59,7 +59,7 @@ apps/cli/
 
 The CLI uses a browser-based native app flow:
 
-1. `appkit login` generates `state`, `code_verifier`, and `code_challenge`.
+1. `codelane login` generates `state`, `code_verifier`, and `code_challenge`.
 2. The CLI starts a temporary localhost callback server.
 3. The CLI opens the web app authorization page.
 4. The browser uses the normal web session or sign-in flow.
@@ -96,20 +96,20 @@ CLI flags take precedence over environment variables. Environment variables take
 ## Scripts
 
 ```bash
-pnpm --filter @appkit/cli dev
-pnpm --filter @appkit/cli build
-pnpm --filter @appkit/cli typecheck
-pnpm --filter @appkit/cli test:run
-pnpm --filter @appkit/cli knip
+pnpm --filter @codelane/cli dev
+pnpm --filter @codelane/cli build
+pnpm --filter @codelane/cli typecheck
+pnpm --filter @codelane/cli test:run
+pnpm --filter @codelane/cli knip
 ```
 
 ## Development guidelines
 
 - Keep command files focused on terminal UX and orchestration.
 - Put reusable auth helpers under `src/auth`.
-- Use `@appkit/api-client` for API calls.
-- Use `@appkit/core` for shared request/response types.
-- Use `@appkit/config` for URL and port defaults.
+- Use `@codelane/api-client` for API calls.
+- Use `@codelane/core` for shared request/response types.
+- Use `@codelane/config` for URL and port defaults.
 - Do not import frontend routes, UI components, or app implementation files.
 - Keep secrets out of logs.
 - Add tests for PKCE, token manager behavior, state verification, and error cases.
@@ -117,13 +117,13 @@ pnpm --filter @appkit/cli knip
 ## Quality checks
 
 ```bash
-pnpm --filter @appkit/cli typecheck
-pnpm --filter @appkit/cli test:run
-pnpm --filter @appkit/cli build
+pnpm --filter @codelane/cli typecheck
+pnpm --filter @codelane/cli test:run
+pnpm --filter @codelane/cli build
 pnpm deps:arch
 pnpm check
 ```
 
 ## License
 
-This app is part of the AppKit monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.
+This app is part of the CodeLane monorepo and is licensed under the Apache License 2.0. See the root `LICENSE` file for details.

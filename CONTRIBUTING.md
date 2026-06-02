@@ -1,10 +1,10 @@
-# Contributing to AppKit
+# Contributing to CodeLane
 
-Thank you for taking the time to improve AppKit. This project is a TypeScript monorepo starter kit, so good contributions are not only about making code work. They should also keep package boundaries clear, shared code reusable, and the developer workflow predictable.
+Thank you for taking the time to improve CodeLane. This project is a TypeScript monorepo starter kit, so good contributions are not only about making code work. They should also keep package boundaries clear, shared code reusable, and the developer workflow predictable.
 
 ## Project values
 
-AppKit aims to be:
+CodeLane aims to be:
 
 - maintainable over time
 - clear about ownership boundaries
@@ -105,11 +105,11 @@ The main rules are:
 
 - apps must not import from other apps
 - shared packages must not import deployable apps
-- `@appkit/core` must stay framework-agnostic and runtime-neutral
-- `@appkit/ui` must stay presentational and must not call the API directly
-- `@appkit/frontend` owns shared frontend flows
-- `@appkit/api-client` owns reusable API communication
-- `@appkit/config` owns shared config defaults and helpers
+- `@codelane/core` must stay framework-agnostic and runtime-neutral
+- `@codelane/ui` must stay presentational and must not call the API directly
+- `@codelane/frontend` owns shared frontend flows
+- `@codelane/api-client` owns reusable API communication
+- `@codelane/config` owns shared config defaults and helpers
 - CLI code must not depend on UI or shared frontend packages
 - generated build output must not be imported by source files
 
@@ -230,7 +230,7 @@ This runs:
 - `pnpm lint:no-hardcoded-local-urls`
 - `pnpm typecheck`
 
-Do not add hardcoded local URLs, ports, or API base URLs outside approved config/docs locations. Shared defaults belong in `@appkit/config`.
+Do not add hardcoded local URLs, ports, or API base URLs outside approved config/docs locations. Shared defaults belong in `@codelane/config`.
 
 ## Dependency management
 
