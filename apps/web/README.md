@@ -1,8 +1,8 @@
 # CodeLane Web
 
-The CodeLane web app is the browser-based frontend application for the CodeLane monorepo.
+The CodeLane web app is the browser-based client for CodeLane. It is where most users will interact with their issues, navigate developer views, and access the command palette.
 
-It is built with Vite, React, and React Router. The app is intentionally thin: it hosts shared frontend routes and flows from `@codelane/frontend`, imports shared UI styles, and provides browser runtime configuration.
+It is built with Vite, React, and React Router. The app is intentionally thin: it hosts shared frontend routes and flows from `@codelane/frontend`, imports shared UI styles, and provides browser runtime configuration. All product pages and flows live in `@codelane/frontend` so they are shared with the desktop app.
 
 ## Overview
 
@@ -18,25 +18,23 @@ Web-specific runtime host code should remain inside `apps/web`. Shared route/pag
 
 ## Role in the monorepo
 
-The web app is one of the deployable application targets in the CodeLane starter kit.
+The web app is the browser deployment target for CodeLane.
 
 ```text
 apps/
-  web/          Browser frontend application
-  desktop/      Cross-platform desktop application
-  api/          Shared backend API application
+  web/          Browser client — thin host, delegates to @codelane/frontend
+  desktop/      Desktop client — shares the same frontend pages
+  api/          Backend API
 
 packages/
   ui/           Shared React UI components
-  frontend/     Shared frontend routes/pages/flows
+  frontend/     Shared frontend routes, pages, and flows
   core/         Shared framework-agnostic logic
   api-client/   Shared API communication helpers
   config/       Shared config defaults and helpers
 ```
 
-The web app should communicate with the backend through stable API contracts, preferably using helpers from `@codelane/api-client` where appropriate.
-
-It should not import backend implementation files directly.
+The web app communicates with the backend through `@codelane/api-client`. It does not import backend implementation files directly.
 
 ## Architecture
 
@@ -442,13 +440,11 @@ The web app should remain compatible with:
 
 The web app is designed to be:
 
-- **Modern**: built with Vite, React, React Router, and TypeScript.
-- **Thin**: delegates shared routes and flows to `@codelane/frontend`.
-- **Shared-code friendly**: consumes shared UI, frontend, and config packages.
-- **Deployable**: remains a standalone web application target.
-- **Maintainable**: keeps app-specific code separate from reusable packages.
-- **Monorepo-aware**: integrates with Turborepo, pnpm workspaces, Knip, syncpack, dependency-cruiser, Renovate, and CI.
-- **Cross-platform aligned**: shares as much appropriate code as possible with the desktop renderer.
+- **Fast and keyboard-driven**: the interface should feel responsive and navigable entirely by keyboard, consistent with CodeLane's product direction.
+- **Thin**: delegates shared routes and flows to `@codelane/frontend` so the desktop app gets them automatically.
+- **Shared-code friendly**: consumes shared UI, frontend, and config packages rather than duplicating logic.
+- **Deployable**: a self-contained web application target suitable for CDN or static hosting.
+- **Cross-platform aligned**: shares as much code as possible with the desktop renderer.
 
 ## Non-goals
 

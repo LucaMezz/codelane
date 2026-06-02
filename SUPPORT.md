@@ -1,6 +1,6 @@
 # Support
 
-CodeLane is a starter kit and reference architecture. Support is community/project-maintainer best effort unless a separate commercial or organizational support policy is added later.
+CodeLane is an actively developed open-source project. Support is provided on a community and maintainer best-effort basis.
 
 ## Before asking for help
 

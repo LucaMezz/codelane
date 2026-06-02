@@ -1,19 +1,20 @@
 # Contributing to CodeLane
 
-Thank you for taking the time to improve CodeLane. This project is a TypeScript monorepo starter kit, so good contributions are not only about making code work. They should also keep package boundaries clear, shared code reusable, and the developer workflow predictable.
+Thank you for taking the time to improve CodeLane. Good contributions are not only about making code work — they should also keep the product experience keyboard-first and developer-centric, maintain clear package boundaries, and keep shared code reusable and the developer workflow predictable.
 
 ## Project values
 
 CodeLane aims to be:
 
-- maintainable over time
-- clear about ownership boundaries
-- practical for real product work
+- genuinely useful to developers in their daily workflow
+- keyboard-first and fast — every feature should be reachable without a mouse
+- clear about ownership boundaries across the monorepo
+- practical and focused — features should solve real developer problems, not add management overhead
 - friendly to web, desktop, API, and CLI contributors
 - strict enough to catch mistakes early
-- small enough that new contributors can understand where code belongs
+- consistent enough that new contributors can understand where code belongs
 
-When in doubt, prefer clarity over cleverness.
+When in doubt, prefer clarity over cleverness. When choosing between features, prefer the one a developer would reach for in the middle of a flow state.
 
 ## Code of conduct
 

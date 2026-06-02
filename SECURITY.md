@@ -4,7 +4,7 @@ Security issues are handled privately first. Please do not open public GitHub is
 
 ## Supported versions
 
-CodeLane is currently a starter kit and active development project. Security fixes are expected to target the current `main` branch unless a separate release/version support policy is introduced later.
+CodeLane is currently in active development. Security fixes target the current `main` branch unless a separate release/version support policy is introduced later.
 
 | Version                | Supported         |
 | ---------------------- | ----------------- |
@@ -39,7 +39,7 @@ After a report is received, maintainers should try to:
 5. release or merge the fix
 6. credit the reporter if they want credit
 
-Response times may vary because this is a template project, but reports that affect authentication, token handling, secrets, or remote code execution should be treated as high priority.
+Response times may vary, but reports that affect authentication, token handling, secrets, or remote code execution will be treated as high priority.
 
 ## Security-sensitive areas
 
@@ -114,4 +114,4 @@ For desktop changes:
 
 ## Public disclosure
 
-Please give maintainers a reasonable opportunity to fix a vulnerability before public disclosure. Coordinated disclosure helps protect users and downstream projects that may use this template.
+Please give maintainers a reasonable opportunity to fix a vulnerability before public disclosure. Coordinated disclosure helps protect users of CodeLane.

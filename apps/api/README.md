@@ -1,10 +1,8 @@
 # CodeLane API
 
-The CodeLane API is the shared backend application for the CodeLane monorepo.
+The CodeLane API is the backend service for CodeLane. It is the single source of truth for all application data: issues, statuses, assignments, comments, users, and authentication. Every client — the web app, desktop app, and CLI — communicates with the product through this API.
 
-It provides the server-side foundation for the web and desktop applications, including API routes, middleware, authentication-related backend configuration, database access, and application-level backend wiring.
-
-This app is designed to be the single backend service that can support multiple frontend clients while sharing types, validation, and client logic through the monorepo's internal packages.
+It provides the server-side foundation for all CodeLane clients, including API routes, middleware, authentication, database access, and application-level wiring.
 
 ## Overview
 
@@ -24,13 +22,13 @@ It should not depend on frontend-only packages such as `@codelane/ui`.
 
 ## Role in the monorepo
 
-The API is one of the deployable applications in the CodeLane starter kit.
+The API is the shared backend for all CodeLane clients.
 
 ```text
 apps/
-  api/          Shared backend API application
-  web/          Browser frontend
-  desktop/      Desktop frontend
+  api/          Backend — owns all data, business logic, and auth
+  web/          Browser client
+  desktop/      Desktop client
 
 packages/
   core/         Shared framework-agnostic logic
@@ -38,7 +36,7 @@ packages/
   ui/           Shared React UI components
 ```
 
-The API should expose backend functionality to frontend clients through stable HTTP/API contracts. Frontend apps should communicate with the backend through the API client package where possible, rather than importing API implementation details directly.
+The API exposes backend functionality through stable HTTP contracts. Frontend apps communicate with the backend through the API client package, not by importing API implementation files directly.
 
 ## Architecture
 
@@ -532,12 +530,11 @@ The API should remain compatible with:
 
 The API is designed to be:
 
-- **Shared**: usable by both web and desktop clients.
-- **Modular**: organized by features, middleware, database, and configuration.
-- **Typed**: using TypeScript throughout.
-- **Secure**: treating auth, environment variables, and input validation carefully.
-- **Monorepo-aware**: integrated with shared packages and root tooling.
-- **Maintainable**: clear boundaries between routes, controllers, services, config, and database logic.
+- **The single backend**: one service supports web, desktop, and CLI clients without duplication.
+- **Modular**: organised by feature modules, with clear separation between routes, controllers, services, and database access.
+- **Typed end-to-end**: request/response contracts defined in `@codelane/core` as Zod schemas flow from the API through to every client.
+- **Secure**: auth, credential handling, session management, and input validation are treated as first-class concerns.
+- **Maintainable**: business logic lives in service files, not controllers or routes.
 
 ## Non-goals
 

@@ -1,37 +1,58 @@
 # CodeLane CLI
 
-The CodeLane CLI is the command-line client for interacting with the CodeLane backend API.
+The CodeLane CLI (`codelane`) is a first-class interface for CodeLane — not a companion tool bolted on after the fact. Developers who prefer to stay in the terminal should be able to do everything through the CLI: view and create issues, triage their queue, transition statuses, and eventually kick off complete development workflows with a single command.
 
-It is intentionally separate from the web, desktop, and shared frontend packages. CLI code should stay terminal-focused, avoid React/UI dependencies, and communicate with the API through `@codelane/api-client`.
+The CLI is intentionally isolated from the web and desktop apps. It stays terminal-focused, avoids React and UI dependencies, and communicates with the API through `@codelane/api-client`.
 
 ## Overview
 
-`apps/cli` owns:
+`apps/cli` owns all terminal-facing behavior for CodeLane:
 
-- command registration
-- terminal command behavior
-- browser-based CLI authentication orchestration
-- localhost callback handling
-- PKCE and state generation
-- local CLI config storage
-- local credential storage abstraction
-- access token refresh behavior
+- command registration and terminal UX
+- browser-based CLI authentication (PKCE flow with localhost callback)
+- local CLI config storage (API URL, web URL, user metadata)
+- local credential storage abstraction (refresh tokens, access tokens)
+- access token refresh and lifecycle management
+- future: issue listing, creation, status transitions, and Git branch workflows
 
-It should not import from `@codelane/ui`, `@codelane/frontend`, `apps/web`, `apps/desktop`, or `apps/api`.
+It does not import from `@codelane/ui`, `@codelane/frontend`, `apps/web`, `apps/desktop`, or `apps/api`.
 
 ## Commands
 
+### Authentication
+
 ```bash
-codelane status
-codelane login
-codelane login --no-browser
-codelane login --api-url http://localhost:4000 --web-url http://localhost:3000
-codelane whoami
-codelane auth status
-codelane logout
+codelane login                                          # Authenticate via browser (PKCE flow)
+codelane login --no-browser                             # Print auth URL instead of opening browser
+codelane login --api-url http://localhost:4000 \
+               --web-url http://localhost:3000          # Point to a specific server
+codelane whoami                                         # Show the currently authenticated user
+codelane auth status                                    # Show token and session state
+codelane logout                                         # Sign out and revoke credentials
 ```
 
-During local development, run through pnpm:
+### Status and navigation
+
+```bash
+codelane status                                         # Show your current focus and assigned work
+```
+
+### Planned — issue workflows
+
+The following commands are planned as core issue tracking features are built:
+
+```bash
+codelane issues list                                    # List issues with optional filters
+codelane issues create                                  # Create a new issue
+codelane issues view <id>                               # View an issue in the terminal
+codelane start <id>                                     # Assign, transition to In Progress, and branch
+```
+
+The `codelane start` command is the target developer experience: one command that assigns the issue, moves it to In Progress, creates a Git branch, and checks it out — without leaving the terminal.
+
+### Development
+
+During local development, run commands through pnpm:
 
 ```bash
 pnpm --filter @codelane/cli dev -- login
@@ -87,8 +108,8 @@ Secret storage currently uses the `CredentialStore` abstraction. The implementat
 ## Environment variables
 
 ```bash
-APPKIT_API_URL=http://localhost:4000
-APPKIT_WEB_URL=http://localhost:3000
+CODELANE_API_URL=http://localhost:4000
+CODELANE_WEB_URL=http://localhost:3000
 ```
 
 CLI flags take precedence over environment variables. Environment variables take precedence over saved config.

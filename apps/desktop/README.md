@@ -1,8 +1,8 @@
 # CodeLane Desktop
 
-The CodeLane desktop app is the cross-platform desktop client for the CodeLane monorepo.
+The CodeLane desktop app is the native client for CodeLane, available on macOS, Windows, and Linux. It gives developers a dedicated app experience — system notifications, offline-capable viewing, and deep OS integration — built on the same product pages and flows as the web app.
 
-It is built as a desktop application that shares code with the rest of the workspace while keeping desktop-specific concerns isolated inside `apps/desktop`. The app is intended to demonstrate a professional Electron-style architecture with clear separation between main-process code, preload code, renderer code, shared IPC contracts, and reusable workspace packages.
+Desktop-specific concerns (window management, IPC, OS integration) are isolated inside `apps/desktop`. Shared product UI and flows live in `@codelane/frontend` and are consumed by both web and desktop.
 
 ## Overview
 
@@ -18,19 +18,21 @@ Desktop-only code should remain inside this app. Code that can also be used by t
 
 ## Role in the monorepo
 
-The desktop app is one of the deployable application targets in the CodeLane starter kit.
+The desktop app is the native deployment target for CodeLane.
 
 ```text
 apps/
-  desktop/      Cross-platform desktop app
+  desktop/      Native desktop client — thin Electron host, delegates to @codelane/frontend
+  web/          Browser client — shares the same frontend pages
 
 packages/
   ui/           Shared React UI components
+  frontend/     Shared frontend routes, pages, and flows
   core/         Shared framework-agnostic logic
   api-client/   Shared API communication helpers
 ```
 
-The desktop app may depend on shared packages, but shared packages should not depend on the desktop app.
+The desktop app depends on shared packages. Shared packages do not depend on the desktop app.
 
 ## Architecture
 
@@ -354,12 +356,11 @@ Packaging exercises production bundles and Electron Forge output. When packaging
 
 The desktop app is designed to be:
 
-- **Cross-platform**: suitable for Windows, macOS, and Linux packaging workflows.
-- **Separated by runtime**: main, preload, and renderer concerns stay distinct.
-- **Shared-code friendly**: consumes workspace packages without duplicating logic.
-- **Safe by default**: renderer access to desktop capabilities goes through preload APIs.
-- **Maintainable**: IPC contracts and desktop-specific responsibilities are centralized.
-- **Monorepo-aware**: integrates with Turborepo, pnpm workspaces, Knip, dependency-cruiser, syncpack, and CI checks.
+- **A first-class CodeLane client**: the desktop app should feel native and capable, not like a wrapped website.
+- **Cross-platform**: packaged and tested for Windows, macOS, and Linux.
+- **Separated by runtime**: main, preload, and renderer concerns stay distinct to keep the app secure and maintainable.
+- **Shared-code friendly**: consumes workspace packages without duplicating logic already in `@codelane/frontend` or `@codelane/ui`.
+- **Safe by default**: renderer access to OS capabilities goes through narrow preload APIs, not broad Node.js access.
 
 ## Non-goals
 

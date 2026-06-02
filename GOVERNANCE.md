@@ -6,14 +6,14 @@ CodeLane is currently maintained as a small project with a lightweight maintaine
 
 Maintainers are responsible for:
 
-- setting project direction
+- setting product direction
 - reviewing pull requests
 - reviewing and organizing issues
 - maintaining architecture boundaries
 - responding to security reports
 - enforcing the code of conduct
 - keeping CI and repository tooling healthy
-- deciding what belongs in the starter kit
+- deciding what belongs in the product and what does not
 
 ## Decision making
 
@@ -47,16 +47,15 @@ Maintainers may ask for changes or decline a contribution if it is outside the p
 
 ## Project scope
 
-CodeLane is a monorepo starter kit for cross-platform TypeScript applications with a shared backend.
+CodeLane is a developer-centric issue tracking and task management application. Its purpose is to give software developers an issue tracker that fits naturally into their workflow — keyboard-driven, CLI-friendly, and built around how developers actually work rather than how managers want to oversee them.
 
-It is not intended to become:
+Contributions should serve that purpose. CodeLane is not intended to become:
 
-- a marketplace
-- a generic package ecosystem
-- a large business application by default
-- a collection of unrelated examples
-- a replacement for framework documentation
+- a generic project management platform serving all audiences equally
+- a Gantt chart, resource planning, or timeline tool
+- a collection of unrelated features or integrations added without a clear developer use case
+- a replacement for existing tools without meaningfully improving on the developer experience
 
 ## Becoming a maintainer
 
-There is no formal maintainer nomination process yet. If the project grows, maintainership can be expanded based on sustained, constructive contributions and trust.
+There is no formal maintainer nomination process at this stage. As the project grows, maintainership can be expanded based on sustained, constructive contributions and demonstrated alignment with the project's values.

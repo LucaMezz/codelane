@@ -166,7 +166,7 @@ module.exports = {
       name: "web-must-not-import-api-client-directly",
       severity: "error",
       comment:
-        "The web app should stay a thin host. API-backed frontend flows belong in @appkit/frontend.",
+        "The web app should stay a thin host. API-backed frontend flows belong in @codelane/frontend.",
       from: {
         path: "^apps/web/",
       },
@@ -179,7 +179,7 @@ module.exports = {
       name: "desktop-must-not-import-api-client-directly",
       severity: "error",
       comment:
-        "The desktop app should stay a thin host. API-backed frontend flows belong in @appkit/frontend.",
+        "The desktop app should stay a thin host. API-backed frontend flows belong in @codelane/frontend.",
       from: {
         path: "^apps/desktop/",
       },
@@ -192,7 +192,7 @@ module.exports = {
       name: "web-must-not-import-core-directly",
       severity: "error",
       comment:
-        "The web app should stay a thin host. Schema/domain wiring should live in @appkit/frontend.",
+        "The web app should stay a thin host. Schema/domain wiring should live in @codelane/frontend.",
       from: {
         path: "^apps/web/",
       },
@@ -205,7 +205,7 @@ module.exports = {
       name: "desktop-renderer-must-not-import-core-directly",
       severity: "error",
       comment:
-        "The desktop renderer should stay a thin host. Schema/domain wiring should live in @appkit/frontend. Desktop config files may import core metadata for packaging.",
+        "The desktop renderer should stay a thin host. Schema/domain wiring should live in @codelane/frontend. Desktop config files may import core metadata for packaging.",
       from: {
         path: "^apps/desktop/renderer/",
       },
@@ -218,7 +218,7 @@ module.exports = {
       name: "apps-must-not-deep-import-frontend",
       severity: "error",
       comment:
-        "Apps should consume @appkit/frontend through its public entry point, not internal source files.",
+        "Apps should consume @codelane/frontend through its public entry point, not internal source files.",
       from: {
         path: "^(apps/web|apps/desktop)/",
       },
@@ -232,7 +232,7 @@ module.exports = {
       name: "apps-must-not-deep-import-ui",
       severity: "error",
       comment:
-        "Apps should consume @appkit/ui through its public entry point or CSS export, not internal source files.",
+        "Apps should consume @codelane/ui through its public entry point or CSS export, not internal source files.",
       from: {
         path: "^(apps/web|apps/desktop)/",
       },
@@ -249,7 +249,7 @@ module.exports = {
       name: "core-must-stay-independent",
       severity: "error",
       comment:
-        "@appkit/core should stay framework-agnostic and must not depend on config, UI, frontend, API client, or app code.",
+        "@codelane/core should stay framework-agnostic and must not depend on config, UI, frontend, API client, or app code.",
       from: {
         path: "^packages/core/",
       },
@@ -262,7 +262,7 @@ module.exports = {
       name: "core-must-not-import-node-builtins",
       severity: "error",
       comment:
-        "@appkit/core should stay runtime-neutral and must not depend on Node built-in modules.",
+        "@codelane/core should stay runtime-neutral and must not depend on Node built-in modules.",
       from: {
         path: "^packages/core/",
       },
@@ -275,7 +275,7 @@ module.exports = {
       name: "config-must-stay-independent",
       severity: "error",
       comment:
-        "@appkit/config should provide shared configuration defaults/helpers and must not depend on apps, UI, frontend, or API client code.",
+        "@codelane/config should provide shared configuration defaults/helpers and must not depend on apps, UI, frontend, or API client code.",
       from: {
         path: "^packages/config/",
       },
@@ -288,7 +288,7 @@ module.exports = {
       name: "config-must-not-import-react",
       severity: "error",
       comment:
-        "@appkit/config must stay runtime/helper focused and must not depend on React or frontend libraries.",
+        "@codelane/config must stay runtime/helper focused and must not depend on React or frontend libraries.",
       from: {
         path: "^packages/config/",
       },
@@ -314,7 +314,7 @@ module.exports = {
     {
       name: "api-client-must-not-import-apps",
       severity: "error",
-      comment: "@appkit/api-client should stay reusable and must not depend on apps.",
+      comment: "@codelane/api-client should stay reusable and must not depend on apps.",
       from: {
         path: "^packages/api-client/",
       },
@@ -327,7 +327,7 @@ module.exports = {
       name: "api-client-must-not-import-ui-or-frontend",
       severity: "error",
       comment:
-        "@appkit/api-client should stay transport-focused and must not depend on React UI or frontend application code.",
+        "@codelane/api-client should stay transport-focused and must not depend on React UI or frontend application code.",
       from: {
         path: "^packages/api-client/",
       },
@@ -340,7 +340,7 @@ module.exports = {
       name: "api-client-must-not-deep-import-core",
       severity: "error",
       comment:
-        "@appkit/api-client should consume @appkit/core through public exports, not internal source files.",
+        "@codelane/api-client should consume @codelane/core through public exports, not internal source files.",
       from: {
         path: "^packages/api-client/",
       },
@@ -354,7 +354,7 @@ module.exports = {
       name: "api-client-must-not-import-frontend-libraries",
       severity: "error",
       comment:
-        "@appkit/api-client should stay framework-agnostic and must not depend on React, routing, forms, Vite, or UI libraries.",
+        "@codelane/api-client should stay framework-agnostic and must not depend on React, routing, forms, Vite, or UI libraries.",
       from: {
         path: "^packages/api-client/",
       },
@@ -368,7 +368,7 @@ module.exports = {
       name: "frontend-must-not-import-apps",
       severity: "error",
       comment:
-        "@appkit/frontend should be shared across web and desktop and must not depend on app-specific implementation code.",
+        "@codelane/frontend should be shared across web and desktop and must not depend on app-specific implementation code.",
       from: {
         path: "^packages/frontend/",
       },
@@ -381,7 +381,7 @@ module.exports = {
       name: "frontend-must-not-deep-import-ui",
       severity: "error",
       comment:
-        "@appkit/frontend should consume @appkit/ui through its public entry point so UI internals remain refactorable.",
+        "@codelane/frontend should consume @codelane/ui through its public entry point so UI internals remain refactorable.",
       from: {
         path: "^packages/frontend/",
       },
@@ -394,7 +394,8 @@ module.exports = {
     {
       name: "frontend-must-not-use-electron",
       severity: "error",
-      comment: "@appkit/frontend must stay platform-neutral. Electron APIs belong in apps/desktop.",
+      comment:
+        "@codelane/frontend must stay platform-neutral. Electron APIs belong in apps/desktop.",
       from: {
         path: "^packages/frontend/",
       },
@@ -407,7 +408,7 @@ module.exports = {
     {
       name: "ui-must-not-import-apps",
       severity: "error",
-      comment: "@appkit/ui should stay reusable and must not depend on deployable apps.",
+      comment: "@codelane/ui should stay reusable and must not depend on deployable apps.",
       from: {
         path: "^packages/ui/",
       },
@@ -420,7 +421,7 @@ module.exports = {
       name: "ui-must-not-import-frontend",
       severity: "error",
       comment:
-        "@appkit/ui is the reusable design-system layer and must not depend on @appkit/frontend.",
+        "@codelane/ui is the reusable design-system layer and must not depend on @codelane/frontend.",
       from: {
         path: "^packages/ui/",
       },
@@ -433,7 +434,7 @@ module.exports = {
       name: "ui-must-not-import-api-client",
       severity: "error",
       comment:
-        "@appkit/ui must stay presentational and must not call API client functions directly. Put API-backed flows in @appkit/frontend.",
+        "@codelane/ui must stay presentational and must not call API client functions directly. Put API-backed flows in @codelane/frontend.",
       from: {
         path: "^packages/ui/",
       },
@@ -446,7 +447,7 @@ module.exports = {
       name: "ui-must-not-import-core",
       severity: "error",
       comment:
-        "@appkit/ui should avoid app/domain coupling. Put schema-aware or domain-aware logic in @appkit/frontend or @appkit/core consumers.",
+        "@codelane/ui should avoid app/domain coupling. Put schema-aware or domain-aware logic in @codelane/frontend or @codelane/core consumers.",
       from: {
         path: "^packages/ui/",
       },
@@ -459,7 +460,7 @@ module.exports = {
       name: "ui-must-not-import-react-router",
       severity: "error",
       comment:
-        "@appkit/ui should not own routing. Route-aware components and navigation flows belong in @appkit/frontend.",
+        "@codelane/ui should not own routing. Route-aware components and navigation flows belong in @codelane/frontend.",
       from: {
         path: "^packages/ui/",
       },
@@ -473,7 +474,7 @@ module.exports = {
       name: "ui-must-not-import-form-resolvers",
       severity: "error",
       comment:
-        "@appkit/ui may render forms, but schema resolver wiring belongs in @appkit/frontend.",
+        "@codelane/ui may render forms, but schema resolver wiring belongs in @codelane/frontend.",
       from: {
         path: "^packages/ui/",
       },
@@ -486,7 +487,7 @@ module.exports = {
     {
       name: "ui-must-not-use-electron",
       severity: "error",
-      comment: "@appkit/ui must stay platform-neutral and must not depend on Electron APIs.",
+      comment: "@codelane/ui must stay platform-neutral and must not depend on Electron APIs.",
       from: {
         path: "^packages/ui/",
       },
@@ -500,7 +501,7 @@ module.exports = {
       name: "ui-must-not-contain-pages-routes-or-screens",
       severity: "error",
       comment:
-        "@appkit/ui should not contain pages, routes, or screens. Move app-level frontend code to @appkit/frontend.",
+        "@codelane/ui should not contain pages, routes, or screens. Move app-level frontend code to @codelane/frontend.",
       from: {
         path: "^packages/ui/src/(pages|routes|screens)/",
       },
@@ -555,7 +556,7 @@ module.exports = {
       name: "web-must-not-import-ui-pages-directly",
       severity: "error",
       comment:
-        "The web app should consume shared pages/routes from @appkit/frontend, not page-level code from @appkit/ui.",
+        "The web app should consume shared pages/routes from @codelane/frontend, not page-level code from @codelane/ui.",
       from: {
         path: "^apps/web/",
       },
@@ -568,7 +569,7 @@ module.exports = {
       name: "desktop-must-not-import-ui-pages-directly",
       severity: "error",
       comment:
-        "The desktop app should consume shared pages/routes from @appkit/frontend, not page-level code from @appkit/ui.",
+        "The desktop app should consume shared pages/routes from @codelane/frontend, not page-level code from @codelane/ui.",
       from: {
         path: "^apps/desktop/",
       },
