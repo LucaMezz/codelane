@@ -1,29 +1,42 @@
 import { getMyProfile, updateMyProfile } from "@codelane/api-client";
 import { getInitials, type UserProfile } from "@codelane/core";
-import { Avatar, AvatarFallback, AvatarImage, Button, Input, Separator } from "@codelane/ui";
+import { Avatar, AvatarFallback, AvatarImage, Button, Input, Separator, cn } from "@codelane/ui";
 import {
+  AlertCircle,
   Building2,
   CalendarDays,
-  CheckCircle2,
-  CircleDot,
   Clock,
+  Eye,
   Globe,
+  ListTodo,
   MapPin,
   Pencil,
-  Plus,
   Timer,
+  UserCheck,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useAuthSession } from "#components/auth/auth-session-provider";
-import { ActivityGraph } from "#components/profile/activity-graph";
 import { ActivityItem, type ActivityEvent } from "#components/profile/activity-item";
 import { RoleBadge } from "#components/profile/role-badge";
 import { SectionHeading } from "#components/profile/section-heading";
 import { StatCard } from "#components/profile/stat-card";
 import { WorkspaceCard, type Workspace } from "#components/profile/workspace-card";
 import { useFrontendRuntimeConfig } from "#config";
+
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+interface WorkItem {
+  id: string;
+  key: string;
+  title: string;
+  workspace: string;
+  priority: "urgent" | "high" | "medium" | "low";
+  status: "in_progress" | "blocked" | "needs_review";
+  since: string;
+  blockedBy?: string;
+}
 
 // ── Mock data (replace with real API when backend is ready) ──────────────────
 
@@ -116,7 +129,82 @@ const MOCK_ACTIVITY: ActivityEvent[] = [
   },
 ];
 
-const MOCK_STATS = { open: 17, inProgress: 5, resolvedThisMonth: 12, totalCreated: 34 };
+const MOCK_STATS = {
+  assigned: 14,
+  inProgress: 4,
+  blocked: 2,
+  needsReview: 3,
+  resolvedThisMonth: 12,
+};
+
+const MOCK_WORK_ITEMS: WorkItem[] = [
+  {
+    id: "1",
+    key: "CL-42",
+    title: "Add OAuth2 provider support",
+    workspace: "Platform Team",
+    priority: "high",
+    status: "in_progress",
+    since: "3 days",
+  },
+  {
+    id: "2",
+    key: "CL-51",
+    title: "Migrate issue list pagination to cursor-based",
+    workspace: "API Infrastructure",
+    priority: "medium",
+    status: "in_progress",
+    since: "1 day",
+  },
+  {
+    id: "3",
+    key: "CL-38",
+    title: "Fix race condition in auth middleware",
+    workspace: "API Infrastructure",
+    priority: "urgent",
+    status: "blocked",
+    since: "5 days",
+    blockedBy: "Waiting on security audit sign-off",
+  },
+  {
+    id: "4",
+    key: "CL-61",
+    title: "Keyboard shortcut for issue creation",
+    workspace: "Platform Team",
+    priority: "high",
+    status: "blocked",
+    since: "2 days",
+    blockedBy: "Blocked by CL-58: Command palette not wired up yet",
+  },
+  {
+    id: "5",
+    key: "CL-29",
+    title: "Improve CI pipeline performance",
+    workspace: "Platform Team",
+    priority: "medium",
+    status: "needs_review",
+    since: "2 days",
+  },
+  {
+    id: "6",
+    key: "CL-55",
+    title: "Add dark mode to desktop renderer",
+    workspace: "Mobile App",
+    priority: "low",
+    status: "needs_review",
+    since: "4 days",
+  },
+  {
+    id: "7",
+    key: "CL-47",
+    title: "Update rate limiting on /auth routes",
+    workspace: "API Infrastructure",
+    priority: "high",
+    status: "needs_review",
+    since: "1 day",
+  },
+];
+
 const ACTIVITY_PAGE_SIZE = 4;
 
 // ── Page ─────────────────────────────────────────────────────────────────────
@@ -140,12 +228,16 @@ export function ProfileViewPage(): React.JSX.Element {
   const visibleActivity = MOCK_ACTIVITY.slice(0, activityVisible);
   const hasMoreActivity = activityVisible < MOCK_ACTIVITY.length;
 
+  const inProgressItems = MOCK_WORK_ITEMS.filter((i) => i.status === "in_progress");
+  const blockedItems = MOCK_WORK_ITEMS.filter((i) => i.status === "blocked");
+  const reviewItems = MOCK_WORK_ITEMS.filter((i) => i.status === "needs_review");
+
   return (
-    <div className="flex flex-1 flex-col pb-16">
+    <div className="flex flex-1 flex-col pb-16 w-full">
       <div className="mx-auto w-full max-w-5xl px-6 py-8">
-        <div className="flex flex-col md:flex-row items-start gap-8">
-          {/* ── Sidebar — sticky below the h-12 breadcrumb header ── */}
-          <aside className="w-full md:w-60 shrink-0 self-start md:sticky md:top-12">
+        <div className="flex flex-col lg:flex-row items-start gap-8">
+          {/* ── Sidebar ── */}
+          <aside className="w-full lg:max-w-60 lg:sticky lg:top-12">
             <Avatar className="mb-4 h-36 w-36 rounded-full ring-2 ring-border">
               <AvatarImage src={profile?.image ?? undefined} alt={displayName} />
               <AvatarFallback className="text-3xl font-semibold">
@@ -177,8 +269,8 @@ export function ProfileViewPage(): React.JSX.Element {
             <Separator className="my-4" />
 
             <div className="space-y-1.5">
-              <StatLine value={MOCK_STATS.totalCreated} label="issues opened" />
-              <StatLine value={MOCK_STATS.resolvedThisMonth} label="issues resolved this month" />
+              <StatLine value={MOCK_STATS.assigned} label="issues assigned" />
+              <StatLine value={MOCK_STATS.resolvedThisMonth} label="resolved this month" />
               <StatLine value={MOCK_WORKSPACES.length} label="workspaces" />
             </div>
 
@@ -204,12 +296,13 @@ export function ProfileViewPage(): React.JSX.Element {
           </aside>
 
           {/* ── Main content ── */}
-          <main className="min-w-0 flex-1 space-y-8">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <main className="space-y-8 w-full min-w-0">
+            {/* Stat cards */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               <StatCard
-                icon={CircleDot}
-                value={MOCK_STATS.open}
-                label="Open issues"
+                icon={UserCheck}
+                value={MOCK_STATS.assigned}
+                label="Assigned to me"
                 iconColor="text-amber-500"
               />
               <StatCard
@@ -219,21 +312,50 @@ export function ProfileViewPage(): React.JSX.Element {
                 iconColor="text-blue-500"
               />
               <StatCard
-                icon={CheckCircle2}
-                value={MOCK_STATS.resolvedThisMonth}
-                label="Resolved this month"
-                iconColor="text-emerald-500"
+                icon={AlertCircle}
+                value={MOCK_STATS.blocked}
+                label="Blocked"
+                iconColor="text-red-500"
               />
               <StatCard
-                icon={Plus}
-                value={MOCK_STATS.totalCreated}
-                label="Total created"
+                icon={Eye}
+                value={MOCK_STATS.needsReview}
+                label="Needs review"
                 iconColor="text-violet-500"
               />
             </div>
 
-            <ActivityGraph />
+            {/* Current Work — hero section */}
+            <section>
+              <SectionHeading icon={ListTodo} title="Current Work" count={MOCK_WORK_ITEMS.length} />
+              <div className="mt-3 overflow-hidden rounded-lg border divide-y">
+                {inProgressItems.length > 0 && (
+                  <WorkGroup
+                    label="In Progress"
+                    accentClass="bg-blue-500"
+                    items={inProgressItems}
+                  />
+                )}
+                {blockedItems.length > 0 && (
+                  <WorkGroup
+                    label="Blocked"
+                    accentClass="bg-red-500"
+                    items={blockedItems}
+                    showBlockedBy
+                  />
+                )}
+                {reviewItems.length > 0 && (
+                  <WorkGroup label="Needs Review" accentClass="bg-violet-500" items={reviewItems} />
+                )}
+                {MOCK_WORK_ITEMS.length === 0 && (
+                  <p className="py-8 text-center text-sm text-muted-foreground">
+                    No active work items.
+                  </p>
+                )}
+              </div>
+            </section>
 
+            {/* Workspaces */}
             <section>
               <SectionHeading icon={Building2} title="Workspaces" count={MOCK_WORKSPACES.length} />
               <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -243,6 +365,7 @@ export function ProfileViewPage(): React.JSX.Element {
               </div>
             </section>
 
+            {/* Recent activity */}
             <section>
               <SectionHeading title="Recent activity" />
               <div className="mt-3 divide-y overflow-hidden rounded-lg border">
@@ -263,6 +386,68 @@ export function ProfileViewPage(): React.JSX.Element {
           </main>
         </div>
       </div>
+    </div>
+  );
+}
+
+// ── Current Work sub-components ───────────────────────────────────────────────
+
+const PRIORITY_DOT: Record<WorkItem["priority"], string> = {
+  urgent: "bg-red-500",
+  high: "bg-orange-500",
+  medium: "bg-yellow-400",
+  low: "bg-muted-foreground/30",
+};
+
+function WorkGroup({
+  label,
+  accentClass,
+  items,
+  showBlockedBy = false,
+}: {
+  label: string;
+  accentClass: string;
+  items: WorkItem[];
+  showBlockedBy?: boolean;
+}) {
+  return (
+    <div>
+      <div className="flex items-center gap-2 border-b bg-muted/40 px-4 py-2">
+        <div className={cn("h-1.5 w-1.5 rounded-full shrink-0", accentClass)} />
+        <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+          {label}
+        </span>
+        <span className="text-xs text-muted-foreground/60">{items.length}</span>
+      </div>
+      <div className="divide-y">
+        {items.map((item) => (
+          <WorkItemRow key={item.id} item={item} showBlockedBy={showBlockedBy} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function WorkItemRow({ item, showBlockedBy }: { item: WorkItem; showBlockedBy: boolean }) {
+  return (
+    <div className="bg-card px-4 py-3 transition-colors hover:bg-accent/30">
+      <div className="flex items-center gap-3 min-w-0">
+        <div
+          className={cn("h-2 w-2 shrink-0 rounded-full", PRIORITY_DOT[item.priority])}
+          title={item.priority}
+        />
+        <span className="shrink-0 font-mono text-xs text-muted-foreground">{item.key}</span>
+        <span className="flex-1 truncate text-sm font-medium">{item.title}</span>
+        <span className="hidden sm:block shrink-0 text-xs text-muted-foreground">
+          {item.workspace}
+        </span>
+        <span className="shrink-0 whitespace-nowrap text-xs text-muted-foreground/60">
+          {item.since}
+        </span>
+      </div>
+      {showBlockedBy && item.blockedBy && (
+        <p className="mt-1 pl-5 truncate text-xs text-muted-foreground/70">{item.blockedBy}</p>
+      )}
     </div>
   );
 }
