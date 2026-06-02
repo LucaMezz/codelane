@@ -1,19 +1,7 @@
 import { getMyProfile, updateMyProfile } from "@codelane/api-client";
 import { getInitials, type UserProfile } from "@codelane/core";
 import { Avatar, AvatarFallback, AvatarImage, Button, Input, Separator, cn } from "@codelane/ui";
-import {
-  AlertCircle,
-  Building2,
-  CalendarDays,
-  Clock,
-  Eye,
-  Globe,
-  ListTodo,
-  MapPin,
-  Pencil,
-  Timer,
-  UserCheck,
-} from "lucide-react";
+import { Building2, CalendarDays, Clock, Globe, ListTodo, MapPin, Pencil } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -21,7 +9,6 @@ import { useAuthSession } from "#components/auth/auth-session-provider";
 import { ActivityItem, type ActivityEvent } from "#components/profile/activity-item";
 import { RoleBadge } from "#components/profile/role-badge";
 import { SectionHeading } from "#components/profile/section-heading";
-import { StatCard } from "#components/profile/stat-card";
 import { WorkspaceCard, type Workspace } from "#components/profile/workspace-card";
 import { useFrontendRuntimeConfig } from "#config";
 
@@ -234,7 +221,7 @@ export function ProfileViewPage(): React.JSX.Element {
 
   return (
     <div className="flex flex-1 flex-col pb-16 w-full">
-      <div className="mx-auto w-full max-w-5xl px-6 py-8">
+      <div className="mx-auto w-full max-w-7xl px-6 py-8">
         <div className="flex flex-col lg:flex-row items-start gap-8">
           {/* ── Sidebar ── */}
           <aside className="w-full lg:max-w-60 lg:sticky lg:top-12">
@@ -297,38 +284,11 @@ export function ProfileViewPage(): React.JSX.Element {
 
           {/* ── Main content ── */}
           <main className="space-y-8 w-full min-w-0">
-            {/* Stat cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <StatCard
-                icon={UserCheck}
-                value={MOCK_STATS.assigned}
-                label="Assigned to me"
-                iconColor="text-amber-500"
-              />
-              <StatCard
-                icon={Timer}
-                value={MOCK_STATS.inProgress}
-                label="In progress"
-                iconColor="text-blue-500"
-              />
-              <StatCard
-                icon={AlertCircle}
-                value={MOCK_STATS.blocked}
-                label="Blocked"
-                iconColor="text-red-500"
-              />
-              <StatCard
-                icon={Eye}
-                value={MOCK_STATS.needsReview}
-                label="Needs review"
-                iconColor="text-violet-500"
-              />
-            </div>
-
             {/* Current Work — hero section */}
             <section>
               <SectionHeading icon={ListTodo} title="Current Work" count={MOCK_WORK_ITEMS.length} />
-              <div className="mt-3 overflow-hidden rounded-lg border divide-y">
+
+              <div className="mt-3 min-w-0 overflow-hidden rounded-lg border divide-y">
                 {inProgressItems.length > 0 && (
                   <WorkGroup
                     label="In Progress"
@@ -411,7 +371,7 @@ function WorkGroup({
   showBlockedBy?: boolean;
 }) {
   return (
-    <div>
+    <div className="min-w-0">
       <div className="flex items-center gap-2 border-b bg-muted/40 px-4 py-2">
         <div className={cn("h-1.5 w-1.5 rounded-full shrink-0", accentClass)} />
         <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -419,7 +379,7 @@ function WorkGroup({
         </span>
         <span className="text-xs text-muted-foreground/60">{items.length}</span>
       </div>
-      <div className="divide-y">
+      <div className="min-w-0 divide-y">
         {items.map((item) => (
           <WorkItemRow key={item.id} item={item} showBlockedBy={showBlockedBy} />
         ))}
@@ -430,23 +390,32 @@ function WorkGroup({
 
 function WorkItemRow({ item, showBlockedBy }: { item: WorkItem; showBlockedBy: boolean }) {
   return (
-    <div className="bg-card px-4 py-3 transition-colors hover:bg-accent/30">
-      <div className="flex items-center gap-3 min-w-0">
+    <div className="min-w-0 overflow-hidden bg-card px-4 py-3 transition-colors hover:bg-accent/30">
+      <div className="flex min-w-0 items-center gap-3">
         <div
           className={cn("h-2 w-2 shrink-0 rounded-full", PRIORITY_DOT[item.priority])}
           title={item.priority}
         />
-        <span className="shrink-0 font-mono text-xs text-muted-foreground">{item.key}</span>
-        <span className="flex-1 truncate text-sm font-medium">{item.title}</span>
-        <span className="hidden sm:block shrink-0 text-xs text-muted-foreground">
+
+        <span className="min-w-0 shrink-0 truncate font-mono text-xs text-muted-foreground">
+          {item.key}
+        </span>
+
+        <span className="min-w-0 flex-1 truncate text-sm font-medium">{item.title}</span>
+
+        <span className="hidden min-w-0 max-w-32 truncate text-xs text-muted-foreground sm:block">
           {item.workspace}
         </span>
-        <span className="shrink-0 whitespace-nowrap text-xs text-muted-foreground/60">
+
+        <span className="hidden min-w-0 max-w-[5rem] truncate text-xs text-muted-foreground/60 sm:block">
           {item.since}
         </span>
       </div>
+
       {showBlockedBy && item.blockedBy && (
-        <p className="mt-1 pl-5 truncate text-xs text-muted-foreground/70">{item.blockedBy}</p>
+        <p className="mt-1 min-w-0 truncate pl-5 text-xs text-muted-foreground/70">
+          {item.blockedBy}
+        </p>
       )}
     </div>
   );
