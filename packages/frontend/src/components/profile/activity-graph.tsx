@@ -116,9 +116,9 @@ function formatDate(date: Date): string {
 
 // ── Component ────────────────────────────────────────────────────────────────
 
-// Cell: 10px, gap: 1px → step per column = 11px  (~613px total, fits any ≥900px viewport)
+// Cell: 10px, gap: 2px → step per column = 12px
 const CELL = 10;
-const GAP = 1;
+const GAP = 2;
 const STEP = CELL + GAP;
 
 const DAY_LABELS = ["", "Mon", "", "Wed", "", "Fri", ""];
@@ -134,7 +134,7 @@ export function ActivityGraph() {
   const totalCommented = activityData.reduce((s, d) => s + d.commented, 0);
 
   return (
-    <div className="rounded-lg border bg-card p-5">
+    <div className="overflow-hidden rounded-lg border bg-card p-5">
       {/* Header */}
       <div className="mb-4 flex items-baseline justify-between gap-4">
         <div>
@@ -152,7 +152,7 @@ export function ActivityGraph() {
       </div>
 
       {/* Graph */}
-      <div className="flex items-start overflow-hidden">
+      <div className="flex items-start">
         {/* Day-of-week labels */}
         <div
           className="mr-1.5 shrink-0"
