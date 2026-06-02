@@ -1,0 +1,53 @@
+{
+  "name": "@appkit/api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Express API server for AppKit",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/server.js",
+  "imports": {
+    "#api/*": "./src/*.ts"
+  },
+  "scripts": {
+    "dev": "tsx watch --clear-screen=false src/server.ts",
+    "build": "tsup",
+    "typecheck": "tsgo --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "knip": "knip"
+  },
+  "dependencies": {
+    "@appkit/config": "workspace:*",
+    "@appkit/core": "workspace:*",
+    "@auth/drizzle-adapter": "^1.11.2",
+    "@auth/express": "^0.12.2",
+    "argon2": "^0.44.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
+    "pg": "^8.20.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^20",
+    "@types/pg": "^8.20.0",
+    "drizzle-kit": "^0.31.10",
+    "knip": "^6.12.1",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

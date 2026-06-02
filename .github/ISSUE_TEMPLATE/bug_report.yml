@@ -1,0 +1,81 @@
+name: Bug report
+description: Report something that is broken or behaving unexpectedly.
+title: "fix: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve AppKit. Please include enough detail for someone else to reproduce the issue.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What is broken?
+      placeholder: Describe the bug clearly and briefly.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: List the exact steps to reproduce the bug.
+      placeholder: |
+        1. Run ...
+        2. Open ...
+        3. Click ...
+        4. See ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What happened instead?
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - apps/api
+        - apps/cli
+        - apps/desktop
+        - apps/web
+        - packages/api-client
+        - packages/config
+        - packages/core
+        - packages/frontend
+        - packages/ui
+        - docs
+        - tooling/CI
+        - unknown
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs, screenshots, or terminal output
+      description: Paste relevant output. Remove secrets before submitting.
+      render: shell
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Node version, pnpm version, browser, or other useful runtime details.
+      placeholder: "Windows 11, Node 22.x, pnpm 10.x"
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submit checklist
+      options:
+        - label: I searched existing issues and pull requests.
+        - label: I removed secrets, tokens, passwords, and private data from logs.
+          required: true

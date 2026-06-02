@@ -1,0 +1,44 @@
+{
+  "name": "@appkit/frontend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared frontend application routes, pages, and flows for web and desktop apps",
+  "license": "Apache-2.0",
+  "type": "module",
+  "sideEffects": false,
+  "imports": {
+    "#components/*": "./src/components/*.tsx",
+    "#pages/*": "./src/pages/*.tsx",
+    "#routes/*": "./src/routes/*.tsx",
+    "#lib/*": "./src/lib/*.ts",
+    "#hooks/*": "./src/hooks/*.ts",
+    "#utils/*": "./src/utils/*.ts"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./globals.css": "./src/styles/globals.css"
+  },
+  "scripts": {
+    "typecheck": "tsgo --noEmit",
+    "knip": "knip"
+  },
+  "dependencies": {
+    "@appkit/api-client": "workspace:*",
+    "@appkit/core": "workspace:*",
+    "@appkit/ui": "workspace:*",
+    "@hookform/resolvers": "^5.2.2",
+    "lucide-react": "^1.14.0",
+    "react-hook-form": "^7.75.0",
+    "react-router-dom": "^7.15.0",
+    "recharts": "3.8.0"
+  },
+  "devDependencies": {
+    "@typescript/native-preview": "7.0.0-dev.20260507.1",
+    "knip": "^6.12.1",
+    "typescript": "^6.0.3"
+  },
+  "peerDependencies": {
+    "react": ">=18.3.1",
+    "react-dom": ">=18.3.1"
+  }
+}

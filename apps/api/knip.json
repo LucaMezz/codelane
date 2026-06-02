@@ -1,0 +1,6 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignoreDependencies": [],
+  "ignoreExportsUsedInFile": true,
+  "ignoreBinaries": ["tsgo"]
+}

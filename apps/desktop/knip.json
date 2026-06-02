@@ -1,0 +1,37 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": [
+    "main/index.ts",
+    "preload/index.ts",
+    "renderer/src/renderer.tsx",
+    "forge.config.ts",
+    "vite.main.config.ts",
+    "vite.preload.config.ts",
+    "vite.renderer.config.ts"
+  ],
+  "ignore": [
+    "forge.env.d.ts",
+    "global.d.ts",
+    "reset.d.ts",
+    "renderer/src/types/**/*.d.ts",
+    "renderer/src/utils/get-error-message.ts",
+    "renderer/postcss.config.js",
+    "renderer/src/vite-env.d.ts"
+  ],
+  "ignoreDependencies": [
+    "@electron-forge/plugin-auto-unpack-natives",
+    "@total-typescript/ts-reset",
+    "@tailwindcss/typography",
+    "@tailwindcss/postcss",
+    "tailwindcss",
+    "tailwind-merge",
+    "tw-animate-css",
+    "postcss",
+    "clsx",
+    "ts-node",
+    "node-abi",
+    "@testing-library/react"
+  ],
+  "ignoreBinaries": ["tsgo"],
+  "ignoreExportsUsedInFile": true
+}

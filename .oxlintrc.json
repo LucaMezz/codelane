@@ -1,0 +1,31 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["eslint", "typescript", "unicorn", "oxc", "import"],
+  "rules": {
+    "eqeqeq": ["error", "always"],
+    "no-console": [
+      "error",
+      {
+        "allow": ["info", "warn", "error"]
+      }
+    ],
+    "no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "typescript/no-namespace": "off",
+    "import/no-cycle": "error",
+    "import/no-default-export": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["*.config.ts", "vite.*.ts", "*.stories.tsx"],
+      "rules": {
+        "import/no-default-export": "off"
+      }
+    }
+  ]
+}

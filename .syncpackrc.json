@@ -1,0 +1,32 @@
+{
+  "versionGroups": [
+    {
+      "label": "Allow broad React peer dependency ranges",
+      "dependencies": ["react", "react-dom"],
+      "dependencyTypes": ["peer"],
+      "isIgnored": true
+    },
+    {
+      "label": "Use workspace protocol for local packages",
+      "dependencies": ["$LOCAL"],
+      "dependencyTypes": ["prod", "dev"],
+      "pinVersion": "workspace:*"
+    }
+  ],
+  "sortFirst": [
+    "name",
+    "version",
+    "private",
+    "description",
+    "type",
+    "main",
+    "module",
+    "types",
+    "exports",
+    "scripts",
+    "dependencies",
+    "devDependencies",
+    "peerDependencies"
+  ],
+  "sortAz": ["scripts", "dependencies", "devDependencies", "peerDependencies"]
+}

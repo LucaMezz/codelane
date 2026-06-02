@@ -1,0 +1,81 @@
+{
+  "name": "appkit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A scalable full-stack monorepo starter kit for building multi-app systems with shared UI, backend APIs, and cross-platform frontends.",
+  "license": "Apache-2.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:api": "turbo run dev --filter=@appkit/api",
+    "dev:web": "turbo run dev --filter=@appkit/web",
+    "dev:desktop": "pnpm --filter @appkit/desktop dev",
+    "dev:cli": "pnpm --filter @appkit/cli dev",
+    "dev:ui": "pnpm --filter @appkit/ui storybook",
+    "dev:packages": "turbo watch build --filter=@appkit/core --filter=@appkit/api-client --filter=@appkit/ui",
+    "build": "turbo run build",
+    "build:ui": "pnpm --filter @appkit/ui storybook:build",
+    "package": "turbo run package",
+    "check": "pnpm run format && pnpm run lint && pnpm run lint:no-hardcoded-local-urls && pnpm run typecheck",
+    "format": "oxfmt",
+    "lint": "oxlint --type-aware --type-check --ignore-pattern '**/*.config.ts'",
+    "lint:no-hardcoded-local-urls": "node scripts/check-no-hardcoded-local-urls.mjs",
+    "lint:docker": "docker compose config --quiet",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:run": "turbo run test:run",
+    "knip": "turbo run knip --concurrency=2",
+    "knip:desktop": "pnpm --filter @appkit/desktop knip",
+    "deps:lint": "syncpack lint",
+    "deps:fix": "syncpack fix",
+    "deps:format": "syncpack format",
+    "deps:arch": "depcruise apps packages --config .dependency-cruiser.cjs",
+    "deps:arch:summary": "depcruise apps packages --config .dependency-cruiser.cjs --output-type err-long",
+    "db:generate": "pnpm --filter @appkit/api db:generate",
+    "db:migrate": "pnpm --filter @appkit/api db:migrate",
+    "db:studio": "pnpm --filter @appkit/api db:studio",
+    "db:up": "docker compose up -d postgres",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:build": "docker compose build",
+    "docker:logs:api": "docker compose logs -f api",
+    "api:docker": "docker compose up api",
+    "commit": "cross-env NODE_OPTIONS=\"--experimental-transform-types --disable-warning=ExperimentalWarning\" czg",
+    "commit:retry": "cross-env NODE_OPTIONS=\"--experimental-transform-types --disable-warning=ExperimentalWarning\" czg --retry",
+    "commit:amend": "git commit --amend",
+    "lint:spelling": "cspell .",
+    "verify": "pnpm verify:static && pnpm verify:runtime",
+    "verify:static": "concurrently --kill-others-on-fail -c auto -n deps:lint,deps:arch,spelling,check,knip \"pnpm deps:lint\" \"pnpm deps:arch\" \"pnpm lint:spelling\" \"pnpm check\" \"pnpm knip\"",
+    "verify:runtime": "concurrently --kill-others-on-fail -c auto -n test,build \"pnpm test:run\" \"pnpm build\""
+  },
+  "dependencies": {
+    "syncpack": "^15.0.0",
+    "tslib": "^2.8.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.5.3",
+    "@commitlint/config-conventional": "^20.5.3",
+    "@typescript/native-preview": "7.0.0-dev.20260507.1",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "cspell": "^10.0.0",
+    "cz-git": "^1.13.0",
+    "czg": "^1.13.0",
+    "dependency-cruiser": "^17.4.0",
+    "lefthook": "^2.1.4",
+    "oxfmt": "^0.48.0",
+    "oxlint": "^1.57.0",
+    "oxlint-tsgolint": "^0.22.1",
+    "turbo": "^2.9.10",
+    "typescript": "^6.0.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-git"
+    }
+  },
+  "packageManager": "pnpm@10.33.4"
+}

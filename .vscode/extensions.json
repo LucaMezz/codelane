@@ -1,0 +1,21 @@
+{
+  "recommendations": [
+    "oxc.oxc-vscode",
+    "streetsidesoftware.code-spell-checker",
+    "github.vscode-github-actions",
+    "github.vscode-pull-request-github",
+    "ms-azuretools.vscode-docker",
+    "redhat.vscode-yaml",
+    "tamasfe.even-better-toml",
+    "bradlc.vscode-tailwindcss",
+    "csstools.postcss",
+    "vitest.explorer",
+    "ms-playwright.playwright",
+    "ms-vscode.vscode-typescript-next",
+    "yoavbls.pretty-ts-errors",
+    "usernamehw.errorlens",
+    "christian-kohler.path-intellisense",
+    "mikestead.dotenv",
+    "editorconfig.editorconfig"
+  ]
+}

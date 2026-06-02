@@ -1,0 +1,7 @@
+AppKit
+Copyright 2026 Luca Mezzavilla
+
+This project began as a clone of https://github.com/kimizuy/electron-boilerplate
+and has since been substantially reworked into a cross-platform TypeScript
+monorepo starter kit with a shared backend, web app, desktop app, and shared
+internal packages.

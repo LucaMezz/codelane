@@ -1,0 +1,215 @@
+name: CI
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to build"
+        required: false
+        type: string
+        default: "main"
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
+
+      - name: Enforce pnpm lockfile only
+        shell: bash
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "❌ package-lock.json detected. This repo uses pnpm only."
+            exit 1
+          fi
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint dependency versions
+        run: pnpm deps:lint
+
+      - name: Lint dependency architecture
+        run: pnpm deps:arch
+
+      - name: Build workspace packages
+        run: pnpm build
+
+      - name: Run Knip
+        run: pnpm knip
+
+      - name: Run checks
+        run: pnpm check
+
+      - name: Run tests
+        run: pnpm test:run
+
+  build-storybook:
+    name: Build Storybook
+    needs: validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
+
+      - name: Enforce pnpm lockfile only
+        shell: bash
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "❌ package-lock.json detected. This repo uses pnpm only."
+            exit 1
+          fi
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Storybook
+        run: pnpm build:ui
+
+      - name: Upload Storybook build
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-build
+          path: packages/ui/storybook-static
+          retention-days: 5
+
+  build:
+    name: Build apps and packages
+    needs: validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
+
+      - name: Enforce pnpm lockfile only
+        shell: bash
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "❌ package-lock.json detected. This repo uses pnpm only."
+            exit 1
+          fi
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build monorepo
+        run: pnpm build
+
+      - name: Upload web build
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: apps/web/.next
+          retention-days: 5
+
+  package-desktop:
+    name: Package desktop app
+    needs: validate
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch || github.ref }}
+
+      - name: Enforce pnpm lockfile only
+        shell: bash
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "❌ package-lock.json detected. This repo uses pnpm only."
+            exit 1
+          fi
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build desktop dependencies
+        run: pnpm exec turbo run build --filter='@appkit/desktop^...'
+
+      - name: Package desktop app
+        run: pnpm --filter @appkit/desktop make
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload desktop artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-${{ matrix.os }}
+          path: |
+            apps/desktop/out/make/**
+          retention-days: 5

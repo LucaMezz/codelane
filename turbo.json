@@ -1,0 +1,38 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^typecheck"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "out/**", ".vite/**", "build/**"]
+    },
+    "typecheck": {
+      "dependsOn": ["^typecheck"],
+      "outputs": []
+    },
+    "lint": {
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^typecheck"],
+      "outputs": ["coverage/**"]
+    },
+    "test:run": {
+      "dependsOn": ["^typecheck"],
+      "outputs": ["coverage/**"]
+    },
+    "knip": {
+      "outputs": []
+    },
+    "package": {
+      "dependsOn": ["build"],
+      "outputs": ["out/**", "dist/**", "release/**", "make/**"]
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}

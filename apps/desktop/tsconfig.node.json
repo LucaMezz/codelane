@@ -1,0 +1,7 @@
+// for forge.config.ts
+{
+  "compilerOptions": {
+    "skipLibCheck": true
+  },
+  "include": ["forge.config.ts"]
+}

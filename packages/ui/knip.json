@@ -1,0 +1,6 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignore": ["tsup.config.ts", "vitest.shims.d.ts", ".storybook/vite-env.d.ts"],
+  "ignoreDependencies": [],
+  "ignoreExportsUsedInFile": true
+}

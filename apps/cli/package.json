@@ -1,0 +1,46 @@
+{
+  "name": "@appkit/cli",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Command-line client for interacting with the AppKit backend API.",
+  "license": "Apache-2.0",
+  "bin": {
+    "appkit": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "imports": {
+    "#commands/*": "./src/commands/*.ts",
+    "#lib/*": "./src/lib/*.ts"
+  },
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsup",
+    "typecheck": "tsgo --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "knip": "knip",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@appkit/api-client": "workspace:*",
+    "@appkit/config": "workspace:*",
+    "@appkit/core": "workspace:*",
+    "commander": "^14.0.3",
+    "conf": "^15.1.0",
+    "ora": "^9.4.0",
+    "picocolors": "^1.1.1",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/prompts": "^2.4.9",
+    "knip": "^6.12.1",
+    "rimraf": "^6.1.3",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "vitest": "^4.1.6"
+  }
+}

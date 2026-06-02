@@ -1,0 +1,47 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+
+# Node
+node_modules/
+jspm_packages/
+
+# Env files
+.env*
+!.env.example
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage
+coverage
+*.lcov
+.nyc_output
+
+# Misc caches
+.cache
+.eslintcache
+.node_repl_history
+
+# Packaged output (shared default)
+out/
+dist/
+build/Release
+
+# Database (if shared or local dev artifact)
+database/
+.temp
+
+# pnpm local store
+.pnpm-store/
+
+# Turborepo
+.turbo
+*storybook.log
+storybook-static

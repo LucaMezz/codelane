@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "area": "Web app",
+    "owner": "apps/web",
+    "purpose": "Browser host for shared frontend routes and UI.",
+    "status": "Ready",
+    "boundary": "Consumes packages only"
+  },
+  {
+    "id": 2,
+    "area": "Desktop app",
+    "owner": "apps/desktop",
+    "purpose": "Electron shell with renderer, preload, main process, and IPC contracts.",
+    "status": "Ready",
+    "boundary": "Desktop-specific code stays local"
+  },
+  {
+    "id": 3,
+    "area": "API server",
+    "owner": "apps/api",
+    "purpose": "Shared backend for sessions, users, CLI auth, and health routes.",
+    "status": "Scaffolded",
+    "boundary": "No frontend or UI imports"
+  },
+  {
+    "id": 4,
+    "area": "CLI client",
+    "owner": "apps/cli",
+    "purpose": "Terminal workflow with browser-based authorization and local token storage.",
+    "status": "Scaffolded",
+    "boundary": "Uses API client, not UI"
+  },
+  {
+    "id": 5,
+    "area": "Shared frontend",
+    "owner": "packages/frontend",
+    "purpose": "Reusable routes, auth guards, pages, and frontend flows.",
+    "status": "Ready",
+    "boundary": "No deployable app imports"
+  },
+  {
+    "id": 6,
+    "area": "UI library",
+    "owner": "packages/ui",
+    "purpose": "Reusable shadcn-based components, theme support, and app primitives.",
+    "status": "Ready",
+    "boundary": "No app or server imports"
+  },
+  {
+    "id": 7,
+    "area": "Quality gates",
+    "owner": "root tooling",
+    "purpose": "Formatting, linting, typecheck, tests, builds, dependency linting, and architecture checks.",
+    "status": "Scaffolded",
+    "boundary": "Runs across workspace"
+  },
+  {
+    "id": 8,
+    "area": "Dashboard content",
+    "owner": "template sample",
+    "purpose": "Placeholder screen showing how an AppKit product surface can be composed.",
+    "status": "Placeholder",
+    "boundary": "Not wired to product data"
+  }
+]

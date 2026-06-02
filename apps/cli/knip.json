@@ -1,0 +1,15 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "ignoreDependencies": [
+    "@appkit/api-client",
+    "@appkit/core",
+    "commander",
+    "conf",
+    "ora",
+    "picocolors",
+    "prompts",
+    "@types/prompts"
+  ],
+  "ignoreExportsUsedInFile": true,
+  "ignoreBinaries": ["tsgo"]
+}

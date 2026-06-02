@@ -1,0 +1,35 @@
+{
+  "name": "@appkit/web",
+  "version": "0.1.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "imports": {
+    "#app/*": "./app/*.tsx"
+  },
+  "scripts": {
+    "dev": "vite --config ./vite.config.ts --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build --config ./vite.config.ts",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "knip": "knip"
+  },
+  "dependencies": {
+    "@appkit/config": "workspace:*",
+    "@appkit/frontend": "workspace:*",
+    "@appkit/ui": "workspace:*",
+    "@vitejs/plugin-react": "5.2.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "react-router-dom": "^7.15.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "knip": "^6.12.1",
+    "tailwindcss": "^4",
+    "typescript": "^6.0.3",
+    "vite": "^7.3.3"
+  }
+}

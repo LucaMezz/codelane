@@ -1,0 +1,11 @@
+{
+  "extends": "@tsconfig/vite-react/tsconfig.json", // https://www.npmjs.com/package/@tsconfig/vite-react
+  "compilerOptions": {
+    "types": ["vitest/importMeta", "vitest/globals"],
+    "verbatimModuleSyntax": false,
+    "resolvePackageJsonImports": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true
+  },
+  "exclude": ["forge.config.ts"]
+}

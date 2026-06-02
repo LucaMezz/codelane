@@ -1,0 +1,10 @@
+# Electron build output
+out/
+dist/
+release/
+
+# Vite Electron caches
+.vite/
+
+# IPC build artifacts
+*.asar

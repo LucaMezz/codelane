@@ -1,0 +1,35 @@
+commit-msg:
+  commands:
+    commitlint:
+      run: pnpm exec commitlint --edit {1}
+
+pre-commit:
+  parallel: true
+  commands:
+    check:
+      glob: "*.{ts,tsx,js,jsx,json,css,md,mdx}"
+      run: pnpm run check
+      stage_fixed: true
+
+    knip:
+      glob: "*.{ts,tsx,js,jsx}"
+      run: pnpm run knip
+
+    syncpack:
+      glob: "{**/package.json,pnpm-lock.yaml,pnpm-workspace.yaml,.syncpackrc,.syncpackrc.json}"
+      run: pnpm run deps:lint
+
+pre-push:
+  parallel: true
+  commands:
+    test:
+      glob: "*.{ts,tsx}"
+      run: pnpm run test:run
+
+    package:
+      glob: "*.{ts,tsx,css,md,mdx}"
+      run: pnpm run package
+
+    similarity:
+      glob: "*.{ts,tsx}"
+      run: similarity-ts ./src --threshold 0.9 --no-types --fail-on-duplicates && similarity-ts ./src --types-only --threshold 0.97 --fail-on-duplicates

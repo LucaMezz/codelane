@@ -1,0 +1,24 @@
+# .dockerignore
+
+node_modules
+**/node_modules
+
+dist
+**/dist
+
+.next
+**/.next
+
+.vite
+**/.vite
+
+.git
+.gitignore
+
+.env
+**/.env
+
+coverage
+**/coverage
+
+.DS_Store

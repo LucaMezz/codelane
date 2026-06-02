@@ -1,0 +1,39 @@
+name: Documentation improvement
+description: Report missing, confusing, stale, or incorrect documentation.
+title: "docs: "
+labels: ["documentation"]
+body:
+  - type: textarea
+    id: location
+    attributes:
+      label: Documentation location
+      description: Which file, page, or section is affected?
+      placeholder: "README.md, apps/web/README.md, docs/cli-auth.md, etc."
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What should change?
+      description: Explain what is unclear, missing, outdated, or incorrect.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested wording or structure
+      description: Optional, but helpful.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - getting started
+        - architecture
+        - app/package README
+        - auth/security
+        - CLI
+        - contributing
+        - CI/tooling
+        - unknown

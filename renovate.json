@@ -1,0 +1,84 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":semanticCommitTypeAll(chore)"
+  ],
+  "baseBranches": ["main"],
+  "labels": ["dependencies"],
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 5,
+  "rangeStrategy": "bump",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on monday"]
+  },
+  "packageRules": [
+    {
+      "description": "Require manual approval for major updates",
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Group repo quality tooling updates",
+      "matchPackageNames": [
+        "turbo",
+        "lefthook",
+        "knip",
+        "syncpack",
+        "dependency-cruiser",
+        "oxlint",
+        "oxfmt",
+        "czg",
+        "cz-git",
+        "@commitlint/cli",
+        "@commitlint/config-conventional"
+      ],
+      "groupName": "repo tooling"
+    },
+    {
+      "description": "Group TypeScript tooling updates",
+      "matchPackageNames": ["typescript", "@typescript/native-preview", "tsup", "tsx"],
+      "groupName": "typescript tooling"
+    },
+    {
+      "description": "Group React ecosystem updates",
+      "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom", "next"],
+      "groupName": "react ecosystem"
+    },
+    {
+      "description": "Group Electron ecosystem updates",
+      "matchPackagePatterns": ["^electron$", "^@electron-forge/", "^@electron/"],
+      "groupName": "electron ecosystem"
+    },
+    {
+      "description": "Group Vite ecosystem updates",
+      "matchPackagePatterns": ["^vite$", "^@vitejs/", "^vite-"],
+      "groupName": "vite ecosystem"
+    },
+    {
+      "description": "Group Tailwind ecosystem updates",
+      "matchPackageNames": [
+        "tailwindcss",
+        "@tailwindcss/postcss",
+        "class-variance-authority",
+        "clsx",
+        "tailwind-merge",
+        "tw-animate-css"
+      ],
+      "groupName": "tailwind ecosystem"
+    },
+    {
+      "description": "Group GitHub Actions updates",
+      "matchManagers": ["github-actions"],
+      "groupName": "github actions"
+    },
+    {
+      "description": "Group Docker updates",
+      "matchManagers": ["dockerfile", "docker-compose"],
+      "groupName": "docker images"
+    }
+  ]
+}

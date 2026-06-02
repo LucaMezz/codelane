@@ -1,0 +1,291 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🚀 Start API Dev Server",
+      "type": "shell",
+      "command": "pnpm dev:api",
+      "group": "build",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "🌐 Start Web Dev Server",
+      "type": "shell",
+      "command": "pnpm dev:web",
+      "group": "build",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "🖥️ Start Desktop Dev App",
+      "type": "shell",
+      "command": "pnpm dev:desktop",
+      "group": "build",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "⌨️ Run CLI Dev Command",
+      "type": "shell",
+      "command": "pnpm dev:cli",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "🎨 Start UI Storybook",
+      "type": "shell",
+      "command": "pnpm dev:ui",
+      "group": "build",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "⚡ Start API + Web",
+      "dependsOn": ["🚀 Start API Dev Server", "🌐 Start Web Dev Server"],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    },
+    {
+      "label": "🧩 Start All Apps",
+      "dependsOn": [
+        "🚀 Start API Dev Server",
+        "🌐 Start Web Dev Server",
+        "🖥️ Start Desktop Dev App"
+      ],
+      "dependsOrder": "parallel",
+      "problemMatcher": []
+    },
+    {
+      "label": "🏗️ Build Workspace",
+      "type": "shell",
+      "command": "pnpm build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "📚 Build UI Storybook",
+      "type": "shell",
+      "command": "pnpm build:ui",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "📦 Package Workspace",
+      "type": "shell",
+      "command": "pnpm package",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "✅ Run Full Check",
+      "type": "shell",
+      "command": "pnpm check",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🧪 Verify Workspace",
+      "type": "shell",
+      "command": "pnpm verify",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🧪 Verify Static Checks",
+      "type": "shell",
+      "command": "pnpm verify:static",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🧪 Verify Runtime Checks",
+      "type": "shell",
+      "command": "pnpm verify:runtime",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "✨ Format Workspace",
+      "type": "shell",
+      "command": "pnpm format",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🧹 Lint Workspace",
+      "type": "shell",
+      "command": "pnpm lint",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🔎 Typecheck Workspace",
+      "type": "shell",
+      "command": "pnpm typecheck",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🔤 Spellcheck Workspace",
+      "type": "shell",
+      "command": "pnpm lint:spelling",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🔗 Check Hardcoded Local URLs",
+      "type": "shell",
+      "command": "pnpm lint:no-hardcoded-local-urls",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🐳 Validate Docker Compose Config",
+      "type": "shell",
+      "command": "pnpm lint:docker",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🧪 Run Tests in Watch Mode",
+      "type": "shell",
+      "command": "pnpm test",
+      "group": "test",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "🧪 Run Tests Once",
+      "type": "shell",
+      "command": "pnpm test:run",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🕵️ Find Unused Code with Knip",
+      "type": "shell",
+      "command": "pnpm knip",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🖥️ Find Unused Desktop Code with Knip",
+      "type": "shell",
+      "command": "pnpm knip:desktop",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "📌 Check Dependency Versions",
+      "type": "shell",
+      "command": "pnpm deps:lint",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🔧 Fix Dependency Versions",
+      "type": "shell",
+      "command": "pnpm deps:fix",
+      "problemMatcher": []
+    },
+    {
+      "label": "📚 Format Package Files",
+      "type": "shell",
+      "command": "pnpm deps:format",
+      "problemMatcher": []
+    },
+    {
+      "label": "🏛️ Check Architecture Boundaries",
+      "type": "shell",
+      "command": "pnpm deps:arch",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🏛️ Check Architecture Boundaries Summary",
+      "type": "shell",
+      "command": "pnpm deps:arch:summary",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "🐘 Start Postgres Database",
+      "type": "shell",
+      "command": "pnpm db:up",
+      "problemMatcher": []
+    },
+    {
+      "label": "🧬 Generate Drizzle Migration",
+      "type": "shell",
+      "command": "pnpm db:generate",
+      "problemMatcher": []
+    },
+    {
+      "label": "📦 Apply Database Migrations",
+      "type": "shell",
+      "command": "pnpm db:migrate",
+      "problemMatcher": []
+    },
+    {
+      "label": "🧭 Open Drizzle Studio",
+      "type": "shell",
+      "command": "pnpm db:studio",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "🐳 Start Docker Services",
+      "type": "shell",
+      "command": "pnpm docker:up",
+      "problemMatcher": []
+    },
+    {
+      "label": "🛑 Stop Docker Services",
+      "type": "shell",
+      "command": "pnpm docker:down",
+      "problemMatcher": []
+    },
+    {
+      "label": "🐳 Build Docker Images",
+      "type": "shell",
+      "command": "pnpm docker:build",
+      "problemMatcher": []
+    },
+    {
+      "label": "📜 Follow API Docker Logs",
+      "type": "shell",
+      "command": "pnpm docker:logs:api",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "🚢 Run API in Docker",
+      "type": "shell",
+      "command": "pnpm api:docker",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "💬 Create Conventional Commit",
+      "type": "shell",
+      "command": "pnpm commit",
+      "problemMatcher": []
+    },
+    {
+      "label": "🔁 Retry Conventional Commit",
+      "type": "shell",
+      "command": "pnpm commit:retry",
+      "problemMatcher": []
+    },
+    {
+      "label": "✏️ Amend Last Commit",
+      "type": "shell",
+      "command": "pnpm commit:amend",
+      "problemMatcher": []
+    }
+  ]
+}
