@@ -283,7 +283,7 @@ export function ProfileViewPage(): React.JSX.Element {
           </aside>
 
           {/* ── Main content ── */}
-          <main className="space-y-8 w-full min-w-0">
+          <main className="space-y-8 w-full min-w-0 overflow-x-hidden">
             {/* Current Work — hero section */}
             <section>
               <SectionHeading icon={ListTodo} title="Current Work" count={MOCK_WORK_ITEMS.length} />
@@ -403,11 +403,11 @@ function WorkItemRow({ item, showBlockedBy }: { item: WorkItem; showBlockedBy: b
 
         <span className="min-w-0 flex-1 truncate text-sm font-medium">{item.title}</span>
 
-        <span className="hidden min-w-0 max-w-32 truncate text-xs text-muted-foreground sm:block">
+        <span className="hidden min-w-0 max-w-32 truncate text-xs text-muted-foreground lg:block">
           {item.workspace}
         </span>
 
-        <span className="hidden min-w-0 max-w-[5rem] truncate text-xs text-muted-foreground/60 sm:block">
+        <span className="hidden min-w-0 max-w-[5rem] truncate text-xs text-muted-foreground/60 lg:block">
           {item.since}
         </span>
       </div>
