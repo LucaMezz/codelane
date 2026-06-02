@@ -227,6 +227,22 @@ When building the issue tracking domain, keep these principles:
 - Use `react-hook-form` (already a dependency) for all form state
 - Prefer derived state over redundant state; don't mirror server state unnecessarily in component state
 
+### Import style in `packages/frontend`
+
+Always use the `#`-prefixed package imports defined in `package.json`'s `"imports"` map instead of `../` relative chains when importing across directories:
+
+```ts
+// ✓ prefer
+import { useAuthSession } from "#components/auth/auth-session-provider";
+import { useFrontendRuntimeConfig } from "#config";
+
+// ✗ avoid
+import { useAuthSession } from "../../../components/auth/auth-session-provider";
+import { useFrontendRuntimeConfig } from "../../../config";
+```
+
+Same-directory relative imports (`./sibling`) are still fine. When adding a new top-level source file that will be imported by many pages, add a corresponding `#`-alias to `packages/frontend/package.json`'s `"imports"` field.
+
 ### API conventions
 
 - Use the module pattern: `<domain>.routes.ts` → `<domain>.controller.ts` → `<domain>.service.ts`

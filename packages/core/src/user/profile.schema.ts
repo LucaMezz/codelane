@@ -17,6 +17,7 @@ export const updateProfileSchema = z.object({
     .optional()
     .or(z.literal("")),
   timezone: z.string().trim().max(100, "Timezone must be at most 100 characters.").optional(),
+  status: z.string().trim().max(100, "Status must be at most 100 characters.").optional(),
 });
 
 export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
@@ -47,4 +48,5 @@ export type UserProfile = {
   location: string | null;
   website: string | null;
   timezone: string | null;
+  status: string | null;
 };

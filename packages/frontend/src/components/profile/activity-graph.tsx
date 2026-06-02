@@ -116,9 +116,9 @@ function formatDate(date: Date): string {
 
 // ── Component ────────────────────────────────────────────────────────────────
 
-// Cell: 10px, gap: 2px → step per column = 12px
+// Cell: 10px, gap: 1px → step per column = 11px  (~613px total, fits any ≥900px viewport)
 const CELL = 10;
-const GAP = 2;
+const GAP = 1;
 const STEP = CELL + GAP;
 
 const DAY_LABELS = ["", "Mon", "", "Wed", "", "Fri", ""];
@@ -152,61 +152,59 @@ export function ActivityGraph() {
       </div>
 
       {/* Graph */}
-      <div className="overflow-x-auto">
-        <div className="flex items-start" style={{ minWidth: "max-content" }}>
-          {/* Day-of-week labels */}
-          <div
-            className="mr-1.5 shrink-0"
-            style={{ marginTop: STEP + GAP, display: "flex", flexDirection: "column", gap: GAP }}
-          >
-            {DAY_LABELS.map((label, i) => (
-              <div
-                key={i}
-                className="flex items-center justify-end text-right text-[10px] leading-none text-muted-foreground"
-                style={{ width: 24, height: CELL }}
+      <div className="flex items-start overflow-hidden">
+        {/* Day-of-week labels */}
+        <div
+          className="mr-1.5 shrink-0"
+          style={{ marginTop: STEP + GAP, display: "flex", flexDirection: "column", gap: GAP }}
+        >
+          {DAY_LABELS.map((label, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-end text-right text-[10px] leading-none text-muted-foreground"
+              style={{ width: 24, height: CELL }}
+            >
+              {label}
+            </div>
+          ))}
+        </div>
+
+        {/* Weeks grid */}
+        <div className="relative">
+          {/* Month labels */}
+          <div className="relative" style={{ height: STEP + GAP }}>
+            {monthLabels.map(({ label, col }) => (
+              <span
+                key={label + col}
+                className="absolute text-[10px] leading-none text-muted-foreground"
+                style={{ left: col * STEP, top: 0 }}
               >
                 {label}
-              </div>
+              </span>
             ))}
           </div>
 
-          {/* Weeks grid */}
-          <div className="relative">
-            {/* Month labels */}
-            <div className="relative" style={{ height: STEP + GAP }}>
-              {monthLabels.map(({ label, col }) => (
-                <span
-                  key={label + col}
-                  className="absolute text-[10px] leading-none text-muted-foreground"
-                  style={{ left: col * STEP, top: 0 }}
-                >
-                  {label}
-                </span>
-              ))}
-            </div>
-
-            {/* Cell grid */}
-            <div style={{ display: "flex", gap: GAP }}>
-              {weeks.map((week, wi) => (
-                <div key={wi} style={{ display: "flex", flexDirection: "column", gap: GAP }}>
-                  {week.map((day, di) =>
-                    day === null ? (
-                      <div key={di} style={{ width: CELL, height: CELL }} />
-                    ) : (
-                      <div
-                        key={di}
-                        className={cn(
-                          "rounded-[2px] transition-opacity hover:opacity-80",
-                          LEVEL_CLASSES[getLevel(day.total)],
-                        )}
-                        style={{ width: CELL, height: CELL }}
-                        title={`${formatDate(day.date)} — ${day.total} contribution${day.total !== 1 ? "s" : ""}`}
-                      />
-                    ),
-                  )}
-                </div>
-              ))}
-            </div>
+          {/* Cell grid */}
+          <div style={{ display: "flex", gap: GAP }}>
+            {weeks.map((week, wi) => (
+              <div key={wi} style={{ display: "flex", flexDirection: "column", gap: GAP }}>
+                {week.map((day, di) =>
+                  day === null ? (
+                    <div key={di} style={{ width: CELL, height: CELL }} />
+                  ) : (
+                    <div
+                      key={di}
+                      className={cn(
+                        "rounded-[2px] transition-opacity hover:opacity-80",
+                        LEVEL_CLASSES[getLevel(day.total)],
+                      )}
+                      style={{ width: CELL, height: CELL }}
+                      title={`${formatDate(day.date)} — ${day.total} contribution${day.total !== 1 ? "s" : ""}`}
+                    />
+                  ),
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>

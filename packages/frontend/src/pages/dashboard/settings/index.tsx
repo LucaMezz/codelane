@@ -41,8 +41,8 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
 
-import { useAuthSession } from "../../../components/auth/auth-session-provider";
-import { useFrontendRuntimeConfig } from "../../../config";
+import { useAuthSession } from "#components/auth/auth-session-provider";
+import { useFrontendRuntimeConfig } from "#config";
 
 // ── Section nav ──────────────────────────────────────────────────────────────
 
@@ -213,6 +213,7 @@ function ProfileSection({
       location: profile?.location ?? "",
       website: profile?.website ?? "",
       timezone: profile?.timezone ?? "",
+      status: profile?.status ?? "",
     },
   });
 
@@ -339,6 +340,28 @@ function ProfileSection({
                     disabled={loading}
                     placeholder="e.g. Europe/London"
                     className="max-w-sm"
+                  />
+                </SettingsField>
+              )}
+            />
+
+            <Controller
+              control={form.control}
+              name="status"
+              render={({ field, fieldState }) => (
+                <SettingsField
+                  label="Status"
+                  htmlFor="s-status"
+                  hint="A short status visible to your team members on your profile."
+                  error={fieldState.error?.message}
+                >
+                  <Input
+                    {...field}
+                    id="s-status"
+                    disabled={loading}
+                    placeholder="e.g. Working on auth refactor"
+                    className="max-w-sm"
+                    maxLength={100}
                   />
                 </SettingsField>
               )}

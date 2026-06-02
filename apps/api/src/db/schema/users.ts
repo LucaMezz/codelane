@@ -13,4 +13,5 @@ export const users = pgTable("user", {
   location: text("location"),
   website: text("website"),
   timezone: text("timezone"),
+  status: text("status"),
 });

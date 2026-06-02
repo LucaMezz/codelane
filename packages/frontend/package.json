@@ -12,7 +12,8 @@
     "#routes/*": "./src/routes/*.tsx",
     "#lib/*": "./src/lib/*.ts",
     "#hooks/*": "./src/hooks/*.ts",
-    "#utils/*": "./src/utils/*.ts"
+    "#utils/*": "./src/utils/*.ts",
+    "#config": "./src/config.tsx"
   },
   "exports": {
     ".": "./src/index.ts",

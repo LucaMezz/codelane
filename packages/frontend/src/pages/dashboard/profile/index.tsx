@@ -1,6 +1,6 @@
-import { getMyProfile } from "@codelane/api-client";
+import { getMyProfile, updateMyProfile } from "@codelane/api-client";
 import { getInitials, type UserProfile } from "@codelane/core";
-import { Avatar, AvatarFallback, AvatarImage, Button, Separator } from "@codelane/ui";
+import { Avatar, AvatarFallback, AvatarImage, Button, Input, Separator } from "@codelane/ui";
 import {
   Building2,
   CalendarDays,
@@ -13,17 +13,17 @@ import {
   Plus,
   Timer,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { useAuthSession } from "../../../components/auth/auth-session-provider";
-import { ActivityGraph } from "../../../components/profile/activity-graph";
-import { ActivityItem, type ActivityEvent } from "../../../components/profile/activity-item";
-import { RoleBadge } from "../../../components/profile/role-badge";
-import { SectionHeading } from "../../../components/profile/section-heading";
-import { StatCard } from "../../../components/profile/stat-card";
-import { WorkspaceCard, type Workspace } from "../../../components/profile/workspace-card";
-import { useFrontendRuntimeConfig } from "../../../config";
+import { useAuthSession } from "#components/auth/auth-session-provider";
+import { ActivityGraph } from "#components/profile/activity-graph";
+import { ActivityItem, type ActivityEvent } from "#components/profile/activity-item";
+import { RoleBadge } from "#components/profile/role-badge";
+import { SectionHeading } from "#components/profile/section-heading";
+import { StatCard } from "#components/profile/stat-card";
+import { WorkspaceCard, type Workspace } from "#components/profile/workspace-card";
+import { useFrontendRuntimeConfig } from "#config";
 
 // ── Mock data (replace with real API when backend is ready) ──────────────────
 
@@ -100,9 +100,24 @@ const MOCK_ACTIVITY: ActivityEvent[] = [
     workspace: "API Infrastructure",
     time: "4 days ago",
   },
+  {
+    id: "7",
+    type: "commented",
+    title: "Update rate limiting on /auth routes",
+    workspace: "API Infrastructure",
+    time: "5 days ago",
+  },
+  {
+    id: "8",
+    type: "created",
+    title: "Keyboard shortcut for issue creation",
+    workspace: "Platform Team",
+    time: "6 days ago",
+  },
 ];
 
 const MOCK_STATS = { open: 17, inProgress: 5, resolvedThisMonth: 12, totalCreated: 34 };
+const ACTIVITY_PAGE_SIZE = 4;
 
 // ── Page ─────────────────────────────────────────────────────────────────────
 
@@ -110,6 +125,7 @@ export function ProfileViewPage(): React.JSX.Element {
   const config = useFrontendRuntimeConfig();
   const { user } = useAuthSession();
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [activityVisible, setActivityVisible] = useState(ACTIVITY_PAGE_SIZE);
 
   useEffect(() => {
     getMyProfile({ apiBaseUrl: config.apiBaseUrl })
@@ -121,13 +137,15 @@ export function ProfileViewPage(): React.JSX.Element {
 
   const displayName = profile?.name?.trim() || user?.name?.trim() || user?.email?.trim();
   const email = profile?.email ?? user?.email;
+  const visibleActivity = MOCK_ACTIVITY.slice(0, activityVisible);
+  const hasMoreActivity = activityVisible < MOCK_ACTIVITY.length;
 
   return (
-    <div className="flex flex-1 overflow-y-auto">
+    <div className="flex flex-1 flex-col pb-16">
       <div className="mx-auto w-full max-w-5xl px-6 py-8">
         <div className="flex items-start gap-8">
-          {/* ── Sidebar ── */}
-          <aside className="w-60 shrink-0 sticky top-0">
+          {/* ── Sidebar — sticky below the h-12 breadcrumb header ── */}
+          <aside className="w-60 shrink-0 self-start sticky top-12">
             <Avatar className="mb-4 h-36 w-36 rounded-full ring-2 ring-border">
               <AvatarImage src={profile?.image ?? undefined} alt={displayName} />
               <AvatarFallback className="text-3xl font-semibold">
@@ -142,6 +160,12 @@ export function ProfileViewPage(): React.JSX.Element {
             {profile?.bio && (
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{profile.bio}</p>
             )}
+
+            <StatusEditor
+              status={profile?.status ?? null}
+              apiBaseUrl={config.apiBaseUrl}
+              onSave={(status) => setProfile((p) => (p ? { ...p, status } : p))}
+            />
 
             <Button variant="outline" size="sm" className="mt-4 w-full" asChild>
               <Link to="/dashboard/settings">
@@ -181,7 +205,6 @@ export function ProfileViewPage(): React.JSX.Element {
 
           {/* ── Main content ── */}
           <main className="min-w-0 flex-1 space-y-8">
-            {/* Stats */}
             <div className="grid grid-cols-4 gap-3">
               <StatCard
                 icon={CircleDot}
@@ -209,10 +232,8 @@ export function ProfileViewPage(): React.JSX.Element {
               />
             </div>
 
-            {/* Activity graph */}
             <ActivityGraph />
 
-            {/* Workspaces */}
             <section>
               <SectionHeading icon={Building2} title="Workspaces" count={MOCK_WORKSPACES.length} />
               <div className="mt-3 grid grid-cols-2 gap-3">
@@ -222,14 +243,22 @@ export function ProfileViewPage(): React.JSX.Element {
               </div>
             </section>
 
-            {/* Recent activity */}
             <section>
               <SectionHeading title="Recent activity" />
               <div className="mt-3 divide-y overflow-hidden rounded-lg border">
-                {MOCK_ACTIVITY.map((item) => (
+                {visibleActivity.map((item) => (
                   <ActivityItem key={item.id} item={item} />
                 ))}
               </div>
+              {hasMoreActivity && (
+                <button
+                  type="button"
+                  onClick={() => setActivityVisible((n) => n + ACTIVITY_PAGE_SIZE)}
+                  className="mt-2 w-full rounded-md border border-dashed py-2 text-xs text-muted-foreground transition-colors hover:border-border hover:text-foreground"
+                >
+                  Show {Math.min(ACTIVITY_PAGE_SIZE, MOCK_ACTIVITY.length - activityVisible)} more
+                </button>
+              )}
             </section>
           </main>
         </div>
@@ -238,7 +267,90 @@ export function ProfileViewPage(): React.JSX.Element {
   );
 }
 
-// ── Sidebar-local helpers (tightly coupled to this layout) ───────────────────
+// ── Status inline editor ──────────────────────────────────────────────────────
+
+function StatusEditor({
+  status,
+  apiBaseUrl,
+  onSave,
+}: {
+  status: string | null;
+  apiBaseUrl: string;
+  onSave: (status: string | null) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [value, setValue] = useState(status ?? "");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setValue(status ?? "");
+  }, [status]);
+  useEffect(() => {
+    if (editing) inputRef.current?.focus();
+  }, [editing]);
+
+  async function commit() {
+    setEditing(false);
+    const trimmed = value.trim();
+    if (trimmed === (status ?? "")) return;
+    const result = await updateMyProfile({ status: trimmed || undefined }, { apiBaseUrl }).catch(
+      () => null,
+    );
+    if (result?.success) {
+      onSave(result.profile.status);
+    } else {
+      setValue(status ?? "");
+    }
+  }
+
+  if (editing) {
+    return (
+      <div className="mt-2">
+        <Input
+          ref={inputRef}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") void commit();
+            if (e.key === "Escape") {
+              setValue(status ?? "");
+              setEditing(false);
+            }
+          }}
+          onBlur={() => void commit()}
+          placeholder="What's your status?"
+          maxLength={100}
+          className="h-8 text-sm"
+        />
+      </div>
+    );
+  }
+
+  if (status) {
+    return (
+      <button
+        type="button"
+        onClick={() => setEditing(true)}
+        title="Click to edit"
+        className="mt-2 block w-full text-left text-sm text-muted-foreground transition-colors hover:text-foreground"
+      >
+        💬 {status}
+      </button>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => setEditing(true)}
+      className="mt-2 text-xs text-muted-foreground/60 transition-colors hover:text-muted-foreground"
+    >
+      + Set a status
+    </button>
+  );
+}
+
+// ── Sidebar-local layout helpers ──────────────────────────────────────────────
 
 function StatLine({ value, label }: { value: number; label: string }) {
   return (

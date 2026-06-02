@@ -71,6 +71,7 @@ export const usersService = {
         location: true,
         website: true,
         timezone: true,
+        status: true,
       },
     });
 
@@ -90,6 +91,7 @@ export const usersService = {
         ...(input.location !== undefined && { location: input.location || null }),
         ...(input.website !== undefined && { website: input.website || null }),
         ...(input.timezone !== undefined && { timezone: input.timezone || null }),
+        ...(input.status !== undefined && { status: input.status || null }),
       })
       .where(eq(users.id, userId))
       .returning({
@@ -102,6 +104,7 @@ export const usersService = {
         location: users.location,
         website: users.website,
         timezone: users.timezone,
+        status: users.status,
       });
 
     if (!updated) {
