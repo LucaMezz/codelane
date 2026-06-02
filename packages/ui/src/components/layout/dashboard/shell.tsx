@@ -23,7 +23,7 @@ export function DashboardShell({ actions, breadcrumbs, children, user }: Dashboa
       />
 
       <SidebarInset className="p-0 m-0">
-        <header className="flex h-12 shrink-0 items-center transition-[width,height] ease-linear">
+        <header className="sticky top-0 z-10 flex h-12 shrink-0 items-center bg-background transition-[width,height] ease-linear">
           <div className="flex items-center gap-2 px-3">
             <SidebarTrigger />
             <Separator orientation="vertical" className="data-[orientation=vertical]:h-4" />
