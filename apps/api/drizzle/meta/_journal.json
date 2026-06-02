@@ -22,6 +22,13 @@
       "when": 1778728431554,
       "tag": "0002_worried_romulus",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1780381940992,
+      "tag": "0003_smart_grandmaster",
+      "breakpoints": true
     }
   ]
 }

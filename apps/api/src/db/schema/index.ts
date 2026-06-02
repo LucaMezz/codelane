@@ -4,3 +4,4 @@ export * from "./sessions";
 export * from "./authenticators";
 export * from "./verificationTokens";
 export * from "./cliAuth";
+export * from "./userPreferences";

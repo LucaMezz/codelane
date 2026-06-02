@@ -20,9 +20,16 @@ interface NavUserProps {
     initials: string;
   };
   onSignOut: () => void | Promise<void>;
+  onNavigateToProfile?: () => void;
+  onNavigateToPreferences?: () => void;
 }
 
-export function NavUser({ user, onSignOut }: NavUserProps) {
+export function NavUser({
+  user,
+  onSignOut,
+  onNavigateToProfile,
+  onNavigateToPreferences,
+}: NavUserProps) {
   const { isMobile } = useSidebar();
 
   return (
@@ -65,14 +72,14 @@ export function NavUser({ user, onSignOut }: NavUserProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={onNavigateToProfile}>
                 <BadgeCheck />
                 Profile
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={onNavigateToPreferences}>
                 <Settings2 />
                 Preferences
               </DropdownMenuItem>

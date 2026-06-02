@@ -207,6 +207,8 @@ const data = {
 export interface AppSidebarActions {
   user: {
     onSignOut: () => void | Promise<void>;
+    onNavigateToProfile?: () => void;
+    onNavigateToPreferences?: () => void;
   };
 }
 
@@ -245,7 +247,12 @@ export function AppSidebar({ actions, user, ...props }: AppSidebarProps) {
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={getDisplayUser(user)} onSignOut={actions.user.onSignOut} />
+        <NavUser
+          user={getDisplayUser(user)}
+          onSignOut={actions.user.onSignOut}
+          onNavigateToProfile={actions.user.onNavigateToProfile}
+          onNavigateToPreferences={actions.user.onNavigateToPreferences}
+        />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

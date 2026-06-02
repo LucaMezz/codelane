@@ -8,6 +8,7 @@ import { SignUp } from "#pages/auth/sign-up";
 import { CliLogin } from "#pages/cli/login";
 import { Dashboard } from "#pages/dashboard/index";
 import { DashboardLayout } from "#pages/dashboard/layout";
+import { ProfilePage } from "#pages/dashboard/profile/index";
 import { ErrorBoundary } from "#pages/error-boundary";
 
 import { AuthSessionProvider } from "./components/auth/auth-session-provider";
@@ -52,6 +53,10 @@ export function createRoutes(rootLayout: ReactNode, config: FrontendRuntimeConfi
                 {
                   index: true,
                   element: <Dashboard />,
+                },
+                {
+                  path: "profile",
+                  element: <ProfilePage />,
                 },
               ],
             },

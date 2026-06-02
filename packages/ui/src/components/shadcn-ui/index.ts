@@ -27,3 +27,4 @@ export * from "./badge";
 export * from "./checkbox";
 export * from "./table";
 export * from "./tabs";
+export * from "./switch";

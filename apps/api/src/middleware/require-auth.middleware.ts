@@ -8,6 +8,7 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
   if (!session?.user) {
     res.redirect("/login");
   } else {
+    res.locals.session = session;
     next();
   }
 }
