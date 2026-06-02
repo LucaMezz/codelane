@@ -1,569 +1,259 @@
+import { getMyProfile } from "@codelane/api-client";
+import { getInitials, type UserProfile } from "@codelane/core";
+import { Avatar, AvatarFallback, AvatarImage, Button, Separator } from "@codelane/ui";
 import {
-  changeMyPassword,
-  getMyPreferences,
-  getMyProfile,
-  updateMyPreferences,
-  updateMyProfile,
-} from "@codelane/api-client";
-import {
-  changePasswordSchema,
-  getInitials,
-  themeSchema,
-  updatePreferencesSchema,
-  updateProfileSchema,
-  type ChangePasswordInput,
-  type UpdatePreferencesInput,
-  type UpdateProfileInput,
-  type UserPreferences,
-  type UserProfile,
-} from "@codelane/core";
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-  Button,
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  Input,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Separator,
-  Switch,
-  Textarea,
-  cn,
-  toast,
-} from "@codelane/ui";
-import { zodResolver } from "@hookform/resolvers/zod";
+  Building2,
+  CalendarDays,
+  CheckCircle2,
+  CircleDot,
+  Clock,
+  Globe,
+  MapPin,
+  Pencil,
+  Plus,
+  Timer,
+} from "lucide-react";
 import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { useAuthSession } from "../../../components/auth/auth-session-provider";
+import { ActivityGraph } from "../../../components/profile/activity-graph";
+import { ActivityItem, type ActivityEvent } from "../../../components/profile/activity-item";
+import { RoleBadge } from "../../../components/profile/role-badge";
+import { SectionHeading } from "../../../components/profile/section-heading";
+import { StatCard } from "../../../components/profile/stat-card";
+import { WorkspaceCard, type Workspace } from "../../../components/profile/workspace-card";
 import { useFrontendRuntimeConfig } from "../../../config";
 
-const SECTIONS = ["profile", "security", "preferences"] as const;
-type Section = (typeof SECTIONS)[number];
+// ── Mock data (replace with real API when backend is ready) ──────────────────
 
-function isValidSection(value: string | null): value is Section {
-  return SECTIONS.includes(value as Section);
-}
-
-const NAV_ITEMS: { id: Section; label: string }[] = [
-  { id: "profile", label: "Public profile" },
-  { id: "security", label: "Security & password" },
-  { id: "preferences", label: "Preferences" },
+const MOCK_WORKSPACES: Workspace[] = [
+  {
+    id: "1",
+    name: "Platform Team",
+    role: "Owner",
+    openIssues: 8,
+    inProgress: 3,
+    members: 5,
+    color: "#6366f1",
+  },
+  {
+    id: "2",
+    name: "Mobile App",
+    role: "Member",
+    openIssues: 3,
+    inProgress: 1,
+    members: 8,
+    color: "#0ea5e9",
+  },
+  {
+    id: "3",
+    name: "API Infrastructure",
+    role: "Admin",
+    openIssues: 6,
+    inProgress: 2,
+    members: 4,
+    color: "#10b981",
+  },
 ];
 
-export function ProfilePage(): React.JSX.Element {
+const MOCK_ACTIVITY: ActivityEvent[] = [
+  {
+    id: "1",
+    type: "created",
+    title: "Add OAuth2 provider support",
+    workspace: "Platform Team",
+    time: "2 hours ago",
+  },
+  {
+    id: "2",
+    type: "resolved",
+    title: "Fix race condition in auth middleware",
+    workspace: "API Infrastructure",
+    time: "5 hours ago",
+  },
+  {
+    id: "3",
+    type: "commented",
+    title: "Improve CI pipeline performance",
+    workspace: "Platform Team",
+    time: "1 day ago",
+  },
+  {
+    id: "4",
+    type: "assigned",
+    title: "Design new onboarding flow",
+    workspace: "Mobile App",
+    time: "2 days ago",
+  },
+  {
+    id: "5",
+    type: "created",
+    title: "Add dark mode to renderer",
+    workspace: "Mobile App",
+    time: "3 days ago",
+  },
+  {
+    id: "6",
+    type: "resolved",
+    title: "Pagination broken on issues list",
+    workspace: "API Infrastructure",
+    time: "4 days ago",
+  },
+];
+
+const MOCK_STATS = { open: 17, inProgress: 5, resolvedThisMonth: 12, totalCreated: 34 };
+
+// ── Page ─────────────────────────────────────────────────────────────────────
+
+export function ProfileViewPage(): React.JSX.Element {
   const config = useFrontendRuntimeConfig();
   const { user } = useAuthSession();
-
-  const [searchParams, setSearchParams] = useSearchParams();
-  const sectionParam = searchParams.get("tab");
-  const activeSection: Section = isValidSection(sectionParam) ? sectionParam : "profile";
-
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [preferences, setPreferences] = useState<UserPreferences | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([
-      getMyProfile({ apiBaseUrl: config.apiBaseUrl }),
-      getMyPreferences({ apiBaseUrl: config.apiBaseUrl }),
-    ])
-      .then(([profileData, prefsData]) => {
-        setProfile(profileData);
-        setPreferences(prefsData);
-      })
+    getMyProfile({ apiBaseUrl: config.apiBaseUrl })
+      .then(setProfile)
       .catch(() => {
-        toast.error("Could not load your profile. Please try again.");
-      })
-      .finally(() => setLoading(false));
+        /* fallback to session user */
+      });
   }, [config.apiBaseUrl]);
 
-  function setSection(section: Section) {
-    setSearchParams({ tab: section }, { replace: true });
-  }
-
   const displayName = profile?.name?.trim() || user?.name?.trim() || user?.email?.trim();
+  const email = profile?.email ?? user?.email;
 
   return (
-    <div className="flex flex-1 flex-col overflow-y-auto">
-      <div className="mx-auto w-full max-w-5xl px-8 py-8">
-        <h1 className="text-2xl font-semibold tracking-tight mb-6">Settings</h1>
-        <Separator />
+    <div className="flex flex-1 overflow-y-auto">
+      <div className="mx-auto w-full max-w-5xl px-6 py-8">
+        <div className="flex items-start gap-8">
+          {/* ── Sidebar ── */}
+          <aside className="w-60 shrink-0 sticky top-0">
+            <Avatar className="mb-4 h-36 w-36 rounded-full ring-2 ring-border">
+              <AvatarImage src={profile?.image ?? undefined} alt={displayName} />
+              <AvatarFallback className="text-3xl font-semibold">
+                {getInitials(displayName)}
+              </AvatarFallback>
+            </Avatar>
 
-        <div className="flex gap-10 pt-8">
-          {/* Left navigation */}
-          <nav className="w-52 shrink-0 space-y-0.5">
-            <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Account
-            </p>
-            {NAV_ITEMS.map(({ id, label }) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => setSection(id)}
-                className={cn(
-                  "w-full rounded-md px-3 py-1.5 text-left text-sm transition-colors",
-                  activeSection === id
-                    ? "bg-accent font-medium text-accent-foreground"
-                    : "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
-                )}
-              >
-                {label}
-              </button>
-            ))}
-          </nav>
+            <h1 className="text-2xl font-bold leading-tight">{displayName ?? "—"}</h1>
+            <p className="mt-0.5 mb-2 text-sm text-muted-foreground">{email}</p>
+            <RoleBadge role="Owner" />
 
-          {/* Main content */}
-          <div className="min-w-0 flex-1">
-            {activeSection === "profile" && (
-              <ProfileSection
-                profile={profile}
-                loading={loading}
-                apiBaseUrl={config.apiBaseUrl}
-                displayName={displayName}
-                onSaved={setProfile}
-              />
+            {profile?.bio && (
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{profile.bio}</p>
             )}
-            {activeSection === "security" && <SecuritySection apiBaseUrl={config.apiBaseUrl} />}
-            {activeSection === "preferences" && (
-              <PreferencesSection
-                preferences={preferences}
-                loading={loading}
-                apiBaseUrl={config.apiBaseUrl}
-                onSaved={setPreferences}
+
+            <Button variant="outline" size="sm" className="mt-4 w-full" asChild>
+              <Link to="/dashboard/settings">
+                <Pencil className="mr-1.5 h-3.5 w-3.5" />
+                Edit profile
+              </Link>
+            </Button>
+
+            <Separator className="my-4" />
+
+            <div className="space-y-1.5">
+              <StatLine value={MOCK_STATS.totalCreated} label="issues opened" />
+              <StatLine value={MOCK_STATS.resolvedThisMonth} label="issues resolved this month" />
+              <StatLine value={MOCK_WORKSPACES.length} label="workspaces" />
+            </div>
+
+            <Separator className="my-4" />
+
+            <div className="space-y-2 text-sm text-muted-foreground">
+              {profile?.location && <InfoRow icon={MapPin}>{profile.location}</InfoRow>}
+              {profile?.website && (
+                <InfoRow icon={Globe}>
+                  <a
+                    href={profile.website}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block truncate hover:text-foreground hover:underline"
+                  >
+                    {profile.website.replace(/^https?:\/\//, "")}
+                  </a>
+                </InfoRow>
+              )}
+              {profile?.timezone && <InfoRow icon={Clock}>{profile.timezone}</InfoRow>}
+              <InfoRow icon={CalendarDays}>Joined June 2026</InfoRow>
+            </div>
+          </aside>
+
+          {/* ── Main content ── */}
+          <main className="min-w-0 flex-1 space-y-8">
+            {/* Stats */}
+            <div className="grid grid-cols-4 gap-3">
+              <StatCard
+                icon={CircleDot}
+                value={MOCK_STATS.open}
+                label="Open issues"
+                iconColor="text-amber-500"
               />
-            )}
-          </div>
+              <StatCard
+                icon={Timer}
+                value={MOCK_STATS.inProgress}
+                label="In progress"
+                iconColor="text-blue-500"
+              />
+              <StatCard
+                icon={CheckCircle2}
+                value={MOCK_STATS.resolvedThisMonth}
+                label="Resolved this month"
+                iconColor="text-emerald-500"
+              />
+              <StatCard
+                icon={Plus}
+                value={MOCK_STATS.totalCreated}
+                label="Total created"
+                iconColor="text-violet-500"
+              />
+            </div>
+
+            {/* Activity graph */}
+            <ActivityGraph />
+
+            {/* Workspaces */}
+            <section>
+              <SectionHeading icon={Building2} title="Workspaces" count={MOCK_WORKSPACES.length} />
+              <div className="mt-3 grid grid-cols-2 gap-3">
+                {MOCK_WORKSPACES.map((ws) => (
+                  <WorkspaceCard key={ws.id} workspace={ws} />
+                ))}
+              </div>
+            </section>
+
+            {/* Recent activity */}
+            <section>
+              <SectionHeading title="Recent activity" />
+              <div className="mt-3 divide-y overflow-hidden rounded-lg border">
+                {MOCK_ACTIVITY.map((item) => (
+                  <ActivityItem key={item.id} item={item} />
+                ))}
+              </div>
+            </section>
+          </main>
         </div>
       </div>
     </div>
   );
 }
 
-function SectionHeader({ title, description }: { title: string; description?: string }) {
+// ── Sidebar-local helpers (tightly coupled to this layout) ───────────────────
+
+function StatLine({ value, label }: { value: number; label: string }) {
   return (
-    <div className="mb-6">
-      <h2 className="text-xl font-semibold">{title}</h2>
-      {description && <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>}
-      <Separator className="mt-4" />
-    </div>
+    <p className="text-sm">
+      <span className="font-semibold text-foreground">{value}</span>{" "}
+      <span className="text-muted-foreground">{label}</span>
+    </p>
   );
 }
 
-function SettingsField({
-  label,
-  htmlFor,
-  hint,
-  children,
-  error,
-}: {
-  label: string;
-  htmlFor: string;
-  hint?: string;
-  children: React.ReactNode;
-  error?: string;
-}) {
+function InfoRow({ icon: Icon, children }: { icon: React.ElementType; children: React.ReactNode }) {
   return (
-    <div className="space-y-1.5">
-      <label htmlFor={htmlFor} className="block text-sm font-semibold">
-        {label}
-      </label>
-      {children}
-      {error ? (
-        <p className="text-xs text-destructive">{error}</p>
-      ) : hint ? (
-        <p className="text-xs text-muted-foreground">{hint}</p>
-      ) : null}
-    </div>
-  );
-}
-
-function ProfileSection({
-  profile,
-  loading,
-  apiBaseUrl,
-  displayName,
-  onSaved,
-}: {
-  profile: UserProfile | null;
-  loading: boolean;
-  apiBaseUrl: string;
-  displayName: string | undefined;
-  onSaved: (p: UserProfile) => void;
-}) {
-  const form = useForm<UpdateProfileInput>({
-    resolver: zodResolver(updateProfileSchema),
-    values: {
-      name: profile?.name ?? "",
-      bio: profile?.bio ?? "",
-      location: profile?.location ?? "",
-      website: profile?.website ?? "",
-      timezone: profile?.timezone ?? "",
-    },
-  });
-
-  async function onSubmit(data: UpdateProfileInput) {
-    const result = await updateMyProfile(data, { apiBaseUrl }).catch(() => null);
-    if (!result) {
-      toast.error("Could not reach the server. Please try again.");
-      return;
-    }
-    if (!result.success) {
-      toast.error(result.message);
-      return;
-    }
-    onSaved(result.profile);
-    toast.success("Profile updated.");
-  }
-
-  return (
-    <div>
-      <SectionHeader
-        title="Public profile"
-        description="This information will be visible to other members of your workspace."
-      />
-
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex gap-8">
-          {/* Form fields */}
-          <div className="flex-1 space-y-5">
-            <Controller
-              control={form.control}
-              name="name"
-              render={({ field, fieldState }) => (
-                <SettingsField
-                  label="Name"
-                  htmlFor="profile-name"
-                  hint="Your name may appear around CodeLane where you contribute."
-                  error={fieldState.error?.message}
-                >
-                  <Input
-                    {...field}
-                    id="profile-name"
-                    disabled={loading}
-                    placeholder="Your name"
-                    autoComplete="name"
-                    className="max-w-sm"
-                  />
-                </SettingsField>
-              )}
-            />
-
-            <Controller
-              control={form.control}
-              name="bio"
-              render={({ field, fieldState }) => (
-                <SettingsField
-                  label="Bio"
-                  htmlFor="profile-bio"
-                  hint="Tell others a bit about yourself."
-                  error={fieldState.error?.message}
-                >
-                  <Textarea
-                    {...field}
-                    id="profile-bio"
-                    disabled={loading}
-                    placeholder="A short bio about yourself"
-                    rows={4}
-                  />
-                </SettingsField>
-              )}
-            />
-
-            <Controller
-              control={form.control}
-              name="location"
-              render={({ field, fieldState }) => (
-                <SettingsField
-                  label="Location"
-                  htmlFor="profile-location"
-                  error={fieldState.error?.message}
-                >
-                  <Input
-                    {...field}
-                    id="profile-location"
-                    disabled={loading}
-                    placeholder="e.g. London, UK"
-                    className="max-w-sm"
-                  />
-                </SettingsField>
-              )}
-            />
-
-            <Controller
-              control={form.control}
-              name="website"
-              render={({ field, fieldState }) => (
-                <SettingsField
-                  label="Website"
-                  htmlFor="profile-website"
-                  error={fieldState.error?.message}
-                >
-                  <Input
-                    {...field}
-                    id="profile-website"
-                    disabled={loading}
-                    placeholder="https://yoursite.com"
-                    type="url"
-                    className="max-w-sm"
-                  />
-                </SettingsField>
-              )}
-            />
-
-            <Controller
-              control={form.control}
-              name="timezone"
-              render={({ field, fieldState }) => (
-                <SettingsField
-                  label="Timezone"
-                  htmlFor="profile-timezone"
-                  hint="Used for displaying dates and deadlines in your local time."
-                  error={fieldState.error?.message}
-                >
-                  <Input
-                    {...field}
-                    id="profile-timezone"
-                    disabled={loading}
-                    placeholder="e.g. Europe/London"
-                    className="max-w-sm"
-                  />
-                </SettingsField>
-              )}
-            />
-          </div>
-
-          {/* Avatar */}
-          <div className="w-44 shrink-0">
-            <p className="mb-3 text-sm font-semibold">Profile picture</p>
-            <div className="flex flex-col items-center gap-3">
-              <Avatar className="h-28 w-28">
-                <AvatarImage src={profile?.image ?? undefined} alt={displayName} />
-                <AvatarFallback className="text-2xl">{getInitials(displayName)}</AvatarFallback>
-              </Avatar>
-              <p className="text-center text-xs text-muted-foreground leading-relaxed">
-                Avatar is based on your account image.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <Separator className="my-6" />
-
-        <Button type="submit" disabled={form.formState.isSubmitting || loading}>
-          {form.formState.isSubmitting ? "Saving..." : "Update profile"}
-        </Button>
-      </form>
-    </div>
-  );
-}
-
-function SecuritySection({ apiBaseUrl }: { apiBaseUrl: string }) {
-  const form = useForm<ChangePasswordInput>({
-    resolver: zodResolver(changePasswordSchema),
-    defaultValues: { currentPassword: "", newPassword: "", confirmPassword: "" },
-  });
-
-  async function onSubmit(data: ChangePasswordInput) {
-    const result = await changeMyPassword(data, { apiBaseUrl }).catch(() => null);
-    if (!result) {
-      toast.error("Could not reach the server. Please try again.");
-      return;
-    }
-    if (!result.success) {
-      toast.error(result.message);
-      return;
-    }
-    form.reset();
-    toast.success("Password changed successfully.");
-  }
-
-  return (
-    <div>
-      <SectionHeader
-        title="Change password"
-        description="After a successful password change, you will remain signed in."
-      />
-
-      <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-sm space-y-5">
-        <Controller
-          control={form.control}
-          name="currentPassword"
-          render={({ field, fieldState }) => (
-            <SettingsField
-              label="Current password"
-              htmlFor="security-current-password"
-              error={fieldState.error?.message}
-            >
-              <Input
-                {...field}
-                id="security-current-password"
-                type="password"
-                autoComplete="current-password"
-                placeholder="••••••••"
-              />
-            </SettingsField>
-          )}
-        />
-
-        <Controller
-          control={form.control}
-          name="newPassword"
-          render={({ field, fieldState }) => (
-            <SettingsField
-              label="New password"
-              htmlFor="security-new-password"
-              hint="At least 6 characters."
-              error={fieldState.error?.message}
-            >
-              <Input
-                {...field}
-                id="security-new-password"
-                type="password"
-                autoComplete="new-password"
-                placeholder="••••••••"
-              />
-            </SettingsField>
-          )}
-        />
-
-        <Controller
-          control={form.control}
-          name="confirmPassword"
-          render={({ field, fieldState }) => (
-            <SettingsField
-              label="Confirm new password"
-              htmlFor="security-confirm-password"
-              error={fieldState.error?.message}
-            >
-              <Input
-                {...field}
-                id="security-confirm-password"
-                type="password"
-                autoComplete="new-password"
-                placeholder="••••••••"
-              />
-            </SettingsField>
-          )}
-        />
-
-        <Separator />
-
-        <Button type="submit" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? "Updating..." : "Update password"}
-        </Button>
-      </form>
-    </div>
-  );
-}
-
-function PreferencesSection({
-  preferences,
-  loading,
-  apiBaseUrl,
-  onSaved,
-}: {
-  preferences: UserPreferences | null;
-  loading: boolean;
-  apiBaseUrl: string;
-  onSaved: (p: UserPreferences) => void;
-}) {
-  const form = useForm<UpdatePreferencesInput>({
-    resolver: zodResolver(updatePreferencesSchema),
-    values: {
-      theme: preferences?.theme ?? "system",
-      emailNotifications: preferences?.emailNotifications ?? true,
-    },
-  });
-
-  async function onSubmit(data: UpdatePreferencesInput) {
-    const result = await updateMyPreferences(data, { apiBaseUrl }).catch(() => null);
-    if (!result) {
-      toast.error("Could not reach the server. Please try again.");
-      return;
-    }
-    if (!result.success) {
-      toast.error(result.message);
-      return;
-    }
-    onSaved(result.preferences);
-    toast.success("Preferences saved.");
-  }
-
-  return (
-    <div>
-      <SectionHeader
-        title="Preferences"
-        description="Manage how CodeLane looks and behaves for you."
-      />
-
-      <form onSubmit={form.handleSubmit(onSubmit)} className="max-w-lg space-y-0">
-        <Controller
-          control={form.control}
-          name="theme"
-          render={({ field }) => (
-            <div className="flex items-center justify-between py-4">
-              <div>
-                <p className="text-sm font-semibold">Theme</p>
-                <p className="text-xs text-muted-foreground">Choose your preferred color scheme.</p>
-              </div>
-              <Select
-                value={field.value}
-                onValueChange={(v) => field.onChange(themeSchema.parse(v))}
-                disabled={loading}
-              >
-                <SelectTrigger className="w-32">
-                  <SelectValue placeholder="Select theme" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="system">System</SelectItem>
-                  <SelectItem value="light">Light</SelectItem>
-                  <SelectItem value="dark">Dark</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          )}
-        />
-
-        <Separator />
-
-        <Controller
-          control={form.control}
-          name="emailNotifications"
-          render={({ field }) => (
-            <div className="flex items-center justify-between py-4">
-              <div>
-                <p className="text-sm font-semibold">Email notifications</p>
-                <p className="text-xs text-muted-foreground">
-                  Receive email updates about your issues and activity.
-                </p>
-              </div>
-              <Switch
-                id="pref-email-notifications"
-                checked={field.value}
-                onCheckedChange={field.onChange}
-                disabled={loading}
-              />
-            </div>
-          )}
-        />
-
-        <Separator />
-
-        <div className="pt-5">
-          <Button type="submit" disabled={form.formState.isSubmitting || loading}>
-            {form.formState.isSubmitting ? "Saving..." : "Save preferences"}
-          </Button>
-        </div>
-      </form>
+    <div className="flex items-start gap-2">
+      <Icon className="mt-0.5 h-4 w-4 shrink-0" />
+      <span className="min-w-0">{children}</span>
     </div>
   );
 }

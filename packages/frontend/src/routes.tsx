@@ -8,8 +8,8 @@ import { SignUp } from "#pages/auth/sign-up";
 import { CliLogin } from "#pages/cli/login";
 import { Dashboard } from "#pages/dashboard/index";
 import { DashboardLayout } from "#pages/dashboard/layout";
-import { ProfilePage } from "#pages/dashboard/profile/index";
-import { ProfileViewPage } from "#pages/dashboard/u/index";
+import { ProfileViewPage } from "#pages/dashboard/profile/index";
+import { SettingsPage } from "#pages/dashboard/settings/index";
 import { ErrorBoundary } from "#pages/error-boundary";
 
 import { AuthSessionProvider } from "./components/auth/auth-session-provider";
@@ -32,18 +32,9 @@ export function createRoutes(rootLayout: ReactNode, config: FrontendRuntimeConfi
       ),
       errorElement: <ErrorBoundary />,
       children: [
-        {
-          index: true,
-          element: <RootRedirect />,
-        },
-        {
-          path: "about",
-          element: <About />,
-        },
-        {
-          path: "cli/login",
-          element: <CliLogin />,
-        },
+        { index: true, element: <RootRedirect /> },
+        { path: "about", element: <About /> },
+        { path: "cli/login", element: <CliLogin /> },
         {
           element: <ProtectedRoute />,
           children: [
@@ -51,18 +42,9 @@ export function createRoutes(rootLayout: ReactNode, config: FrontendRuntimeConfi
               path: "dashboard",
               element: <DashboardLayout />,
               children: [
-                {
-                  index: true,
-                  element: <Dashboard />,
-                },
-                {
-                  path: "u",
-                  element: <ProfileViewPage />,
-                },
-                {
-                  path: "profile",
-                  element: <ProfilePage />,
-                },
+                { index: true, element: <Dashboard /> },
+                { path: "profile", element: <ProfileViewPage /> },
+                { path: "settings", element: <SettingsPage /> },
               ],
             },
           ],
@@ -73,14 +55,8 @@ export function createRoutes(rootLayout: ReactNode, config: FrontendRuntimeConfi
             {
               path: "auth",
               children: [
-                {
-                  path: "login",
-                  element: <Login />,
-                },
-                {
-                  path: "sign-up",
-                  element: <SignUp />,
-                },
+                { path: "login", element: <Login /> },
+                { path: "sign-up", element: <SignUp /> },
               ],
             },
           ],
