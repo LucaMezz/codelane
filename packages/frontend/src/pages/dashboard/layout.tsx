@@ -47,6 +47,9 @@ export function DashboardLayout(): React.JSX.Element {
         });
       },
       onNavigateToProfile: () => {
+        void navigate("/dashboard/u");
+      },
+      onNavigateToSettings: () => {
         void navigate("/dashboard/profile");
       },
       onNavigateToPreferences: () => {

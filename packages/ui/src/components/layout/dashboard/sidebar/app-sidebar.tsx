@@ -208,6 +208,7 @@ export interface AppSidebarActions {
   user: {
     onSignOut: () => void | Promise<void>;
     onNavigateToProfile?: () => void;
+    onNavigateToSettings?: () => void;
     onNavigateToPreferences?: () => void;
   };
 }
@@ -251,6 +252,7 @@ export function AppSidebar({ actions, user, ...props }: AppSidebarProps) {
           user={getDisplayUser(user)}
           onSignOut={actions.user.onSignOut}
           onNavigateToProfile={actions.user.onNavigateToProfile}
+          onNavigateToSettings={actions.user.onNavigateToSettings}
           onNavigateToPreferences={actions.user.onNavigateToPreferences}
         />
       </SidebarFooter>

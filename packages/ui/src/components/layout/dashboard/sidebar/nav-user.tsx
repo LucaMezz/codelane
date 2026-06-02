@@ -1,4 +1,4 @@
-import { BadgeCheck, Bell, ChevronsUpDown, LogOut, Settings2 } from "lucide-react";
+import { BadgeCheck, Bell, ChevronsUpDown, LogOut, Settings2, UserRound } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "#shadcn/avatar";
 import {
@@ -21,6 +21,7 @@ interface NavUserProps {
   };
   onSignOut: () => void | Promise<void>;
   onNavigateToProfile?: () => void;
+  onNavigateToSettings?: () => void;
   onNavigateToPreferences?: () => void;
 }
 
@@ -28,6 +29,7 @@ export function NavUser({
   user,
   onSignOut,
   onNavigateToProfile,
+  onNavigateToSettings,
   onNavigateToPreferences,
 }: NavUserProps) {
   const { isMobile } = useSidebar();
@@ -73,8 +75,12 @@ export function NavUser({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem onClick={onNavigateToProfile}>
+                <UserRound />
+                View profile
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={onNavigateToSettings}>
                 <BadgeCheck />
-                Profile
+                Settings
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
