@@ -100,9 +100,9 @@ export function SettingsPage(): React.JSX.Element {
         <h1 className="mb-6 text-2xl font-semibold tracking-tight">Settings</h1>
         <Separator />
 
-        <div className="flex gap-10 pt-8">
+        <div className="flex flex-col md:flex-row gap-10 pt-8">
           {/* Left nav */}
-          <nav className="w-52 shrink-0 space-y-0.5">
+          <nav className="w-full md:w-52 shrink-0 space-y-0.5">
             <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
               Account
             </p>
@@ -238,7 +238,7 @@ function ProfileSection({
         description="This information will be visible to other members of your workspace."
       />
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="flex gap-8">
+        <div className="flex flex-col sm:flex-row gap-8">
           <div className="flex-1 space-y-5">
             <Controller
               control={form.control}
@@ -368,7 +368,7 @@ function ProfileSection({
             />
           </div>
 
-          <div className="w-44 shrink-0">
+          <div className="sm:w-44 sm:shrink-0">
             <p className="mb-3 text-sm font-semibold">Profile picture</p>
             <div className="flex flex-col items-center gap-3">
               <Avatar className="h-28 w-28">

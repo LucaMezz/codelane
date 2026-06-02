@@ -143,9 +143,9 @@ export function ProfileViewPage(): React.JSX.Element {
   return (
     <div className="flex flex-1 flex-col pb-16">
       <div className="mx-auto w-full max-w-5xl px-6 py-8">
-        <div className="flex items-start gap-8">
+        <div className="flex flex-col md:flex-row items-start gap-8">
           {/* ── Sidebar — sticky below the h-12 breadcrumb header ── */}
-          <aside className="w-60 shrink-0 self-start sticky top-12">
+          <aside className="w-full md:w-60 shrink-0 self-start md:sticky md:top-12">
             <Avatar className="mb-4 h-36 w-36 rounded-full ring-2 ring-border">
               <AvatarImage src={profile?.image ?? undefined} alt={displayName} />
               <AvatarFallback className="text-3xl font-semibold">
@@ -205,7 +205,7 @@ export function ProfileViewPage(): React.JSX.Element {
 
           {/* ── Main content ── */}
           <main className="min-w-0 flex-1 space-y-8">
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               <StatCard
                 icon={CircleDot}
                 value={MOCK_STATS.open}
@@ -236,7 +236,7 @@ export function ProfileViewPage(): React.JSX.Element {
 
             <section>
               <SectionHeading icon={Building2} title="Workspaces" count={MOCK_WORKSPACES.length} />
-              <div className="mt-3 grid grid-cols-2 gap-3">
+              <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {MOCK_WORKSPACES.map((ws) => (
                   <WorkspaceCard key={ws.id} workspace={ws} />
                 ))}
