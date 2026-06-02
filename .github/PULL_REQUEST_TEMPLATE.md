@@ -32,11 +32,11 @@
 <!-- Tick any that apply. -->
 
 - [ ] This PR respects the current package boundaries.
-- [ ] Shared UI-only code remains in `@appkit/ui`.
-- [ ] Shared frontend routes/pages/flows remain in `@appkit/frontend`.
-- [ ] Runtime config, ports, URLs, and env names use `@appkit/config`.
-- [ ] Shared schemas/types remain in `@appkit/core`.
-- [ ] API communication logic remains in `@appkit/api-client`.
+- [ ] Shared UI-only code remains in `@codelane/ui`.
+- [ ] Shared frontend routes/pages/flows remain in `@codelane/frontend`.
+- [ ] Runtime config, ports, URLs, and env names use `@codelane/config`.
+- [ ] Shared schemas/types remain in `@codelane/core`.
+- [ ] API communication logic remains in `@codelane/api-client`.
 - [ ] Web and desktop apps remain thin platform hosts.
 - [ ] CLI code does not depend on UI/frontend packages.
 - [ ] No deployable app imports implementation code from another app.
@@ -46,7 +46,7 @@
 - [ ] I did not add hardcoded local URLs, ports, or API base URLs.
 - [ ] I updated `.env.example` if environment variables changed.
 - [ ] I updated Docker or Compose config if runtime config changed.
-- [ ] I verified config defaults are centralised through `@appkit/config`.
+- [ ] I verified config defaults are centralised through `@codelane/config`.
 
 ## Testing / verification
 

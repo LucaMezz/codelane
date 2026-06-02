@@ -22,7 +22,6 @@ import {
   AvatarFallback,
   AvatarImage,
   Button,
-  Field,
   FieldError,
   Input,
   Select,
@@ -100,7 +99,7 @@ export function SettingsPage(): React.JSX.Element {
         <h1 className="mb-6 text-2xl font-semibold tracking-tight">Settings</h1>
         <Separator />
 
-        <div className="flex flex-col md:flex-row gap-10 pt-8">
+        <div className="flex flex-col lg:flex-row gap-10 pt-8">
           {/* Left nav */}
           <nav className="w-full md:w-52 shrink-0 space-y-0.5">
             <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -396,7 +395,11 @@ function ProfileSection({
 function SecuritySection({ apiBaseUrl }: { apiBaseUrl: string }) {
   const form = useForm<ChangePasswordInput>({
     resolver: zodResolver(changePasswordSchema),
-    defaultValues: { currentPassword: "", newPassword: "", confirmPassword: "" },
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
   });
 
   async function onSubmit(data: ChangePasswordInput) {

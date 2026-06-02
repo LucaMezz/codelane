@@ -17,7 +17,7 @@ export function whoami(program: Command) {
       const me = await tokenManager.getCurrentUser();
 
       if (!me) {
-        console.info("You are not signed in. Run `appkit login`.");
+        console.info("You are not signed in. Run `codelane login`.");
         return;
       }
 

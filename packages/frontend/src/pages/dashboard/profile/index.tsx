@@ -224,7 +224,7 @@ export function ProfileViewPage(): React.JSX.Element {
       <div className="mx-auto w-full max-w-7xl px-6 py-8">
         <div className="flex flex-col lg:flex-row items-start gap-8">
           {/* ── Sidebar ── */}
-          <aside className="w-full lg:max-w-60 lg:sticky lg:top-12">
+          <aside className="w-full lg:max-w-60 lg:sticky lg:top-20">
             <Avatar className="mb-4 h-36 w-36 rounded-full ring-2 ring-border">
               <AvatarImage src={profile?.image ?? undefined} alt={displayName} />
               <AvatarFallback className="text-3xl font-semibold">
@@ -252,14 +252,6 @@ export function ProfileViewPage(): React.JSX.Element {
                 Edit profile
               </Link>
             </Button>
-
-            <Separator className="my-4" />
-
-            <div className="space-y-1.5">
-              <StatLine value={MOCK_STATS.assigned} label="issues assigned" />
-              <StatLine value={MOCK_STATS.resolvedThisMonth} label="resolved this month" />
-              <StatLine value={MOCK_WORKSPACES.length} label="workspaces" />
-            </div>
 
             <Separator className="my-4" />
 
