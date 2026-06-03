@@ -24,16 +24,16 @@ export function WorkspaceCard({ workspace }: { workspace: Workspace }) {
           <p className="text-sm font-semibold leading-tight">{workspace.name}</p>
           <RoleBadge role={workspace.role} />
         </div>
-        <div className="flex items-center gap-4 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1 whitespace-nowrap">
             <CircleDot className="h-3 w-3" />
             {workspace.openIssues} open
           </span>
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1 whitespace-nowrap">
             <Timer className="h-3 w-3" />
             {workspace.inProgress} in progress
           </span>
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1 whitespace-nowrap">
             <Users className="h-3 w-3" />
             {workspace.members}
           </span>
