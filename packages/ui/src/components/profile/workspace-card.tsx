@@ -1,20 +1,33 @@
 import { CircleDot, Timer, Users } from "lucide-react";
+import * as React from "react";
 
-import { RoleBadge, type WorkspaceRole } from "./role-badge";
+import { RoleBadge, type WorkspaceRole } from "#components/profile/role-badge";
+import { cn } from "#utils/cn";
 
 export interface Workspace {
   id: string;
   name: string;
-  role: WorkspaceRole;
+  role: WorkspaceRole | string;
   openIssues: number;
   inProgress: number;
   members: number;
+  /** Accent color rendered as a left border stripe. Any valid CSS color. */
   color: string;
 }
 
-export function WorkspaceCard({ workspace }: { workspace: Workspace }) {
+interface WorkspaceCardProps {
+  workspace: Workspace;
+  className?: string;
+}
+
+function WorkspaceCard({ workspace, className }: WorkspaceCardProps) {
   return (
-    <div className="relative overflow-hidden rounded-lg border bg-card p-4 transition-colors hover:bg-accent/30">
+    <div
+      className={cn(
+        "relative overflow-hidden rounded-lg border bg-card p-4 transition-colors hover:bg-accent/30",
+        className,
+      )}
+    >
       <div
         className="absolute inset-y-0 left-0 w-1 rounded-l-lg"
         style={{ backgroundColor: workspace.color }}
@@ -42,3 +55,5 @@ export function WorkspaceCard({ workspace }: { workspace: Workspace }) {
     </div>
   );
 }
+
+export { WorkspaceCard };

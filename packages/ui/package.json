@@ -34,9 +34,13 @@
     "storybook:build": "storybook build"
   },
   "dependencies": {
+    "@base-ui/react": "^1.5.0",
     "@tailwindcss/typography": "^0.5.19",
+    "@vvo/tzdb": "^6.198.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cmdk": "^1.1.1",
+    "countries-list": "^3.3.0",
     "lucide-react": "^1.14.0",
     "radix-ui": "^1.4.3",
     "react-hook-form": "^7.75.0",

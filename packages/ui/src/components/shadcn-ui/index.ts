@@ -28,3 +28,6 @@ export * from "./checkbox";
 export * from "./table";
 export * from "./tabs";
 export * from "./switch";
+export * from "./command";
+export * from "./combobox";
+export * from "./dialog";

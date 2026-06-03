@@ -1,14 +1,19 @@
 import { getMyProfile, updateMyProfile } from "@codelane/api-client";
 import { getInitials, type UserProfile } from "@codelane/core";
 import { Avatar, AvatarFallback, AvatarImage, Button, Input, Separator, cn } from "@codelane/ui";
+import {
+  ActivityItem,
+  SectionHeading,
+  WorkspaceCard,
+  type ActivityEvent,
+  type Workspace,
+} from "@codelane/ui";
+import { getTimeZones } from "@vvo/tzdb";
 import { Building2, CalendarDays, Clock, ListTodo, MapPin, Pencil } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useAuthSession } from "#components/auth/auth-session-provider";
-import { ActivityItem, type ActivityEvent } from "#components/profile/activity-item";
-import { SectionHeading } from "#components/profile/section-heading";
-import { WorkspaceCard, type Workspace } from "#components/profile/workspace-card";
 import { useFrontendRuntimeConfig } from "#config";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -22,6 +27,25 @@ interface WorkItem {
   status: "in_progress" | "blocked" | "needs_review";
   since: string;
   blockedBy?: string;
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function formatTimezoneOffset(minutes: number): string {
+  const sign = minutes >= 0 ? "+" : "-";
+  const abs = Math.abs(minutes);
+  const h = String(Math.floor(abs / 60)).padStart(2, "0");
+  const m = String(abs % 60).padStart(2, "0");
+  return `UTC${sign}${h}:${m}`;
+}
+
+function getTimezoneDisplay(tzName: string | null | undefined): string {
+  if (!tzName) return "";
+  const tz = getTimeZones().find((t) => t.name === tzName);
+  if (!tz) return tzName;
+  const offset = formatTimezoneOffset(tz.currentTimeOffsetInMinutes);
+  const formatted = tzName.replace(/_/g, " ");
+  return `${formatted} ${offset}`;
 }
 
 // ── Mock data (replace with real API when backend is ready) ──────────────────
@@ -230,31 +254,28 @@ export function ProfileViewPage(): React.JSX.Element {
                 {getInitials(displayName)}
               </AvatarFallback>
             </Avatar>
-
             <h1 className="text-2xl font-bold leading-tight">{displayName ?? "—"}</h1>
             <p className="mt-0.5 mb-2 text-sm text-muted-foreground">{email}</p>
             {profile?.title && (
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{profile.title}</p>
             )}
-
             <StatusEditor
               status={profile?.status ?? null}
               apiBaseUrl={config.apiBaseUrl}
               onSave={(status) => setProfile((p) => (p ? { ...p, status } : p))}
             />
-
             <Button variant="outline" size="sm" className="mt-4 w-full" asChild>
               <Link to="/dashboard/settings">
                 <Pencil className="mr-1.5 h-3.5 w-3.5" />
                 Edit profile
               </Link>
             </Button>
-
             <Separator className="my-4" />
-
             <div className="space-y-2 text-sm text-muted-foreground">
               {profile?.location && <InfoRow icon={MapPin}>{profile.location}</InfoRow>}
-              {profile?.timezone && <InfoRow icon={Clock}>{profile.timezone}</InfoRow>}
+              {profile?.timezone && (
+                <InfoRow icon={Clock}>{getTimezoneDisplay(profile!.timezone)}</InfoRow>
+              )}
               <InfoRow icon={CalendarDays}>Joined June 2026</InfoRow>
             </div>
           </aside>

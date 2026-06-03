@@ -23,14 +23,16 @@ import {
   AvatarImage,
   Button,
   Input,
+  LocationCombobox,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
   Separator,
+  SettingsSectionHeader,
   Switch,
-  Textarea,
+  TimezoneCombobox,
   cn,
   toast,
 } from "@codelane/ui";
@@ -150,16 +152,6 @@ export function SettingsPage(): React.JSX.Element {
 
 // ── Shared primitives ────────────────────────────────────────────────────────
 
-function SectionHeader({ title, description }: { title: string; description?: string }) {
-  return (
-    <div className="mb-6">
-      <h2 className="text-xl font-semibold">{title}</h2>
-      {description && <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>}
-      <Separator className="mt-4" />
-    </div>
-  );
-}
-
 function SettingsField({
   label,
   htmlFor,
@@ -230,7 +222,7 @@ function ProfileSection({
 
   return (
     <div>
-      <SectionHeader
+      <SettingsSectionHeader
         title="Public profile"
         description="This information will be visible to other members of your workspace."
       />
@@ -266,15 +258,15 @@ function ProfileSection({
                 <SettingsField
                   label="Title"
                   htmlFor="s-title"
-                  hint="Tell others a bit about yourself."
+                  hint="Your title or role."
                   error={fieldState.error?.message}
                 >
-                  <Textarea
+                  <Input
                     {...field}
                     id="s-title"
                     disabled={loading}
-                    placeholder="A short title about yourself"
-                    rows={4}
+                    placeholder="e.g. Software Engineer"
+                    className="max-w-sm"
                   />
                 </SettingsField>
               )}
@@ -289,11 +281,12 @@ function ProfileSection({
                   htmlFor="s-location"
                   error={fieldState.error?.message}
                 >
-                  <Input
-                    {...field}
+                  <LocationCombobox
                     id="s-location"
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    onBlur={() => field.onBlur()}
                     disabled={loading}
-                    placeholder="e.g. London, UK"
                     className="max-w-sm"
                   />
                 </SettingsField>
@@ -310,11 +303,12 @@ function ProfileSection({
                   hint="Used for displaying dates and deadlines in your local time."
                   error={fieldState.error?.message}
                 >
-                  <Input
-                    {...field}
+                  <TimezoneCombobox
                     id="s-timezone"
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    onBlur={() => field.onBlur()}
                     disabled={loading}
-                    placeholder="e.g. Europe/London"
                     className="max-w-sm"
                   />
                 </SettingsField>
@@ -395,7 +389,7 @@ function SecuritySection({ apiBaseUrl }: { apiBaseUrl: string }) {
 
   return (
     <div>
-      <SectionHeader
+      <SettingsSectionHeader
         title="Change password"
         description="After a successful password change, you will remain signed in."
       />
@@ -507,7 +501,7 @@ function PreferencesSection({
 
   return (
     <div>
-      <SectionHeader
+      <SettingsSectionHeader
         title="Preferences"
         description="Manage how CodeLane looks and behaves for you."
       />

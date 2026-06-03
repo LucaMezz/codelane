@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { locationValidator, timezoneValidator } from "./location-timezone.validators";
+
 export const updateProfileSchema = z.object({
   name: z
     .string()
@@ -8,8 +10,8 @@ export const updateProfileSchema = z.object({
     .max(100, "Name must be at most 100 characters.")
     .optional(),
   title: z.string().trim().max(300, "Title must be at most 300 characters.").optional(),
-  location: z.string().trim().max(100, "Location must be at most 100 characters.").optional(),
-  timezone: z.string().trim().max(100, "Timezone must be at most 100 characters.").optional(),
+  location: locationValidator,
+  timezone: timezoneValidator,
   status: z.string().trim().max(100, "Status must be at most 100 characters.").optional(),
 });
 

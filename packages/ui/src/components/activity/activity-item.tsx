@@ -1,15 +1,25 @@
-import { cn } from "@codelane/ui";
-import { CheckCircle2, MessageSquare, Plus, UserCheck } from "lucide-react";
+import { CheckCircle2, MessageSquare, Plus, UserCheck, type LucideIcon } from "lucide-react";
+import * as React from "react";
+
+import { cn } from "#utils/cn";
+
+export type ActivityEventType = "created" | "resolved" | "commented" | "assigned";
 
 export interface ActivityEvent {
   id: string;
-  type: "created" | "resolved" | "commented" | "assigned";
+  type: ActivityEventType;
   title: string;
   workspace: string;
   time: string;
 }
 
-const ACTIVITY_CONFIG = {
+export interface ActivityConfig {
+  icon: LucideIcon;
+  color: string;
+  verb: string;
+}
+
+export const DEFAULT_ACTIVITY_CONFIG: Record<ActivityEventType, ActivityConfig> = {
   created: {
     icon: Plus,
     color: "bg-violet-100 text-violet-600 dark:bg-violet-900/40 dark:text-violet-400",
@@ -30,25 +40,33 @@ const ACTIVITY_CONFIG = {
     color: "bg-amber-100 text-amber-600 dark:bg-amber-900/40 dark:text-amber-400",
     verb: "Was assigned",
   },
-} as const;
+};
 
-export function ActivityItem({ item }: { item: ActivityEvent }) {
-  const config = ACTIVITY_CONFIG[item.type];
-  const Icon = config.icon;
+interface ActivityItemProps {
+  item: ActivityEvent;
+  /** Override config for specific activity types. Merged with defaults. */
+  config?: Partial<Record<ActivityEventType, ActivityConfig>>;
+  className?: string;
+}
+
+function ActivityItem({ item, config, className }: ActivityItemProps) {
+  const merged = { ...DEFAULT_ACTIVITY_CONFIG, ...config };
+  const entry = merged[item.type];
+  const Icon = entry.icon;
 
   return (
-    <div className="flex items-start gap-3 bg-card px-4 py-3">
+    <div className={cn("flex items-start gap-3 bg-card px-4 py-3", className)}>
       <div
         className={cn(
           "mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full",
-          config.color,
+          entry.color,
         )}
       >
         <Icon className="h-3.5 w-3.5" />
       </div>
       <div className="min-w-0 flex-1">
         <p className="text-sm">
-          <span className="text-muted-foreground">{config.verb} </span>
+          <span className="text-muted-foreground">{entry.verb} </span>
           <span className="font-medium">{item.title}</span>
         </p>
         <p className="mt-0.5 text-xs text-muted-foreground">
@@ -58,3 +76,5 @@ export function ActivityItem({ item }: { item: ActivityEvent }) {
     </div>
   );
 }
+
+export { ActivityItem };
