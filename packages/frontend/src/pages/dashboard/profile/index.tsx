@@ -1,13 +1,12 @@
 import { getMyProfile, updateMyProfile } from "@codelane/api-client";
 import { getInitials, type UserProfile } from "@codelane/core";
 import { Avatar, AvatarFallback, AvatarImage, Button, Input, Separator, cn } from "@codelane/ui";
-import { Building2, CalendarDays, Clock, Globe, ListTodo, MapPin, Pencil } from "lucide-react";
+import { Building2, CalendarDays, Clock, ListTodo, MapPin, Pencil } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useAuthSession } from "#components/auth/auth-session-provider";
 import { ActivityItem, type ActivityEvent } from "#components/profile/activity-item";
-import { RoleBadge } from "#components/profile/role-badge";
 import { SectionHeading } from "#components/profile/section-heading";
 import { WorkspaceCard, type Workspace } from "#components/profile/workspace-card";
 import { useFrontendRuntimeConfig } from "#config";
@@ -234,10 +233,8 @@ export function ProfileViewPage(): React.JSX.Element {
 
             <h1 className="text-2xl font-bold leading-tight">{displayName ?? "—"}</h1>
             <p className="mt-0.5 mb-2 text-sm text-muted-foreground">{email}</p>
-            <RoleBadge role="Owner" />
-
-            {profile?.bio && (
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{profile.bio}</p>
+            {profile?.title && (
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{profile.title}</p>
             )}
 
             <StatusEditor
@@ -257,18 +254,6 @@ export function ProfileViewPage(): React.JSX.Element {
 
             <div className="space-y-2 text-sm text-muted-foreground">
               {profile?.location && <InfoRow icon={MapPin}>{profile.location}</InfoRow>}
-              {profile?.website && (
-                <InfoRow icon={Globe}>
-                  <a
-                    href={profile.website}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="block truncate hover:text-foreground hover:underline"
-                  >
-                    {profile.website.replace(/^https?:\/\//, "")}
-                  </a>
-                </InfoRow>
-              )}
               {profile?.timezone && <InfoRow icon={Clock}>{profile.timezone}</InfoRow>}
               <InfoRow icon={CalendarDays}>Joined June 2026</InfoRow>
             </div>

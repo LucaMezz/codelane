@@ -7,15 +7,8 @@ export const updateProfileSchema = z.object({
     .min(1, "Name must not be empty.")
     .max(100, "Name must be at most 100 characters.")
     .optional(),
-  bio: z.string().trim().max(300, "Bio must be at most 300 characters.").optional(),
+  title: z.string().trim().max(300, "Title must be at most 300 characters.").optional(),
   location: z.string().trim().max(100, "Location must be at most 100 characters.").optional(),
-  website: z
-    .string()
-    .trim()
-    .max(200, "Website must be at most 200 characters.")
-    .url("Please enter a valid URL.")
-    .optional()
-    .or(z.literal("")),
   timezone: z.string().trim().max(100, "Timezone must be at most 100 characters.").optional(),
   status: z.string().trim().max(100, "Status must be at most 100 characters.").optional(),
 });
@@ -44,9 +37,8 @@ export type UserProfile = {
   email: string | null;
   image: string | null;
   emailVerified: Date | string | null;
-  bio: string | null;
+  title: string | null;
   location: string | null;
-  website: string | null;
   timezone: string | null;
   status: string | null;
 };

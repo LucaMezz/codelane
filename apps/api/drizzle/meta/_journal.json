@@ -36,6 +36,13 @@
       "when": 1780385232803,
       "tag": "0004_calm_junta",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1780400147325,
+      "tag": "0005_short_george_stacy",
+      "breakpoints": true
     }
   ]
 }

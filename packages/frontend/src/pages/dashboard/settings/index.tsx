@@ -22,7 +22,6 @@ import {
   AvatarFallback,
   AvatarImage,
   Button,
-  FieldError,
   Input,
   Select,
   SelectContent,
@@ -208,9 +207,8 @@ function ProfileSection({
     resolver: zodResolver(updateProfileSchema),
     values: {
       name: profile?.name ?? "",
-      bio: profile?.bio ?? "",
+      title: profile?.title ?? "",
       location: profile?.location ?? "",
-      website: profile?.website ?? "",
       timezone: profile?.timezone ?? "",
       status: profile?.status ?? "",
     },
@@ -263,19 +261,19 @@ function ProfileSection({
 
             <Controller
               control={form.control}
-              name="bio"
+              name="title"
               render={({ field, fieldState }) => (
                 <SettingsField
-                  label="Bio"
-                  htmlFor="s-bio"
+                  label="Title"
+                  htmlFor="s-title"
                   hint="Tell others a bit about yourself."
                   error={fieldState.error?.message}
                 >
                   <Textarea
                     {...field}
-                    id="s-bio"
+                    id="s-title"
                     disabled={loading}
-                    placeholder="A short bio about yourself"
+                    placeholder="A short title about yourself"
                     rows={4}
                   />
                 </SettingsField>
@@ -296,27 +294,6 @@ function ProfileSection({
                     id="s-location"
                     disabled={loading}
                     placeholder="e.g. London, UK"
-                    className="max-w-sm"
-                  />
-                </SettingsField>
-              )}
-            />
-
-            <Controller
-              control={form.control}
-              name="website"
-              render={({ field, fieldState }) => (
-                <SettingsField
-                  label="Website"
-                  htmlFor="s-website"
-                  error={fieldState.error?.message}
-                >
-                  <Input
-                    {...field}
-                    id="s-website"
-                    disabled={loading}
-                    placeholder="https://yoursite.com"
-                    type="url"
                     className="max-w-sm"
                   />
                 </SettingsField>

@@ -67,9 +67,8 @@ export const usersService = {
         email: true,
         image: true,
         emailVerified: true,
-        bio: true,
+        title: true,
         location: true,
-        website: true,
         timezone: true,
         status: true,
       },
@@ -87,10 +86,13 @@ export const usersService = {
       .update(users)
       .set({
         ...(input.name !== undefined && { name: input.name }),
-        ...(input.bio !== undefined && { bio: input.bio || null }),
-        ...(input.location !== undefined && { location: input.location || null }),
-        ...(input.website !== undefined && { website: input.website || null }),
-        ...(input.timezone !== undefined && { timezone: input.timezone || null }),
+        ...(input.title !== undefined && { title: input.title || null }),
+        ...(input.location !== undefined && {
+          location: input.location || null,
+        }),
+        ...(input.timezone !== undefined && {
+          timezone: input.timezone || null,
+        }),
         ...(input.status !== undefined && { status: input.status || null }),
       })
       .where(eq(users.id, userId))
@@ -100,9 +102,8 @@ export const usersService = {
         email: users.email,
         image: users.image,
         emailVerified: users.emailVerified,
-        bio: users.bio,
+        title: users.title,
         location: users.location,
-        website: users.website,
         timezone: users.timezone,
         status: users.status,
       });
