@@ -1,80 +1,30 @@
 ## Summary
 
-<!-- Briefly explain what this PR changes and why. -->
+<!-- What does this PR change and why? Link related issues with "Fixes #123" or "Closes #123". -->
 
 ## Type of change
 
-<!-- Tick all that apply. -->
-
-- [ ] Feature
 - [ ] Bug fix
-- [ ] Refactor
-- [ ] Tooling / configuration
-- [ ] Documentation
-- [ ] Tests
-- [ ] CI / release
+- [ ] Feature
+- [ ] Refactor / cleanup
+- [ ] Docs / tooling / CI
 - [ ] Breaking change
 
-## Changes
+## Checklist
 
-<!-- List the main changes made in this PR. -->
-
--
--
--
-
-## Motivation
-
-<!-- Explain the problem this solves or the reason for the change. -->
-
-## Architecture / package boundary checklist
-
-<!-- Tick any that apply. -->
-
-- [ ] This PR respects the current package boundaries.
-- [ ] Shared UI-only code remains in `@codelane/ui`.
-- [ ] Shared frontend routes/pages/flows remain in `@codelane/frontend`.
-- [ ] Runtime config, ports, URLs, and env names use `@codelane/config`.
-- [ ] Shared schemas/types remain in `@codelane/core`.
-- [ ] API communication logic remains in `@codelane/api-client`.
-- [ ] Web and desktop apps remain thin platform hosts.
-- [ ] CLI code does not depend on UI/frontend packages.
-- [ ] No deployable app imports implementation code from another app.
-
-## Configuration / environment checklist
-
-- [ ] I did not add hardcoded local URLs, ports, or API base URLs.
-- [ ] I updated `.env.example` if environment variables changed.
-- [ ] I updated Docker or Compose config if runtime config changed.
-- [ ] I verified config defaults are centralised through `@codelane/config`.
-
-## Testing / verification
-
-<!-- Tick the checks that were run. If a check was skipped, explain why. -->
-
-- [ ] `pnpm verify`
-- [ ] `pnpm check`
-- [ ] `pnpm deps:arch`
-- [ ] `pnpm deps:lint`
-- [ ] `pnpm knip`
-- [ ] `pnpm test:run`
-- [ ] `pnpm build`
-- [ ] Other:
+- [ ] `pnpm verify` passes (format, lint, typecheck, arch boundaries, knip, tests, build)
+- [ ] New shared code placed in the correct package (`core`, `ui`, `frontend`, `api-client`, or `config`)
+- [ ] `.env.example` updated if environment variables were added or removed
+- [ ] No hardcoded ports, URLs, or env var values — use `@codelane/config`
 
 ## Screenshots / recordings
 
-<!-- Add screenshots, recordings, or terminal output for UI/CLI changes where useful. -->
-
-N/A
+<!-- For UI or CLI changes. Delete if not applicable. -->
 
 ## Breaking changes
 
-<!-- Describe any breaking changes, migrations, renamed exports, changed env vars, or removed APIs. -->
-
-N/A
+<!-- List removed or renamed APIs, env vars, exports, or required migrations. Delete if none. -->
 
 ## Notes for reviewers
 
-<!-- Mention anything reviewers should focus on, known limitations, or follow-up work. -->
-
-N/A
+<!-- Anything reviewers should focus on, known trade-offs, or planned follow-up. Delete if none. -->
