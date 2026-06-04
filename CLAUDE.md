@@ -375,9 +375,3 @@ Example: adding an "Issues" feature with a list and detail view.
 - New external dependencies: add only to the package that uses them; run `pnpm deps:lint` after
 - Check for version drift with `pnpm deps:fix && pnpm install` if syncpack reports issues
 - Major dependency upgrades require care — check Renovate's Dependency Dashboard first
-
-# Committing changes
-
-- When one or more changes to the codebase are requested, please group them appropriately into a number of commits
-- Complete one group of changes, and then immediately commit the changes with a conventional commit message
-- This commit message should adhere to the commitlint configuration in this repo at `commitlint.config.ts`
