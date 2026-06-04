@@ -11,12 +11,12 @@ export function resolveAuthUrls(options?: { apiUrl?: string; webUrl?: string }):
   return {
     apiUrl:
       options?.apiUrl ??
-      process.env.APPKIT_API_URL ??
+      process.env.CODELANE_API_URL ??
       config.apiUrl ??
       createLocalHttpUrl({ port: defaultPorts.api }),
     webUrl:
       options?.webUrl ??
-      process.env.APPKIT_WEB_URL ??
+      process.env.CODELANE_WEB_URL ??
       config.webUrl ??
       createLocalHttpUrl({ port: defaultPorts.web }),
   };
