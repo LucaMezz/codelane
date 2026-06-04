@@ -20,6 +20,12 @@ pnpm config set store-dir "${PNPM_STORE_DIR:-/pnpm-store}"
 # Install all workspace dependencies
 pnpm install
 
+# Electron's chrome-sandbox helper must be owned by root with SUID mode 4755
+# to create sandboxed renderer processes. pnpm installs it without these
+# permissions, so we fix them here after every install.
+sudo chown root:root node_modules/electron/dist/chrome-sandbox
+sudo chmod 4755 node_modules/electron/dist/chrome-sandbox
+
 # Create .env from the example if one does not already exist.
 # The dev container reaches PostgreSQL via the Docker Compose service name
 # ("postgres"), so DATABASE_URL must use that hostname instead of localhost.
