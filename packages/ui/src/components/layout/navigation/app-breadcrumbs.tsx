@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { useLocation, Link } from "react-router-dom";
 
 import {
@@ -51,13 +52,14 @@ export function AppBreadcrumbs({ collapseAfter = 1 }: AppBreadcrumbsProps) {
         {visibleSegments.map((item, i) => {
           const isLast = item.index === segments.length - 1;
 
-          // 🔹 Ellipsis
           if (item.name === "__ellipsis__") {
             return (
-              <div key="ellipsis" className="flex items-center">
+              <Fragment key="ellipsis">
                 <BreadcrumbSeparator />
-                <span className="px-2 text-muted-foreground">…</span>
-              </div>
+                <BreadcrumbItem>
+                  <span className="text-muted-foreground">…</span>
+                </BreadcrumbItem>
+              </Fragment>
             );
           }
 
@@ -65,9 +67,8 @@ export function AppBreadcrumbs({ collapseAfter = 1 }: AppBreadcrumbsProps) {
           const href = buildPath(item.index);
 
           return (
-            <div key={href} className="flex items-center">
+            <Fragment key={href}>
               {i !== 0 && <BreadcrumbSeparator />}
-
               <BreadcrumbItem>
                 {isLast ? (
                   <BreadcrumbPage>{label}</BreadcrumbPage>
@@ -77,7 +78,7 @@ export function AppBreadcrumbs({ collapseAfter = 1 }: AppBreadcrumbsProps) {
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>
-            </div>
+            </Fragment>
           );
         })}
       </BreadcrumbList>
