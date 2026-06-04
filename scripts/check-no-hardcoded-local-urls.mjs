@@ -31,6 +31,9 @@ const allowedPathFragments = [
   "packages/config/src/defaults.ts",
   "packages/config/src/env-names.ts",
   "scripts/check-no-hardcoded-local-urls.mjs",
+  // Docker files legitimately carry localhost defaults for local development
+  "Dockerfile",
+  "docker-compose",
 ];
 
 const allowedExtensions = new Set([

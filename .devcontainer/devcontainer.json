@@ -1,25 +1,52 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+// For format details, see https://aka.ms/devcontainer.json
 {
-  "name": "Ubuntu",
-  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/base:resolute",
+  "name": "CodeLane",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
+  // Node.js 22 LTS with build tools for native modules (argon2 requires them).
+  // GitHub CLI is included for convenient PR and issue workflows.
   "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22",
+      "nodeGypDependencies": true
+    },
     "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  // Activates pnpm, installs dependencies, creates .env, and runs migrations.
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+  // Forward all service ports to the VS Code host
+  "forwardPorts": [3000, 4000, 5173, 5432],
+  "portsAttributes": {
+    "3000": { "label": "Web (Vite)" },
+    "4000": { "label": "API (Express)" },
+    "5173": { "label": "Desktop renderer" },
+    "5432": { "label": "PostgreSQL", "onAutoForward": "silent" }
+  },
+
+  // Expose the shared pnpm store path so post-create.sh can configure it
+  "remoteEnv": {
+    "PNPM_STORE_DIR": "/pnpm-store"
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // Tailwind CSS IntelliSense for autocomplete and hover docs
+        "bradlc.vscode-tailwindcss",
+        // Vitest explorer panel for running and debugging tests
+        "vitest.explorer",
+        // Syntax highlighting for .env files
+        "mikestead.dotenv",
+        // Docker file editing and container management
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "typescript.tsdk": "node_modules/typescript/lib"
+      }
+    }
   }
-
-  // Features to add to the dev container. More info: https://containers.dev/features.
-  // "features": {},
-
-  // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  // "forwardPorts": [],
-
-  // Use 'postCreateCommand' to run commands after the container is created.
-  // "postCreateCommand": "uname -a",
-
-  // Configure tool-specific properties.
-  // "customizations": {},
-
-  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-  // "remoteUser": "root"
 }
