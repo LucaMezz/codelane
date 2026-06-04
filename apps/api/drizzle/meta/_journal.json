@@ -22,6 +22,27 @@
       "when": 1778728431554,
       "tag": "0002_worried_romulus",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1780381940992,
+      "tag": "0003_smart_grandmaster",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1780385232803,
+      "tag": "0004_calm_junta",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1780400147325,
+      "tag": "0005_short_george_stacy",
+      "breakpoints": true
     }
   ]
 }

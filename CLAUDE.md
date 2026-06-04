@@ -227,6 +227,22 @@ When building the issue tracking domain, keep these principles:
 - Use `react-hook-form` (already a dependency) for all form state
 - Prefer derived state over redundant state; don't mirror server state unnecessarily in component state
 
+### Import style in `packages/frontend`
+
+Always use the `#`-prefixed package imports defined in `package.json`'s `"imports"` map instead of `../` relative chains when importing across directories:
+
+```ts
+// ✓ prefer
+import { useAuthSession } from "#components/auth/auth-session-provider";
+import { useFrontendRuntimeConfig } from "#config";
+
+// ✗ avoid
+import { useAuthSession } from "../../../components/auth/auth-session-provider";
+import { useFrontendRuntimeConfig } from "../../../config";
+```
+
+Same-directory relative imports (`./sibling`) are still fine. When adding a new top-level source file that will be imported by many pages, add a corresponding `#`-alias to `packages/frontend/package.json`'s `"imports"` field.
+
 ### API conventions
 
 - Use the module pattern: `<domain>.routes.ts` → `<domain>.controller.ts` → `<domain>.service.ts`
@@ -359,3 +375,9 @@ Example: adding an "Issues" feature with a list and detail view.
 - New external dependencies: add only to the package that uses them; run `pnpm deps:lint` after
 - Check for version drift with `pnpm deps:fix && pnpm install` if syncpack reports issues
 - Major dependency upgrades require care — check Renovate's Dependency Dashboard first
+
+# Committing changes
+
+- When one or more changes to the codebase are requested, please group them appropriately into a number of commits
+- Complete one group of changes, and then immediately commit the changes with a conventional commit message
+- This commit message should adhere to the commitlint configuration in this repo at `commitlint.config.ts`

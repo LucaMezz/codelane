@@ -9,4 +9,8 @@ export const users = pgTable("user", {
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   passwordHash: text("password_hash"),
   image: text("image"),
+  title: text("title"),
+  location: text("location"),
+  timezone: text("timezone"),
+  status: text("status"),
 });

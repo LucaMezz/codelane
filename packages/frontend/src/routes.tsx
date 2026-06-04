@@ -6,9 +6,11 @@ import { About } from "#pages/about/index";
 import { Login } from "#pages/auth/login";
 import { SignUp } from "#pages/auth/sign-up";
 import { CliLogin } from "#pages/cli/login";
-import { Dashboard } from "#pages/dashboard/index";
-import { DashboardLayout } from "#pages/dashboard/layout";
 import { ErrorBoundary } from "#pages/error-boundary";
+import { InboxPage } from "#pages/inbox/index";
+import { AppLayout } from "#pages/layout";
+import { ProfileViewPage } from "#pages/profile/index";
+import { SettingsPage } from "#pages/settings/index";
 
 import { AuthSessionProvider } from "./components/auth/auth-session-provider";
 import { GuestOnlyRoute } from "./components/auth/guest-only-route";
@@ -30,29 +32,19 @@ export function createRoutes(rootLayout: ReactNode, config: FrontendRuntimeConfi
       ),
       errorElement: <ErrorBoundary />,
       children: [
-        {
-          index: true,
-          element: <RootRedirect />,
-        },
-        {
-          path: "about",
-          element: <About />,
-        },
-        {
-          path: "cli/login",
-          element: <CliLogin />,
-        },
+        { index: true, element: <RootRedirect /> },
+        { path: "about", element: <About /> },
+        { path: "cli/login", element: <CliLogin /> },
         {
           element: <ProtectedRoute />,
           children: [
             {
-              path: "dashboard",
-              element: <DashboardLayout />,
+              element: <AppLayout />,
               children: [
-                {
-                  index: true,
-                  element: <Dashboard />,
-                },
+                { path: "inbox", element: <InboxPage /> },
+                { path: "profile", element: <ProfileViewPage /> },
+                { path: "profile/:userId", element: <ProfileViewPage /> },
+                { path: "settings", element: <SettingsPage /> },
               ],
             },
           ],
@@ -63,14 +55,8 @@ export function createRoutes(rootLayout: ReactNode, config: FrontendRuntimeConfi
             {
               path: "auth",
               children: [
-                {
-                  path: "login",
-                  element: <Login />,
-                },
-                {
-                  path: "sign-up",
-                  element: <SignUp />,
-                },
+                { path: "login", element: <Login /> },
+                { path: "sign-up", element: <SignUp /> },
               ],
             },
           ],

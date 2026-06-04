@@ -11,7 +11,7 @@ export function RootRedirect() {
   }
 
   if (status === "authenticated") {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/inbox" replace />;
   }
 
   return <Navigate to="/auth/login" replace />;

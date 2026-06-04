@@ -9,7 +9,7 @@ export type CliConfig = {
 };
 
 const config = new Conf<CliConfig>({
-  projectName: "appkit",
+  projectName: "codelane",
   configName: "cli",
 });
 

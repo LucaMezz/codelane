@@ -1,5 +1,4 @@
 import { Separator } from "@codelane/ui";
-import { ThemeModeToggle } from "@codelane/ui";
 import { TooltipProvider } from "@codelane/ui";
 import type { CSSProperties } from "react";
 import { Outlet } from "react-router-dom";
@@ -20,7 +19,6 @@ export function Layout(): React.JSX.Element {
           <div className="w-full h-8 flex items-center justify-between px-2">
             <HistoryControls />
             <div className="flex items-center h-full gap-2" style={{ WebkitAppRegion: "no-drag" }}>
-              <ThemeModeToggle size="icon-titlebar" />
               <Inbox />
               <Separator orientation="vertical" />
             </div>

@@ -8,7 +8,7 @@ export interface CredentialStore {
   deleteRefreshToken(): Promise<void>;
 }
 
-const fallbackDir = path.join(os.homedir(), ".config", "appkit");
+const fallbackDir = path.join(os.homedir(), ".config", "codelane");
 const fallbackPath = path.join(fallbackDir, "cli-credentials.json");
 
 export class FileCredentialStore implements CredentialStore {

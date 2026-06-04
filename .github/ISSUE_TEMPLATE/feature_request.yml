@@ -35,7 +35,6 @@ body:
         - packages/ui
         - docs
         - tooling/CI
-        - repository template
         - unknown
   - type: textarea
     id: alternatives

@@ -12,7 +12,8 @@
     "#routes/*": "./src/routes/*.tsx",
     "#lib/*": "./src/lib/*.ts",
     "#hooks/*": "./src/hooks/*.ts",
-    "#utils/*": "./src/utils/*.ts"
+    "#utils/*": "./src/utils/*.ts",
+    "#config": "./src/config.tsx"
   },
   "exports": {
     ".": "./src/index.ts",
@@ -27,10 +28,10 @@
     "@codelane/core": "workspace:*",
     "@codelane/ui": "workspace:*",
     "@hookform/resolvers": "^5.2.2",
+    "@vvo/tzdb": "^6.198.0",
     "lucide-react": "^1.14.0",
     "react-hook-form": "^7.75.0",
-    "react-router-dom": "^7.15.0",
-    "recharts": "3.8.0"
+    "react-router-dom": "^7.15.0"
   },
   "devDependencies": {
     "@typescript/native-preview": "7.0.0-dev.20260507.1",
