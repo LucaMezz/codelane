@@ -58,6 +58,27 @@ export const usersService = {
     });
   },
 
+  async getById(userId: string) {
+    const user = await db.query.users.findFirst({
+      where: eq(users.id, userId),
+      columns: {
+        id: true,
+        name: true,
+        image: true,
+        title: true,
+        location: true,
+        timezone: true,
+        status: true,
+      },
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return user;
+  },
+
   async getMe(userId: string) {
     const user = await db.query.users.findFirst({
       where: eq(users.id, userId),

@@ -44,3 +44,13 @@ export type UserProfile = {
   timezone: string | null;
   status: string | null;
 };
+
+export type PublicUserProfile = {
+  id: string;
+  name: string | null;
+  image: string | null;
+  title: string | null;
+  location: string | null;
+  timezone: string | null;
+  status: string | null;
+};

@@ -6,6 +6,7 @@ import {
   changePassword,
   getMe,
   getPreferences,
+  getUserById,
   listUsers,
   registerUser,
   updateMe,
@@ -18,6 +19,7 @@ usersRoutes.get("/", requireAuth, listUsers);
 usersRoutes.post("/", registerUser);
 
 usersRoutes.get("/me", requireAuth, getMe);
+usersRoutes.get("/:id", requireAuth, getUserById);
 usersRoutes.patch("/me", requireAuth, updateMe);
 usersRoutes.patch("/me/password", requireAuth, changePassword);
 usersRoutes.get("/me/preferences", requireAuth, getPreferences);

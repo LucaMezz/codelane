@@ -21,6 +21,19 @@ export const registerUser: RequestHandler = async (req, res, next) => {
   }
 };
 
+export const getUserById: RequestHandler = async (req, res, next) => {
+  try {
+    const profile = await usersService.getById(req.params["id"] as string);
+    res.json({ data: profile });
+  } catch (error) {
+    if (error instanceof Error && error.message === "User not found") {
+      res.status(404).json({ error: { message: "User not found" } });
+      return;
+    }
+    next(error);
+  }
+};
+
 export const getMe: RequestHandler = async (req, res, next) => {
   try {
     const userId = res.locals.session?.user?.id as string;

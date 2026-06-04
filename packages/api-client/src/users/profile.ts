@@ -1,6 +1,7 @@
 import { joinUrl } from "@codelane/config/client";
 import type {
   ChangePasswordInput,
+  PublicUserProfile,
   UpdatePreferencesInput,
   UpdateProfileInput,
   UserPreferences,
@@ -9,6 +10,22 @@ import type {
 
 import type { ApiClientOptions } from "../auth/types";
 import { fetchWithTimeout } from "../request";
+
+export async function getUserProfile(
+  userId: string,
+  options: ApiClientOptions,
+): Promise<PublicUserProfile> {
+  const response = await fetchWithTimeout(joinUrl(options.apiBaseUrl, `/users/${userId}`), {
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to load user profile");
+  }
+
+  const body = (await response.json()) as { data: PublicUserProfile };
+  return body.data;
+}
 
 export async function getMyProfile(options: ApiClientOptions): Promise<UserProfile> {
   const response = await fetchWithTimeout(joinUrl(options.apiBaseUrl, "/users/me"), {
