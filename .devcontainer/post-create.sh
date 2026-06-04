@@ -1,6 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
+# Install Electron's native GUI dependencies (GTK, X11, NSS, etc.)
+sudo apt-get update -qq
+sudo apt-get install -y \
+  libgtk-3-0 libglib2.0-0 libnss3 libnspr4 \
+  libatk1.0-0 libatk-bridge2.0-0 libcups2 libdbus-1-3 \
+  libcairo2 libpango-1.0-0 libx11-6 libxcomposite1 \
+  libxdamage1 libxext6 libxfixes3 libxrandr2 \
+  libgbm1 libasound2 libxss1 libxtst6
+
 # Activate the exact pnpm version declared in the root package.json
 corepack enable
 corepack install
