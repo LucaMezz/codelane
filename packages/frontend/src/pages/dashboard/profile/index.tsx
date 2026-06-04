@@ -41,11 +41,38 @@ function formatTimezoneOffset(minutes: number): string {
 
 function getTimezoneDisplay(tzName: string | null | undefined): string {
   if (!tzName) return "";
-  const tz = getTimeZones().find((t) => t.name === tzName);
+  const tz = getTimeZones({ includeUtc: true }).find((t) => t.name === tzName);
   if (!tz) return tzName;
   const offset = formatTimezoneOffset(tz.currentTimeOffsetInMinutes);
-  const formatted = tzName.replace(/_/g, " ");
-  return `${formatted} ${offset}`;
+  const hasRealAbbr = /^[A-Z]{2,6}$/.test(tz.abbreviation) && tz.abbreviation !== "UTC";
+  return hasRealAbbr ? `${offset} ${tz.abbreviation}` : offset;
+}
+
+function getCurrentLocalTime(tzName: string | null | undefined): string {
+  if (!tzName) return "";
+  try {
+    return new Intl.DateTimeFormat("en-US", {
+      timeZone: tzName,
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    }).format(new Date());
+  } catch {
+    return "";
+  }
+}
+
+function useLocalTime(tzName: string | null | undefined): string {
+  const [time, setTime] = useState(() => getCurrentLocalTime(tzName));
+
+  useEffect(() => {
+    setTime(getCurrentLocalTime(tzName));
+    if (!tzName) return;
+    const id = setInterval(() => setTime(getCurrentLocalTime(tzName)), 10_000);
+    return () => clearInterval(id);
+  }, [tzName]);
+
+  return time;
 }
 
 // ── Mock data (replace with real API when backend is ready) ──────────────────
@@ -235,6 +262,7 @@ export function ProfileViewPage(): React.JSX.Element {
 
   const displayName = profile?.name?.trim() || user?.name?.trim() || user?.email?.trim();
   const email = profile?.email ?? user?.email;
+  const localTime = useLocalTime(profile?.timezone);
   const visibleActivity = MOCK_ACTIVITY.slice(0, activityVisible);
   const hasMoreActivity = activityVisible < MOCK_ACTIVITY.length;
 
@@ -274,7 +302,10 @@ export function ProfileViewPage(): React.JSX.Element {
             <div className="space-y-2 text-sm text-muted-foreground">
               {profile?.location && <InfoRow icon={MapPin}>{profile.location}</InfoRow>}
               {profile?.timezone && (
-                <InfoRow icon={Clock}>{getTimezoneDisplay(profile!.timezone)}</InfoRow>
+                <InfoRow icon={Clock}>
+                  {getTimezoneDisplay(profile.timezone)}
+                  {localTime && <span className="text-muted-foreground/60"> · {localTime}</span>}
+                </InfoRow>
               )}
               <InfoRow icon={CalendarDays}>Joined June 2026</InfoRow>
             </div>
