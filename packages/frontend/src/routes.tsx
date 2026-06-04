@@ -6,11 +6,11 @@ import { About } from "#pages/about/index";
 import { Login } from "#pages/auth/login";
 import { SignUp } from "#pages/auth/sign-up";
 import { CliLogin } from "#pages/cli/login";
-import { Dashboard } from "#pages/dashboard/index";
-import { DashboardLayout } from "#pages/dashboard/layout";
-import { ProfileViewPage } from "#pages/dashboard/profile/index";
-import { SettingsPage } from "#pages/dashboard/settings/index";
 import { ErrorBoundary } from "#pages/error-boundary";
+import { InboxPage } from "#pages/inbox/index";
+import { AppLayout } from "#pages/layout";
+import { ProfileViewPage } from "#pages/profile/index";
+import { SettingsPage } from "#pages/settings/index";
 
 import { AuthSessionProvider } from "./components/auth/auth-session-provider";
 import { GuestOnlyRoute } from "./components/auth/guest-only-route";
@@ -39,10 +39,9 @@ export function createRoutes(rootLayout: ReactNode, config: FrontendRuntimeConfi
           element: <ProtectedRoute />,
           children: [
             {
-              path: "dashboard",
-              element: <DashboardLayout />,
+              element: <AppLayout />,
               children: [
-                { index: true, element: <Dashboard /> },
+                { path: "inbox", element: <InboxPage /> },
                 { path: "profile", element: <ProfileViewPage /> },
                 { path: "profile/:userId", element: <ProfileViewPage /> },
                 { path: "settings", element: <SettingsPage /> },

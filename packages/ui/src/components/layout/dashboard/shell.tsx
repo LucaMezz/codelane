@@ -3,7 +3,12 @@ import type { ReactNode } from "react";
 import { Separator } from "#components/shadcn-ui/separator";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "#components/shadcn-ui/sidebar";
 
-import { AppSidebar, AppSidebarActions, AppSidebarUser } from "./sidebar";
+import {
+  AppSidebar,
+  type AppSidebarActions,
+  type AppSidebarTeam,
+  type AppSidebarUser,
+} from "./sidebar";
 
 interface DashboardShellProps {
   actions: AppSidebarActions;
@@ -11,15 +16,26 @@ interface DashboardShellProps {
   children: ReactNode;
   className?: string;
   user?: AppSidebarUser | null;
+  teams?: AppSidebarTeam[];
+  navContent?: ReactNode;
 }
 
-export function DashboardShell({ actions, breadcrumbs, children, user }: DashboardShellProps) {
+export function DashboardShell({
+  actions,
+  breadcrumbs,
+  children,
+  user,
+  teams,
+  navContent,
+}: DashboardShellProps) {
   return (
     <SidebarProvider className="flex min-h-0 h-full w-full" defaultOpen>
       <AppSidebar
         className="top-[var(--codelane-dashboard-sidebar-offset,0px)] h-[calc(100svh-var(--codelane-dashboard-sidebar-offset,0px))]"
         actions={actions}
         user={user}
+        teams={teams}
+        navContent={navContent}
       />
 
       <SidebarInset className="overflow-y-auto p-0 m-0">
