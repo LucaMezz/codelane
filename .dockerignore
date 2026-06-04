@@ -1,24 +1,62 @@
-# .dockerignore
+# Version control
+.git
+.gitignore
+.gitattributes
 
+# Dependencies — reinstalled fresh inside containers
 node_modules
 **/node_modules
 
+# Build outputs — rebuilt inside containers
 dist
 **/dist
-
 .next
 **/.next
-
 .vite
 **/.vite
+out
+**/out
+build
+**/build
 
-.git
-.gitignore
-
+# Environment and secrets — never copy into images
 .env
 **/.env
+.env.*
+**/.env.*
+!.env.example
+!**/.env.example
 
+# Caches
+.turbo
+**/.turbo
 coverage
 **/coverage
+**/storybook-static
 
+# Development tooling — not needed in production images
+.devcontainer
+.vscode
+.claude
+.github
+lefthook.yml
+commitlint.config.ts
+cz.config.ts
+renovate.json
+.syncpackrc.json
+.oxfmtrc.json
+.oxlintrc.json
+.dependency-cruiser.cjs
+cspell.json
+scripts
+
+# Documentation
+docs
+*.md
+
+# Platform artifacts
 .DS_Store
+Thumbs.db
+
+# Logs
+*.log
