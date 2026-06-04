@@ -24,20 +24,10 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import { useAuthSession } from "#components/auth/auth-session-provider";
+import { WorkItemsView, type WorkItem } from "#components/work-items/work-items-view";
 import { useFrontendRuntimeConfig } from "#config";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-
-interface WorkItem {
-  id: string;
-  key: string;
-  title: string;
-  workspace: string;
-  priority: "urgent" | "high" | "medium" | "low";
-  status: "in_progress" | "blocked" | "needs_review";
-  since: string;
-  blockedBy?: string;
-}
 
 type SidebarMode = "full" | "compact" | "hidden";
 
@@ -187,6 +177,7 @@ const MOCK_WORK_ITEMS: WorkItem[] = [
     priority: "high",
     status: "in_progress",
     since: "3 days",
+    tags: ["auth", "backend"],
   },
   {
     id: "2",
@@ -196,6 +187,7 @@ const MOCK_WORK_ITEMS: WorkItem[] = [
     priority: "medium",
     status: "in_progress",
     since: "1 day",
+    tags: ["api", "performance"],
   },
   {
     id: "3",
@@ -206,6 +198,7 @@ const MOCK_WORK_ITEMS: WorkItem[] = [
     status: "blocked",
     since: "5 days",
     blockedBy: "Waiting on security audit sign-off",
+    tags: ["auth", "bug"],
   },
   {
     id: "4",
@@ -216,6 +209,7 @@ const MOCK_WORK_ITEMS: WorkItem[] = [
     status: "blocked",
     since: "2 days",
     blockedBy: "Blocked by CL-58: Command palette not wired up yet",
+    tags: ["ux", "keyboard"],
   },
   {
     id: "5",
@@ -225,6 +219,7 @@ const MOCK_WORK_ITEMS: WorkItem[] = [
     priority: "medium",
     status: "needs_review",
     since: "2 days",
+    tags: ["devops"],
   },
   {
     id: "6",
@@ -234,6 +229,7 @@ const MOCK_WORK_ITEMS: WorkItem[] = [
     priority: "low",
     status: "needs_review",
     since: "4 days",
+    tags: ["ui", "desktop"],
   },
   {
     id: "7",
@@ -243,6 +239,7 @@ const MOCK_WORK_ITEMS: WorkItem[] = [
     priority: "high",
     status: "needs_review",
     since: "1 day",
+    tags: ["auth", "api"],
   },
 ];
 
@@ -285,7 +282,7 @@ function SidebarToggle({
   );
 }
 
-// ── Compact identity banner (shown when sidebarMode === "compact") ─────────────
+// ── Compact identity banner ───────────────────────────────────────────────────
 
 function CompactProfileBanner({
   displayName,
@@ -448,10 +445,6 @@ export function ProfileViewPage(): React.JSX.Element {
   const visibleActivity = MOCK_ACTIVITY.slice(0, activityVisible);
   const hasMoreActivity = activityVisible < MOCK_ACTIVITY.length;
 
-  const inProgressItems = MOCK_WORK_ITEMS.filter((i) => i.status === "in_progress");
-  const blockedItems = MOCK_WORK_ITEMS.filter((i) => i.status === "blocked");
-  const reviewItems = MOCK_WORK_ITEMS.filter((i) => i.status === "needs_review");
-
   function handleStatusSave(status: string | null) {
     setProfile((p) => (p ? { ...p, status } : p));
   }
@@ -459,7 +452,6 @@ export function ProfileViewPage(): React.JSX.Element {
   return (
     <div className="flex flex-1 flex-col pb-16 w-full">
       <div className="mx-auto w-full max-w-7xl px-6 py-8">
-        {/* ── Page header with toggle ── */}
         <div className="mb-6 flex items-center justify-end">
           <SidebarToggle mode={sidebarMode} onChange={setSidebarMode} />
         </div>
@@ -470,7 +462,6 @@ export function ProfileViewPage(): React.JSX.Element {
             sidebarMode === "full" ? "flex-col lg:flex-row" : "flex-col",
           )}
         >
-          {/* ── Full sidebar ── */}
           {sidebarMode === "full" && (
             <FullSidebar
               displayName={displayName}
@@ -483,9 +474,7 @@ export function ProfileViewPage(): React.JSX.Element {
             />
           )}
 
-          {/* ── Main content ── */}
           <main className="space-y-8 w-full min-w-0 overflow-x-hidden">
-            {/* Compact banner replaces the sidebar inline */}
             {sidebarMode === "compact" && (
               <CompactProfileBanner
                 displayName={displayName}
@@ -495,34 +484,10 @@ export function ProfileViewPage(): React.JSX.Element {
               />
             )}
 
-            {/* Current Work — hero section */}
+            {/* Current Work */}
             <section>
               <SectionHeading icon={ListTodo} title="Current Work" count={MOCK_WORK_ITEMS.length} />
-              <div className="mt-3 min-w-0 overflow-hidden rounded-lg border divide-y">
-                {inProgressItems.length > 0 && (
-                  <WorkGroup
-                    label="In Progress"
-                    accentClass="bg-blue-500"
-                    items={inProgressItems}
-                  />
-                )}
-                {blockedItems.length > 0 && (
-                  <WorkGroup
-                    label="Blocked"
-                    accentClass="bg-red-500"
-                    items={blockedItems}
-                    showBlockedBy
-                  />
-                )}
-                {reviewItems.length > 0 && (
-                  <WorkGroup label="Needs Review" accentClass="bg-violet-500" items={reviewItems} />
-                )}
-                {MOCK_WORK_ITEMS.length === 0 && (
-                  <p className="py-8 text-center text-sm text-muted-foreground">
-                    No active work items.
-                  </p>
-                )}
-              </div>
+              <WorkItemsView items={MOCK_WORK_ITEMS} className="mt-3" />
             </section>
 
             {/* Workspaces */}
@@ -556,72 +521,6 @@ export function ProfileViewPage(): React.JSX.Element {
           </main>
         </div>
       </div>
-    </div>
-  );
-}
-
-// ── Current Work sub-components ───────────────────────────────────────────────
-
-const PRIORITY_DOT: Record<WorkItem["priority"], string> = {
-  urgent: "bg-red-500",
-  high: "bg-orange-500",
-  medium: "bg-yellow-400",
-  low: "bg-muted-foreground/30",
-};
-
-function WorkGroup({
-  label,
-  accentClass,
-  items,
-  showBlockedBy = false,
-}: {
-  label: string;
-  accentClass: string;
-  items: WorkItem[];
-  showBlockedBy?: boolean;
-}) {
-  return (
-    <div className="min-w-0">
-      <div className="flex items-center gap-2 border-b bg-muted/40 px-4 py-2">
-        <div className={cn("h-1.5 w-1.5 rounded-full shrink-0", accentClass)} />
-        <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          {label}
-        </span>
-        <span className="text-xs text-muted-foreground/60">{items.length}</span>
-      </div>
-      <div className="min-w-0 divide-y">
-        {items.map((item) => (
-          <WorkItemRow key={item.id} item={item} showBlockedBy={showBlockedBy} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function WorkItemRow({ item, showBlockedBy }: { item: WorkItem; showBlockedBy: boolean }) {
-  return (
-    <div className="min-w-0 overflow-hidden bg-card px-4 py-3 transition-colors hover:bg-accent/30">
-      <div className="flex min-w-0 items-center gap-3">
-        <div
-          className={cn("h-2 w-2 shrink-0 rounded-full", PRIORITY_DOT[item.priority])}
-          title={item.priority}
-        />
-        <span className="min-w-0 shrink-0 truncate font-mono text-xs text-muted-foreground">
-          {item.key}
-        </span>
-        <span className="min-w-0 flex-1 truncate text-sm font-medium">{item.title}</span>
-        <span className="hidden min-w-0 max-w-32 truncate text-xs text-muted-foreground lg:block">
-          {item.workspace}
-        </span>
-        <span className="hidden min-w-0 max-w-[5rem] truncate text-xs text-muted-foreground/60 lg:block">
-          {item.since}
-        </span>
-      </div>
-      {showBlockedBy && item.blockedBy && (
-        <p className="mt-1 min-w-0 truncate pl-5 text-xs text-muted-foreground/70">
-          {item.blockedBy}
-        </p>
-      )}
     </div>
   );
 }
@@ -709,7 +608,7 @@ function StatusEditor({
   );
 }
 
-// ── Sidebar-local layout helpers ──────────────────────────────────────────────
+// ── Sidebar layout helper ─────────────────────────────────────────────────────
 
 function InfoRow({ icon: Icon, children }: { icon: React.ElementType; children: React.ReactNode }) {
   return (
