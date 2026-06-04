@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import path from "node:path";
 
 import { app, BrowserWindow, dialog, ipcMain, Menu } from "electron";
@@ -30,6 +31,13 @@ let mainWindow: BrowserWindow | null = null;
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
+}
+
+// Docker/dev-container environments lack the Linux capabilities required to
+// create namespaces for Chrome's zygote sandbox. Detect the container and
+// disable the sandbox so the process can start.
+if (existsSync("/.dockerenv")) {
+  app.commandLine.appendSwitch("no-sandbox");
 }
 
 app
