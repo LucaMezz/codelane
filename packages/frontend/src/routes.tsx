@@ -44,6 +44,7 @@ export function createRoutes(rootLayout: ReactNode, config: FrontendRuntimeConfi
               children: [
                 { index: true, element: <Dashboard /> },
                 { path: "profile", element: <ProfileViewPage /> },
+                { path: "profile/:userId", element: <ProfileViewPage /> },
                 { path: "settings", element: <SettingsPage /> },
               ],
             },

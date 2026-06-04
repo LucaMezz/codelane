@@ -1,5 +1,5 @@
-import { getMyProfile, updateMyProfile } from "@codelane/api-client";
-import { getInitials, type UserProfile } from "@codelane/core";
+import { getMyProfile, getUserProfile, updateMyProfile } from "@codelane/api-client";
+import { getInitials, type PublicUserProfile, type UserProfile } from "@codelane/core";
 import { Avatar, AvatarFallback, AvatarImage, Button, Input, Separator, cn } from "@codelane/ui";
 import {
   ActivityItem,
@@ -9,9 +9,19 @@ import {
   type Workspace,
 } from "@codelane/ui";
 import { getTimeZones } from "@vvo/tzdb";
-import { Building2, CalendarDays, Clock, ListTodo, MapPin, Pencil } from "lucide-react";
+import {
+  Building2,
+  CalendarDays,
+  Clock,
+  ListTodo,
+  MapPin,
+  Maximize2,
+  PanelLeft,
+  PanelTop,
+  Pencil,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { useAuthSession } from "#components/auth/auth-session-provider";
 import { useFrontendRuntimeConfig } from "#config";
@@ -28,6 +38,8 @@ interface WorkItem {
   since: string;
   blockedBy?: string;
 }
+
+type SidebarMode = "full" | "compact" | "hidden";
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -166,14 +178,6 @@ const MOCK_ACTIVITY: ActivityEvent[] = [
   },
 ];
 
-const MOCK_STATS = {
-  assigned: 14,
-  inProgress: 4,
-  blocked: 2,
-  needsReview: 3,
-  resolvedThisMonth: 12,
-};
-
 const MOCK_WORK_ITEMS: WorkItem[] = [
   {
     id: "1",
@@ -244,24 +248,202 @@ const MOCK_WORK_ITEMS: WorkItem[] = [
 
 const ACTIVITY_PAGE_SIZE = 4;
 
+// ── Sidebar toggle control ────────────────────────────────────────────────────
+
+function SidebarToggle({
+  mode,
+  onChange,
+}: {
+  mode: SidebarMode;
+  onChange: (mode: SidebarMode) => void;
+}) {
+  const options: { value: SidebarMode; Icon: React.ElementType; label: string }[] = [
+    { value: "full", Icon: PanelLeft, label: "Full sidebar" },
+    { value: "compact", Icon: PanelTop, label: "Compact header" },
+    { value: "hidden", Icon: Maximize2, label: "Hide sidebar" },
+  ];
+
+  return (
+    <div className="flex items-center gap-0.5 rounded-md border bg-muted/40 p-0.5">
+      {options.map(({ value, Icon, label }) => (
+        <button
+          key={value}
+          type="button"
+          title={label}
+          onClick={() => onChange(value)}
+          className={cn(
+            "flex items-center justify-center rounded p-1.5 transition-colors",
+            mode === value
+              ? "bg-background text-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground",
+          )}
+        >
+          <Icon className="h-3.5 w-3.5" />
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ── Compact identity banner (shown when sidebarMode === "compact") ─────────────
+
+function CompactProfileBanner({
+  displayName,
+  profile,
+  localTime,
+  isOwnProfile,
+}: {
+  displayName: string | undefined;
+  profile: UserProfile | PublicUserProfile | null;
+  localTime: string;
+  isOwnProfile: boolean;
+}) {
+  return (
+    <div className="flex items-center gap-3 rounded-lg border bg-card px-4 py-3">
+      <Avatar className="h-9 w-9 shrink-0 rounded-full ring-1 ring-border">
+        <AvatarImage src={profile?.image ?? undefined} alt={displayName} />
+        <AvatarFallback className="text-xs font-semibold">
+          {getInitials(displayName)}
+        </AvatarFallback>
+      </Avatar>
+      <div className="min-w-0 flex-1">
+        <div className="flex min-w-0 items-baseline gap-2">
+          <span className="truncate font-semibold leading-tight">{displayName ?? "—"}</span>
+          {profile?.title && (
+            <span className="shrink-0 text-xs text-muted-foreground">{profile.title}</span>
+          )}
+          {profile?.status && (
+            <span className="shrink-0 text-xs text-muted-foreground">· 💬 {profile.status}</span>
+          )}
+        </div>
+        <div className="mt-0.5 flex min-w-0 flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-muted-foreground/70">
+          {profile?.location && (
+            <span className="flex items-center gap-1">
+              <MapPin className="h-3 w-3" />
+              {profile.location}
+            </span>
+          )}
+          {profile?.timezone && (
+            <span className="flex items-center gap-1">
+              <Clock className="h-3 w-3" />
+              {getTimezoneDisplay(profile.timezone)}
+              {localTime && <span>· {localTime}</span>}
+            </span>
+          )}
+          <span className="flex items-center gap-1">
+            <CalendarDays className="h-3 w-3" />
+            Joined June 2026
+          </span>
+        </div>
+      </div>
+      {isOwnProfile && (
+        <Button variant="outline" size="sm" className="shrink-0" asChild>
+          <Link to="/dashboard/settings">
+            <Pencil className="mr-1.5 h-3 w-3" />
+            Edit
+          </Link>
+        </Button>
+      )}
+    </div>
+  );
+}
+
+// ── Full sidebar ──────────────────────────────────────────────────────────────
+
+function FullSidebar({
+  displayName,
+  email,
+  profile,
+  localTime,
+  isOwnProfile,
+  apiBaseUrl,
+  onStatusSave,
+}: {
+  displayName: string | undefined;
+  email: string | null | undefined;
+  profile: UserProfile | PublicUserProfile | null;
+  localTime: string;
+  isOwnProfile: boolean;
+  apiBaseUrl: string;
+  onStatusSave: (status: string | null) => void;
+}) {
+  return (
+    <aside className="w-full lg:max-w-60 lg:sticky lg:top-20 shrink-0">
+      <Avatar className="mb-4 h-36 w-36 rounded-full ring-2 ring-border">
+        <AvatarImage src={profile?.image ?? undefined} alt={displayName} />
+        <AvatarFallback className="text-3xl font-semibold">
+          {getInitials(displayName)}
+        </AvatarFallback>
+      </Avatar>
+      <h1 className="text-2xl font-bold leading-tight">{displayName ?? "—"}</h1>
+      {email && <p className="mt-0.5 mb-2 text-sm text-muted-foreground">{email}</p>}
+      {profile?.title && (
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{profile.title}</p>
+      )}
+      {isOwnProfile ? (
+        <StatusEditor
+          status={profile?.status ?? null}
+          apiBaseUrl={apiBaseUrl}
+          onSave={onStatusSave}
+        />
+      ) : (
+        profile?.status && <p className="mt-2 text-sm text-muted-foreground">💬 {profile.status}</p>
+      )}
+      {isOwnProfile && (
+        <Button variant="outline" size="sm" className="mt-4 w-full" asChild>
+          <Link to="/dashboard/settings">
+            <Pencil className="mr-1.5 h-3.5 w-3.5" />
+            Edit profile
+          </Link>
+        </Button>
+      )}
+      <Separator className="my-4" />
+      <div className="space-y-2 text-sm text-muted-foreground">
+        {profile?.location && <InfoRow icon={MapPin}>{profile.location}</InfoRow>}
+        {profile?.timezone && (
+          <InfoRow icon={Clock}>
+            {getTimezoneDisplay(profile.timezone)}
+            {localTime && <span className="text-muted-foreground/60"> · {localTime}</span>}
+          </InfoRow>
+        )}
+        <InfoRow icon={CalendarDays}>Joined June 2026</InfoRow>
+      </div>
+    </aside>
+  );
+}
+
 // ── Page ─────────────────────────────────────────────────────────────────────
 
 export function ProfileViewPage(): React.JSX.Element {
   const config = useFrontendRuntimeConfig();
   const { user } = useAuthSession();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const { userId } = useParams<{ userId?: string }>();
+
+  const isOwnProfile = !userId || userId === user?.id;
+
+  const [profile, setProfile] = useState<UserProfile | PublicUserProfile | null>(null);
   const [activityVisible, setActivityVisible] = useState(ACTIVITY_PAGE_SIZE);
+  const [sidebarMode, setSidebarMode] = useState<SidebarMode>("full");
 
   useEffect(() => {
-    getMyProfile({ apiBaseUrl: config.apiBaseUrl })
-      .then(setProfile)
-      .catch(() => {
-        /* fallback to session user */
-      });
-  }, [config.apiBaseUrl]);
+    setProfile(null);
+    if (isOwnProfile) {
+      getMyProfile({ apiBaseUrl: config.apiBaseUrl })
+        .then(setProfile)
+        .catch(() => {
+          /* fallback to session user */
+        });
+    } else {
+      getUserProfile(userId!, { apiBaseUrl: config.apiBaseUrl })
+        .then(setProfile)
+        .catch(() => {
+          /* profile stays null */
+        });
+    }
+  }, [config.apiBaseUrl, userId, isOwnProfile]);
 
   const displayName = profile?.name?.trim() || user?.name?.trim() || user?.email?.trim();
-  const email = profile?.email ?? user?.email;
+  const email = isOwnProfile ? ((profile as UserProfile | null)?.email ?? user?.email) : null;
   const localTime = useLocalTime(profile?.timezone);
   const visibleActivity = MOCK_ACTIVITY.slice(0, activityVisible);
   const hasMoreActivity = activityVisible < MOCK_ACTIVITY.length;
@@ -270,53 +452,52 @@ export function ProfileViewPage(): React.JSX.Element {
   const blockedItems = MOCK_WORK_ITEMS.filter((i) => i.status === "blocked");
   const reviewItems = MOCK_WORK_ITEMS.filter((i) => i.status === "needs_review");
 
+  function handleStatusSave(status: string | null) {
+    setProfile((p) => (p ? { ...p, status } : p));
+  }
+
   return (
     <div className="flex flex-1 flex-col pb-16 w-full">
       <div className="mx-auto w-full max-w-7xl px-6 py-8">
-        <div className="flex flex-col lg:flex-row items-start gap-8">
-          {/* ── Sidebar ── */}
-          <aside className="w-full lg:max-w-60 lg:sticky lg:top-20">
-            <Avatar className="mb-4 h-36 w-36 rounded-full ring-2 ring-border">
-              <AvatarImage src={profile?.image ?? undefined} alt={displayName} />
-              <AvatarFallback className="text-3xl font-semibold">
-                {getInitials(displayName)}
-              </AvatarFallback>
-            </Avatar>
-            <h1 className="text-2xl font-bold leading-tight">{displayName ?? "—"}</h1>
-            <p className="mt-0.5 mb-2 text-sm text-muted-foreground">{email}</p>
-            {profile?.title && (
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{profile.title}</p>
-            )}
-            <StatusEditor
-              status={profile?.status ?? null}
+        {/* ── Page header with toggle ── */}
+        <div className="mb-6 flex items-center justify-end">
+          <SidebarToggle mode={sidebarMode} onChange={setSidebarMode} />
+        </div>
+
+        <div
+          className={cn(
+            "flex items-start gap-8",
+            sidebarMode === "full" ? "flex-col lg:flex-row" : "flex-col",
+          )}
+        >
+          {/* ── Full sidebar ── */}
+          {sidebarMode === "full" && (
+            <FullSidebar
+              displayName={displayName}
+              email={email}
+              profile={profile}
+              localTime={localTime}
+              isOwnProfile={isOwnProfile}
               apiBaseUrl={config.apiBaseUrl}
-              onSave={(status) => setProfile((p) => (p ? { ...p, status } : p))}
+              onStatusSave={handleStatusSave}
             />
-            <Button variant="outline" size="sm" className="mt-4 w-full" asChild>
-              <Link to="/dashboard/settings">
-                <Pencil className="mr-1.5 h-3.5 w-3.5" />
-                Edit profile
-              </Link>
-            </Button>
-            <Separator className="my-4" />
-            <div className="space-y-2 text-sm text-muted-foreground">
-              {profile?.location && <InfoRow icon={MapPin}>{profile.location}</InfoRow>}
-              {profile?.timezone && (
-                <InfoRow icon={Clock}>
-                  {getTimezoneDisplay(profile.timezone)}
-                  {localTime && <span className="text-muted-foreground/60"> · {localTime}</span>}
-                </InfoRow>
-              )}
-              <InfoRow icon={CalendarDays}>Joined June 2026</InfoRow>
-            </div>
-          </aside>
+          )}
 
           {/* ── Main content ── */}
           <main className="space-y-8 w-full min-w-0 overflow-x-hidden">
+            {/* Compact banner replaces the sidebar inline */}
+            {sidebarMode === "compact" && (
+              <CompactProfileBanner
+                displayName={displayName}
+                profile={profile}
+                localTime={localTime}
+                isOwnProfile={isOwnProfile}
+              />
+            )}
+
             {/* Current Work — hero section */}
             <section>
               <SectionHeading icon={ListTodo} title="Current Work" count={MOCK_WORK_ITEMS.length} />
-
               <div className="mt-3 min-w-0 overflow-hidden rounded-lg border divide-y">
                 {inProgressItems.length > 0 && (
                   <WorkGroup
@@ -425,22 +606,17 @@ function WorkItemRow({ item, showBlockedBy }: { item: WorkItem; showBlockedBy: b
           className={cn("h-2 w-2 shrink-0 rounded-full", PRIORITY_DOT[item.priority])}
           title={item.priority}
         />
-
         <span className="min-w-0 shrink-0 truncate font-mono text-xs text-muted-foreground">
           {item.key}
         </span>
-
         <span className="min-w-0 flex-1 truncate text-sm font-medium">{item.title}</span>
-
         <span className="hidden min-w-0 max-w-32 truncate text-xs text-muted-foreground lg:block">
           {item.workspace}
         </span>
-
         <span className="hidden min-w-0 max-w-[5rem] truncate text-xs text-muted-foreground/60 lg:block">
           {item.since}
         </span>
       </div>
-
       {showBlockedBy && item.blockedBy && (
         <p className="mt-1 min-w-0 truncate pl-5 text-xs text-muted-foreground/70">
           {item.blockedBy}
@@ -534,15 +710,6 @@ function StatusEditor({
 }
 
 // ── Sidebar-local layout helpers ──────────────────────────────────────────────
-
-function StatLine({ value, label }: { value: number; label: string }) {
-  return (
-    <p className="text-sm">
-      <span className="font-semibold text-foreground">{value}</span>{" "}
-      <span className="text-muted-foreground">{label}</span>
-    </p>
-  );
-}
 
 function InfoRow({ icon: Icon, children }: { icon: React.ElementType; children: React.ReactNode }) {
   return (
