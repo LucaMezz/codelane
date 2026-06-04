@@ -35,6 +35,7 @@ import {
   TimezoneCombobox,
   cn,
   toast,
+  useTheme,
 } from "@codelane/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
@@ -477,6 +478,7 @@ function PreferencesSection({
   apiBaseUrl: string;
   onSaved: (p: UserPreferences) => void;
 }) {
+  const { setMode } = useTheme();
   const form = useForm<UpdatePreferencesInput>({
     resolver: zodResolver(updatePreferencesSchema),
     values: {
@@ -496,6 +498,7 @@ function PreferencesSection({
       return;
     }
     onSaved(result.preferences);
+    setMode(data.theme ?? "system");
     toast.success("Preferences saved.");
   }
 
