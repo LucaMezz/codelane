@@ -9,7 +9,7 @@
   // desktop-lite provides a browser-accessible Linux desktop (Fluxbox + VNC +
   // noVNC) at port 6080 — open http://localhost:6080 to see the Electron app.
   "features": {
-    "ghcr.io/devcontainers/features/node:1": {
+    "ghcr.io/devcontainers/features/node:2": {
       "version": "22",
       "nodeGypDependencies": true
     },
