@@ -33,11 +33,19 @@ if (started) {
   app.quit();
 }
 
-// Docker/dev-container environments lack the Linux capabilities required to
-// create namespaces for Chrome's zygote sandbox. Detect the container and
-// disable the sandbox so the process can start.
+// Docker/dev-container environments lack GPU support and the Linux capabilities
+// required for Chrome's zygote sandbox. Disable the sandbox, hardware GPU
+// acceleration (falls back to SwiftShader), and shared-memory GPU transfers
+// (Docker's /dev/shm is only 64 MB by default, too small for Chromium).
 if (existsSync("/.dockerenv")) {
   app.commandLine.appendSwitch("no-sandbox");
+  app.commandLine.appendSwitch("no-zygote");
+  app.commandLine.appendSwitch("disable-gpu");
+  app.commandLine.appendSwitch("disable-dev-shm-usage");
+  // Use a local encrypted file instead of the system keyring (gnome-keyring,
+  // kwallet). Containers have no keyring daemon, so without this Chromium
+  // pops an "unlock keyring" dialog and floods the console with D-Bus errors.
+  app.commandLine.appendSwitch("password-store", "basic");
 }
 
 app

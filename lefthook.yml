@@ -32,4 +32,4 @@ pre-push:
 
     similarity:
       glob: "*.{ts,tsx}"
-      run: similarity-ts ./src --threshold 0.9 --no-types --fail-on-duplicates && similarity-ts ./src --types-only --threshold 0.97 --fail-on-duplicates
+      run: similarity-ts apps packages --threshold 0.9 --modes functions,classes,overlap --fail-on-warnings && similarity-ts apps packages --threshold 0.97 --modes types --fail-on-warnings

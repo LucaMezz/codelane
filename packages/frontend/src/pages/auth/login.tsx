@@ -23,7 +23,7 @@ export function Login(): React.JSX.Element {
     try {
       result = await signInWithCredentials(data.email, data.password, {
         apiBaseUrl: config.apiBaseUrl,
-        redirectTo: callbackUrl ?? "/dashboard",
+        redirectTo: callbackUrl ?? "/inbox",
       });
     } catch {
       toast.error("Could not reach the server. Please try again.");

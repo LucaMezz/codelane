@@ -4,34 +4,64 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "devcontainer",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-
   // Node.js 22 LTS with build tools for native modules (argon2 requires them).
   // GitHub CLI is included for convenient PR and issue workflows.
+  // desktop-lite provides a browser-accessible Linux desktop (Fluxbox + VNC +
+  // noVNC) at port 6080 — open http://localhost:6080 to see the Electron app.
   "features": {
     "ghcr.io/devcontainers/features/node:1": {
       "version": "22",
       "nodeGypDependencies": true
     },
-    "ghcr.io/devcontainers/features/github-cli:1": {}
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "installDirectlyFromGitHubRelease": true,
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/node:2": {
+      "nodeGypDependencies": true,
+      "version": "lts",
+      "npmVersion": "lts",
+      "pnpmVersion": "latest",
+      "nvmVersion": "latest"
+    },
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "latest",
+      "profile": "minimal",
+      "targets": "aarch64-unknown-linux-gnu",
+      "components": "rust-analyzer,rust-src,rustfmt,clippy"
+    },
+    "ghcr.io/devcontainers/features/desktop-lite:1": {}
   },
-
   // Activates pnpm, installs dependencies, creates .env, and runs migrations.
   "postCreateCommand": "bash .devcontainer/post-create.sh",
-
   // Forward all service ports to the VS Code host
-  "forwardPorts": [3000, 4000, 5173, 5432],
+  "forwardPorts": [3000, 4000, 5173, 5432, 6080],
   "portsAttributes": {
-    "3000": { "label": "Web (Vite)" },
-    "4000": { "label": "API (Express)" },
-    "5173": { "label": "Desktop renderer" },
-    "5432": { "label": "PostgreSQL", "onAutoForward": "silent" }
+    "3000": {
+      "label": "Web (Vite)"
+    },
+    "4000": {
+      "label": "API (Express)"
+    },
+    "5173": {
+      "label": "Desktop renderer"
+    },
+    "5432": {
+      "label": "PostgreSQL",
+      "onAutoForward": "silent"
+    },
+    "6080": {
+      "label": "Electron desktop — open /vnc_lite.html",
+      "onAutoForward": "silent"
+    }
   },
-
-  // Expose the shared pnpm store path so post-create.sh can configure it
+  // DISPLAY=:1 matches the VNC server started by desktop-lite. Set explicitly
+  // so pnpm dev:desktop inherits it regardless of how the terminal is opened.
+  // PNPM_STORE_DIR tells post-create.sh where the shared pnpm cache lives.
   "remoteEnv": {
+    "DISPLAY": ":1",
     "PNPM_STORE_DIR": "/pnpm-store"
   },
-
   "customizations": {
     "vscode": {
       "extensions": [
