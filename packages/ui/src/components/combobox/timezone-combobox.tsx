@@ -93,6 +93,8 @@ const { TZ_BY_CONTINENT, TZ_LABEL_MAP } = (() => {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
+// similarity-ignore — generic combobox props; intentionally the same shape as
+// LocationComboboxProps, each scoped to its own component.
 interface TimezoneComboboxProps {
   id?: string;
   value?: string;

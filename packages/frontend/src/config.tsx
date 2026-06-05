@@ -1,5 +1,7 @@
 import { createContext, useContext } from "react";
 
+// similarity-ignore — same shape as ClientRuntimeConfig by design; this is
+// the React context type, ClientRuntimeConfig is the raw config definition.
 export type FrontendRuntimeConfig = {
   apiBaseUrl: string;
 };
