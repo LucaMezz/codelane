@@ -1,0 +1,35 @@
+services:
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/base:bookworm
+    volumes:
+      # Mount the repo into the standard devcontainer workspace path
+      - ../:/workspaces/codelane:cached
+      # Persist the pnpm store across container rebuilds for faster installs
+      - pnpm-store:/pnpm-store
+    # Keep container alive while VS Code is connected
+    command: sleep infinity
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:17
+    restart: unless-stopped
+    ports:
+      # Expose on the host so Drizzle Studio and other host tools can connect
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: codelane
+      POSTGRES_USER: codelane
+      POSTGRES_PASSWORD: codelane
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U codelane -d codelane"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pnpm-store:
+  postgres-data:

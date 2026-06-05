@@ -12,7 +12,8 @@ services:
     volumes:
       - codelane-postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      test:
+        ["CMD-SHELL", 'pg_isready -U "${POSTGRES_USER:-codelane}" -d "${POSTGRES_DB:-codelane}"']
       interval: 5s
       timeout: 5s
       retries: 10
@@ -30,37 +31,25 @@ services:
     environment:
       NODE_ENV: production
       API_PORT: ${API_PORT:-4000}
-      PORT: ${API_PORT:-4000}
       DATABASE_URL: postgres://${POSTGRES_USER:-codelane}:${POSTGRES_PASSWORD:-codelane}@postgres:5432/${POSTGRES_DB:-codelane}
-      CORS_ORIGINS: ${CORS_ORIGINS}
-      CORS_ORIGIN: ${CORS_ORIGIN}
-      AUTH_SECRET: ${AUTH_SECRET}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+      AUTH_SECRET: ${AUTH_SECRET:?AUTH_SECRET must be set}
     depends_on:
       postgres:
         condition: service_healthy
 
-  api-dev:
-    container_name: codelane-api-dev
-    image: node:22-alpine
-    working_dir: /app
-    command: sh -c "corepack enable && pnpm install --ignore-scripts && pnpm --filter @codelane/api dev"
+  web:
+    container_name: codelane-web
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:4000}
+    restart: unless-stopped
     ports:
-      - "${API_PORT:-4000}:${API_PORT:-4000}"
-    environment:
-      NODE_ENV: development
-      API_PORT: ${API_PORT:-4000}
-      PORT: ${API_PORT:-4000}
-      DATABASE_URL: postgres://${POSTGRES_USER:-codelane}:${POSTGRES_PASSWORD:-codelane}@postgres:5432/${POSTGRES_DB:-codelane}
-      CORS_ORIGINS: ${CORS_ORIGINS}
-      CORS_ORIGIN: ${CORS_ORIGIN}
-      AUTH_SECRET: ${AUTH_SECRET}
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - /app/apps/api/node_modules
+      - "${WEB_PORT:-3000}:80"
     depends_on:
-      postgres:
-        condition: service_healthy
+      - api
 
 volumes:
   codelane-postgres-data:

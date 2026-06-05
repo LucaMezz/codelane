@@ -10,7 +10,7 @@ export async function signInWithCredentials(
     redirectTo?: string;
   },
 ): Promise<SignInResult> {
-  const redirectTo = options.redirectTo ?? "/dashboard";
+  const redirectTo = options.redirectTo ?? "/inbox";
 
   const csrfResponse = await fetchWithTimeout(joinUrl(options.apiBaseUrl, "/auth/csrf"), {
     credentials: "include",

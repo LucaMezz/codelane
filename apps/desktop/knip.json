@@ -19,6 +19,7 @@
     "renderer/src/vite-env.d.ts"
   ],
   "ignoreDependencies": [
+    "@codelane/core",
     "@electron-forge/plugin-auto-unpack-natives",
     "@total-typescript/ts-reset",
     "@tailwindcss/typography",

@@ -1,6 +1,5 @@
 import path from "node:path";
 
-import { appMetadata } from "@codelane/core/metadata";
 import { MakerDeb } from "@electron-forge/maker-deb";
 import { MakerRpm } from "@electron-forge/maker-rpm";
 import { MakerSquirrel } from "@electron-forge/maker-squirrel";
@@ -10,10 +9,12 @@ import { VitePlugin } from "@electron-forge/plugin-vite";
 import type { ForgeConfig } from "@electron-forge/shared-types";
 import { FuseV1Options, FuseVersion } from "@electron/fuses";
 
-const desktopMetadata = appMetadata.apps.desktop;
-
-const appName = desktopMetadata.appName;
-const productName = appMetadata.name;
+const appName = "codelane-desktop";
+const productName = "CodeLane";
+const author = "Luca Mezzavilla";
+const bundleId = "com.codelane.desktop";
+const executableName = "codelane-desktop";
+const category = "public.app-category.developer-tools";
 
 const assetsPath = path.resolve(__dirname, "assets");
 const iconPath = path.resolve(assetsPath, "icon");
@@ -26,10 +27,10 @@ const config: ForgeConfig = {
     // Keep this unscoped. Squirrel can break when it tries to use
     // the package name "@codelane/desktop" in generated .nuspec paths.
     name: appName,
-    executableName: desktopMetadata.executableName,
+    executableName,
 
-    appBundleId: desktopMetadata.bundleId,
-    appCategoryType: desktopMetadata.category,
+    appBundleId: bundleId,
+    appCategoryType: category,
 
     // Important:
     // Do not include the file extension here.
@@ -50,7 +51,7 @@ const config: ForgeConfig = {
     new MakerSquirrel({
       name: appName,
       title: productName,
-      authors: `${appMetadata.author}`,
+      authors: author,
       setupExe: `${productName}Setup.exe`,
       setupIcon: path.resolve(assetsPath, "icon.ico"),
       noMsi: true,

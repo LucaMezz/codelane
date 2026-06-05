@@ -335,7 +335,7 @@ function CompactProfileBanner({
       </div>
       {isOwnProfile && (
         <Button variant="outline" size="sm" className="shrink-0" asChild>
-          <Link to="/dashboard/settings">
+          <Link to="/settings">
             <Pencil className="mr-1.5 h-3 w-3" />
             Edit
           </Link>
@@ -388,7 +388,7 @@ function FullSidebar({
       )}
       {isOwnProfile && (
         <Button variant="outline" size="sm" className="mt-4 w-full" asChild>
-          <Link to="/dashboard/settings">
+          <Link to="/settings">
             <Pencil className="mr-1.5 h-3.5 w-3.5" />
             Edit profile
           </Link>

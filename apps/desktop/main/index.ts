@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import path from "node:path";
 
 import { app, BrowserWindow, dialog, ipcMain, Menu } from "electron";
@@ -30,6 +31,21 @@ let mainWindow: BrowserWindow | null = null;
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
+}
+
+// Docker/dev-container environments lack GPU support and the Linux capabilities
+// required for Chrome's zygote sandbox. Disable the sandbox, hardware GPU
+// acceleration (falls back to SwiftShader), and shared-memory GPU transfers
+// (Docker's /dev/shm is only 64 MB by default, too small for Chromium).
+if (existsSync("/.dockerenv")) {
+  app.commandLine.appendSwitch("no-sandbox");
+  app.commandLine.appendSwitch("no-zygote");
+  app.commandLine.appendSwitch("disable-gpu");
+  app.commandLine.appendSwitch("disable-dev-shm-usage");
+  // Use a local encrypted file instead of the system keyring (gnome-keyring,
+  // kwallet). Containers have no keyring daemon, so without this Chromium
+  // pops an "unlock keyring" dialog and floods the console with D-Bus errors.
+  app.commandLine.appendSwitch("password-store", "basic");
 }
 
 app
