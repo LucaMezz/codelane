@@ -61,7 +61,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "5.2.0",
     "clsx": "^2.1.1",
-    "electron": "^42.0.1",
+    "electron": "^42.5.1",
     "happy-dom": "^20.9.0",
     "knip": "^6.12.1",
     "lefthook": "^2.1.4",
