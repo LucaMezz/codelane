@@ -65,7 +65,7 @@
     "@typescript/native-preview": "7.0.0-dev.20260507.1",
     "@vitest/browser-playwright": "^4.1.6",
     "@vitest/coverage-v8": "^4.1.6",
-    "knip": "^6.12.1",
+    "knip": "^6.34.0",
     "playwright": "^1.60.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",

@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@typescript/native-preview": "7.0.0-dev.20260507.1",
-    "knip": "^6.12.1",
+    "knip": "^6.34.0",
     "rimraf": "^6.1.3",
     "tsup": "^8.5.1",
     "typescript": "^6.0.3"
