@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@typescript/native-preview": "7.0.0-dev.20260507.1",
-    "knip": "^6.12.1",
+    "knip": "^6.34.0",
     "typescript": "^6.0.3"
   },
   "peerDependencies": {

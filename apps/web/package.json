@@ -27,7 +27,7 @@
     "@types/node": "^20",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "knip": "^6.12.1",
+    "knip": "^6.34.0",
     "tailwindcss": "^4",
     "typescript": "^6.0.3",
     "vite": "^7.3.3"
