@@ -34,7 +34,7 @@
     "react-router-dom": "^7.15.0"
   },
   "devDependencies": {
-    "@typescript/native-preview": "7.0.0-dev.20260507.1",
+    "@typescript/native-preview": "7.0.0-dev.20260707.2",
     "knip": "^6.12.1",
     "typescript": "^6.0.3"
   },

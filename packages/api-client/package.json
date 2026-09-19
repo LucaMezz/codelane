@@ -28,7 +28,7 @@
     "@codelane/core": "workspace:*"
   },
   "devDependencies": {
-    "@typescript/native-preview": "7.0.0-dev.20260507.1",
+    "@typescript/native-preview": "7.0.0-dev.20260707.2",
     "knip": "^6.12.1",
     "rimraf": "^6.1.3",
     "tsup": "^8.5.1",
