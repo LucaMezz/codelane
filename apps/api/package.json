@@ -20,7 +20,7 @@
     "knip": "knip"
   },
   "dependencies": {
-    "@auth/drizzle-adapter": "^1.11.2",
+    "@auth/drizzle-adapter": "^1.11.3",
     "@auth/express": "^0.12.2",
     "@codelane/config": "workspace:*",
     "@codelane/core": "workspace:*",
