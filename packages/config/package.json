@@ -23,7 +23,7 @@
     "knip": "knip"
   },
   "dependencies": {
-    "zod": "^3.25.76"
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@typescript/native-preview": "7.0.0-dev.20260507.1",
